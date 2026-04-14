@@ -1,7 +1,6 @@
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
-  darkMode: 'class',
   content: [
     './app/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
@@ -11,24 +10,28 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: '#0a0a0a',
-        surface: '#141414',
-        'surface-2': '#1f1f1f',
-        border: '#2e2e2e',
+        background: '#F7F5F0',
+        surface: '#FFFFFF',
+        'surface-2': '#EEEAE2',
+        border: '#DDD8CE',
         accent: {
-          DEFAULT: '#ffffff',
-          hover: '#e5e5e5',
-          muted: '#525252',
+          DEFAULT: '#E0420C',
+          hover: '#C23A0A',
+          muted: '#F5C4B4',
         },
       },
       fontFamily: {
         sans: [
-          'Inter',
+          'Plus Jakarta Sans',
           'ui-sans-serif',
           'system-ui',
           '-apple-system',
-          'BlinkMacSystemFont',
-          'Segoe UI',
+          'sans-serif',
+        ],
+        display: [
+          'Oswald',
+          'ui-sans-serif',
+          'system-ui',
           'sans-serif',
         ],
       },

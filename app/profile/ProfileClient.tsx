@@ -101,19 +101,19 @@ export function ProfileClient({ userId, email, username, initialAvatarUrl, tourn
     <div className="min-h-screen bg-background">
       <nav className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-sm">
         <div className="max-w-3xl mx-auto px-4 h-14 flex items-center gap-3">
-          <Link href="/dashboard" className="text-slate-500 hover:text-slate-300 transition-colors">
+          <Link href="/dashboard" className="text-stone-500 hover:text-stone-700 transition-colors">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </Link>
-          <span className="text-sm text-slate-300 font-medium">Profile</span>
+          <span className="text-sm text-stone-700 font-medium">Profiel</span>
         </div>
       </nav>
 
       <div className="max-w-3xl mx-auto px-4 py-8 space-y-8">
         {/* Profile info */}
         <div className="card space-y-4">
-          <h2 className="font-semibold text-slate-200">Account</h2>
+          <h2 className="font-semibold text-stone-900 font-display uppercase tracking-wide">Account</h2>
 
           {/* Avatar */}
           <div className="flex items-center gap-4">
@@ -132,23 +132,23 @@ export function ProfileClient({ userId, email, username, initialAvatarUrl, tourn
                 loading={avatarLoading}
                 onClick={() => fileInputRef.current?.click()}
               >
-                {avatarUrl ? 'Change photo' : 'Upload photo'}
+                {avatarUrl ? 'Foto wijzigen' : 'Foto uploaden'}
               </Button>
-              <p className="text-xs text-slate-500 mt-1">Max 10MB</p>
+              <p className="text-xs text-stone-400 mt-1">Max 10MB</p>
             </div>
           </div>
 
           <div>
-            <p className="text-sm text-slate-500 mb-1">Email</p>
-            <p className="text-sm text-slate-300">{email}</p>
+            <p className="text-sm text-stone-400 mb-1">E-mailadres</p>
+            <p className="text-sm text-stone-700">{email}</p>
           </div>
 
           <form onSubmit={handleSave} className="space-y-3">
             <Input
-              label="Username"
+              label="Gebruikersnaam"
               value={newUsername}
               onChange={(e) => setNewUsername(e.target.value)}
-              hint="2–30 characters"
+              hint="2–30 tekens"
             />
             <Button
               type="submit"
@@ -156,19 +156,19 @@ export function ProfileClient({ userId, email, username, initialAvatarUrl, tourn
               disabled={newUsername.trim() === username || !newUsername.trim()}
               size="sm"
             >
-              Save changes
+              Opslaan
             </Button>
           </form>
         </div>
 
         {/* Tournament history */}
         <div>
-          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">
-            Tournament History ({tournaments.length})
+          <h2 className="text-sm font-semibold text-stone-400 uppercase tracking-wider mb-3">
+            Toernooigeschiedenis ({tournaments.length})
           </h2>
 
           {tournaments.length === 0 ? (
-            <p className="text-sm text-slate-500">No tournaments yet.</p>
+            <p className="text-sm text-stone-500">Nog geen toernooien.</p>
           ) : (
             <div className="grid gap-3">
               {tournaments.map(({ tournament, role }) => (

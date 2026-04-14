@@ -37,13 +37,13 @@ export function ForgotPasswordForm() {
       <div className="card">
         <div className="text-center space-y-3">
           <div className="text-green-400 text-3xl">✓</div>
-          <h2 className="text-xl font-semibold text-slate-100">Check your email</h2>
-          <p className="text-sm text-slate-400">
-            We sent a password reset link to <span className="text-slate-200">{email}</span>.
+          <h2 className="text-xl font-semibold text-stone-900">Check your email</h2>
+          <p className="text-sm text-stone-500">
+            We sent a password reset link to <span className="text-stone-800">{email}</span>.
           </p>
-          <p className="text-xs text-slate-500">Didn&apos;t receive it? Check your spam folder.</p>
+          <p className="text-xs text-stone-500">Didn&apos;t receive it? Check your spam folder.</p>
         </div>
-        <p className="mt-6 text-center text-sm text-slate-500">
+        <p className="mt-6 text-center text-sm text-stone-500">
           <Link href="/login" className="text-accent hover:underline">
             Back to sign in
           </Link>
@@ -54,8 +54,8 @@ export function ForgotPasswordForm() {
 
   return (
     <div className="card">
-      <h2 className="text-xl font-semibold text-slate-100 mb-2">Forgot password?</h2>
-      <p className="text-sm text-slate-400 mb-6">
+      <h2 className="text-xl font-semibold text-stone-900 mb-2">Forgot password?</h2>
+      <p className="text-sm text-stone-500 mb-6">
         Enter your email and we&apos;ll send you a reset link.
       </p>
 
@@ -81,7 +81,7 @@ export function ForgotPasswordForm() {
         </Button>
       </form>
 
-      <p className="mt-4 text-center text-sm text-slate-500">
+      <p className="mt-4 text-center text-sm text-stone-500">
         <Link href="/login" className="text-accent hover:underline">
           Back to sign in
         </Link>

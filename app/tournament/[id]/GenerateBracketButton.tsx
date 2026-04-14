@@ -123,8 +123,8 @@ export function GenerateBracketButton({
     return (
       <div key={fromEnd} className="flex items-center gap-3 py-2 border-b border-border last:border-0">
         <div className="flex-1">
-          <p className="text-sm font-medium text-slate-200">{roundLabel(fromEnd)}</p>
-          <p className="text-xs text-slate-500">Ronde {actualRound}</p>
+          <p className="text-sm font-medium text-stone-800">{roundLabel(fromEnd)}</p>
+          <p className="text-xs text-stone-500">Ronde {actualRound}</p>
         </div>
         <div className="flex gap-1">
           {FORMAT_OPTIONS.map((opt) => (
@@ -135,7 +135,7 @@ export function GenerateBracketButton({
               className={
                 overrides[fromEnd] === opt.value
                   ? 'px-2.5 py-1 rounded text-xs font-semibold bg-accent text-white'
-                  : 'px-2.5 py-1 rounded text-xs font-medium bg-surface-2 text-slate-400 hover:text-slate-200 border border-border'
+                  : 'px-2.5 py-1 rounded text-xs font-medium bg-surface-2 text-stone-500 hover:text-stone-800 border border-border'
               }
             >
               {opt.label}
@@ -159,12 +159,12 @@ export function GenerateBracketButton({
         <div className="space-y-5">
           {/* Winners bracket rounds */}
           <div>
-            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">
+            <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1">
               Winnaarsbracket
             </p>
-            <p className="text-sm text-slate-500 mb-3">
+            <p className="text-sm text-stone-500 mb-3">
               {winnersQualifierCount} spelers ({winnersPerGroup}/poule × {numGroups} poules)
-              {' → '}<span className="text-slate-300">{winnersTotalRounds} rondes</span>
+              {' → '}<span className="text-stone-700">{winnersTotalRounds} rondes</span>
             </p>
             <div className="space-y-0">
               {winnersRounds.map((fromEnd) =>
@@ -176,12 +176,12 @@ export function GenerateBracketButton({
           {/* Losers bracket rounds */}
           {enableLosers && losersQualifierCount >= 2 && (
             <div>
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">
+              <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1">
                 Verlizersbracket
               </p>
-              <p className="text-sm text-slate-500 mb-3">
+              <p className="text-sm text-stone-500 mb-3">
                 {losersQualifierCount} spelers ({losersPerGroup}/poule × {numGroups} poules)
-                {' → '}<span className="text-slate-300">{losersTotalRounds} rondes</span>
+                {' → '}<span className="text-stone-700">{losersTotalRounds} rondes</span>
               </p>
               <div className="space-y-0">
                 {losersRounds.map((fromEnd) =>

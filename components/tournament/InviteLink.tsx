@@ -32,9 +32,9 @@ export function InviteLink({ inviteCode }: InviteLinkProps) {
     <div className="flex flex-col gap-3">
       {/* Invite code — most important, shown prominently */}
       <div>
-        <p className="text-sm font-medium text-slate-300 mb-1.5">Uitnodigingscode</p>
+        <p className="text-sm font-medium text-stone-700 mb-1.5">Uitnodigingscode</p>
         <div className="flex items-center gap-3">
-          <div className="bg-surface-2 border border-border rounded-lg px-4 py-2.5 font-mono text-2xl font-bold tracking-[0.25em] text-slate-100 select-all">
+          <div className="bg-surface-2 border border-border rounded-lg px-4 py-2.5 font-mono text-2xl font-bold tracking-[0.25em] text-stone-900 select-all">
             {inviteCode}
           </div>
           <Button
@@ -60,13 +60,13 @@ export function InviteLink({ inviteCode }: InviteLinkProps) {
             )}
           </Button>
         </div>
-        <p className="text-xs text-slate-500 mt-1.5">
+        <p className="text-xs text-stone-500 mt-1.5">
           Spelers voeren deze code in op het dashboard om mee te doen — of deel de volledige link hieronder.
         </p>
       </div>
 
       {/* Full URL — secondary */}
-      <div className="bg-surface-2 border border-border rounded-lg px-3 py-2 text-xs text-slate-500 truncate font-mono">
+      <div className="bg-surface-2 border border-border rounded-lg px-3 py-2 text-xs text-stone-500 truncate font-mono">
         {inviteUrl}
       </div>
     </div>

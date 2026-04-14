@@ -20,7 +20,7 @@ export function Tabs({ tabs, className }: TabsProps) {
   return (
     <nav
       className={cn(
-        'flex gap-1 border-b border-border overflow-x-auto scrollbar-none',
+        'flex gap-0.5 border-b border-border overflow-x-auto scrollbar-none',
         className
       )}
     >
@@ -32,10 +32,10 @@ export function Tabs({ tabs, className }: TabsProps) {
             key={tab.href}
             href={tab.href}
             className={cn(
-              'px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 transition-colors',
+              'px-4 py-2.5 text-sm font-semibold whitespace-nowrap border-b-2 transition-all',
               isActive
-                ? 'border-white text-white'
-                : 'border-transparent text-neutral-500 hover:text-neutral-200 hover:border-neutral-600'
+                ? 'border-accent text-accent'
+                : 'border-transparent text-stone-500 hover:text-stone-800 hover:border-stone-300'
             )}
           >
             {tab.label}

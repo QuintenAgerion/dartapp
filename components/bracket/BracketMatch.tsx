@@ -35,7 +35,7 @@ export function BracketMatchCard({
           isLive
             ? 'border-green-500/50 bg-green-500/5 shadow-green-500/10 shadow-md'
             : 'border-border bg-surface',
-          canPlay && canSubmitScore && !isCompleted && 'cursor-pointer hover:border-slate-600',
+          canPlay && canSubmitScore && !isCompleted && 'cursor-pointer hover:border-stone-400',
           !canPlay && 'opacity-60'
         )}
         onClick={() => {
@@ -45,7 +45,7 @@ export function BracketMatchCard({
         }}
       >
         {roundLabel && (
-          <div className="absolute -top-5 left-0 text-xs text-slate-600 whitespace-nowrap">
+          <div className="absolute -top-5 left-0 text-xs text-stone-400 whitespace-nowrap">
             {roundLabel}
           </div>
         )}
@@ -59,7 +59,7 @@ export function BracketMatchCard({
             'text-sm truncate',
             isCompleted && match.winner_member_id === match.home_member_id
               ? 'text-accent font-semibold'
-              : 'text-slate-300'
+              : 'text-stone-700'
           )}>
             {homeMember?.display_name ?? (match.home_member_id ? '...' : 'TBD')}
           </span>
@@ -67,7 +67,7 @@ export function BracketMatchCard({
             'text-sm font-bold shrink-0 w-5 text-right',
             isCompleted && match.winner_member_id === match.home_member_id
               ? 'text-accent'
-              : 'text-slate-400'
+              : 'text-stone-500'
           )}>
             {isCompleted || isLive ? match.home_score : ''}
           </span>
@@ -82,7 +82,7 @@ export function BracketMatchCard({
             'text-sm truncate',
             isCompleted && match.winner_member_id === match.away_member_id
               ? 'text-accent font-semibold'
-              : 'text-slate-300'
+              : 'text-stone-700'
           )}>
             {awayMember?.display_name ?? (match.away_member_id ? '...' : 'TBD')}
           </span>
@@ -90,7 +90,7 @@ export function BracketMatchCard({
             'text-sm font-bold shrink-0 w-5 text-right',
             isCompleted && match.winner_member_id === match.away_member_id
               ? 'text-accent'
-              : 'text-slate-400'
+              : 'text-stone-500'
           )}>
             {isCompleted || isLive ? match.away_score : ''}
           </span>

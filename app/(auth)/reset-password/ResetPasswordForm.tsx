@@ -64,15 +64,15 @@ export function ResetPasswordForm() {
   if (!ready) {
     return (
       <div className="card text-center">
-        <p className="text-slate-400 text-sm">Verifying reset link…</p>
+        <p className="text-stone-500 text-sm">Verifying reset link…</p>
       </div>
     )
   }
 
   return (
     <div className="card">
-      <h2 className="text-xl font-semibold text-slate-100 mb-2">Set new password</h2>
-      <p className="text-sm text-slate-400 mb-6">Choose a strong password for your account.</p>
+      <h2 className="text-xl font-semibold text-stone-900 mb-2">Set new password</h2>
+      <p className="text-sm text-stone-500 mb-6">Choose a strong password for your account.</p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <Input

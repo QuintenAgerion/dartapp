@@ -79,7 +79,7 @@ export function SettingsForm({ tournament }: { tournament: Tournament }) {
 
       {/* Basic info */}
       <div className="card space-y-4">
-        <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Basisinformatie</h2>
+        <h2 className="text-sm font-semibold text-stone-500 uppercase tracking-wider">Basisinformatie</h2>
 
         <Input
           label="Naam toernooi"
@@ -106,7 +106,7 @@ export function SettingsForm({ tournament }: { tournament: Tournament }) {
       {/* Structural format — draft only */}
       {isDraft && (
         <div className="card space-y-4">
-          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Formaat</h2>
+          <h2 className="text-sm font-semibold text-stone-500 uppercase tracking-wider">Formaat</h2>
 
           <Select
             label="Wedstrijdformaat"
@@ -120,14 +120,14 @@ export function SettingsForm({ tournament }: { tournament: Tournament }) {
           />
 
           <div>
-            <label className="text-sm font-medium text-slate-300">Aantal poules</label>
+            <label className="text-sm font-medium text-stone-700">Aantal poules</label>
             <div className="mt-1.5 flex items-center gap-3">
               <input
                 type="range" min={1} max={8} value={numGroups}
                 onChange={(e) => setNumGroups(parseInt(e.target.value))}
                 className="flex-1 accent-accent"
               />
-              <span className="w-8 text-center text-slate-200 font-medium">{numGroups}</span>
+              <span className="w-8 text-center text-stone-800 font-medium">{numGroups}</span>
             </div>
           </div>
 
@@ -139,8 +139,8 @@ export function SettingsForm({ tournament }: { tournament: Tournament }) {
                 className="w-4 h-4 accent-accent rounded"
               />
               <div>
-                <p className="text-sm font-medium text-slate-300">Winnaarsbracket</p>
-                <p className="text-xs text-slate-500">Topspelers uit elke poule gaan door naar een knockoutbracket</p>
+                <p className="text-sm font-medium text-stone-700">Winnaarsbracket</p>
+                <p className="text-xs text-stone-500">Topspelers uit elke poule gaan door naar een knockoutbracket</p>
               </div>
             </label>
 
@@ -153,42 +153,42 @@ export function SettingsForm({ tournament }: { tournament: Tournament }) {
                     className="w-4 h-4 accent-accent rounded"
                   />
                   <div>
-                    <p className="text-sm font-medium text-slate-300">Verlizersbracket</p>
-                    <p className="text-xs text-slate-500">Troostbracket voor lager geplaatste kwalificanten</p>
+                    <p className="text-sm font-medium text-stone-700">Verlizersbracket</p>
+                    <p className="text-xs text-stone-500">Troostbracket voor lager geplaatste kwalificanten</p>
                   </div>
                 </label>
 
                 <div className="ml-7 space-y-3 rounded-lg bg-surface-2 border border-border p-3">
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Doorstroming per poule</p>
+                  <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider">Doorstroming per poule</p>
 
                   <div className="flex items-center gap-3">
                     <div className="w-3 h-3 rounded-full bg-accent shrink-0" />
-                    <span className="text-sm text-slate-300 flex-1">Spelers naar winnaarsbracket</span>
+                    <span className="text-sm text-stone-700 flex-1">Spelers naar winnaarsbracket</span>
                     <div className="flex items-center gap-2">
-                      <button type="button" onClick={() => setWinnersPerGroup(Math.max(1, winnersPerGroup - 1))} className="w-6 h-6 rounded border border-border text-slate-400 hover:text-slate-200 text-sm font-bold leading-none">−</button>
-                      <span className="w-5 text-center text-slate-100 font-semibold">{winnersPerGroup}</span>
-                      <button type="button" onClick={() => setWinnersPerGroup(Math.min(8, winnersPerGroup + 1))} className="w-6 h-6 rounded border border-border text-slate-400 hover:text-slate-200 text-sm font-bold leading-none">+</button>
+                      <button type="button" onClick={() => setWinnersPerGroup(Math.max(1, winnersPerGroup - 1))} className="w-6 h-6 rounded border border-border text-stone-500 hover:text-stone-800 text-sm font-bold leading-none">−</button>
+                      <span className="w-5 text-center text-stone-900 font-semibold">{winnersPerGroup}</span>
+                      <button type="button" onClick={() => setWinnersPerGroup(Math.min(8, winnersPerGroup + 1))} className="w-6 h-6 rounded border border-border text-stone-500 hover:text-stone-800 text-sm font-bold leading-none">+</button>
                     </div>
                   </div>
 
                   {enableLosers && (
                     <div className="flex items-center gap-3">
-                      <div className="w-3 h-3 rounded-full bg-slate-500 shrink-0" />
-                      <span className="text-sm text-slate-300 flex-1">Spelers naar verlizersbracket</span>
+                      <div className="w-3 h-3 rounded-full bg-stone-400 shrink-0" />
+                      <span className="text-sm text-stone-700 flex-1">Spelers naar verlizersbracket</span>
                       <div className="flex items-center gap-2">
-                        <button type="button" onClick={() => setLosersPerGroup(Math.max(0, losersPerGroup - 1))} className="w-6 h-6 rounded border border-border text-slate-400 hover:text-slate-200 text-sm font-bold leading-none">−</button>
-                        <span className="w-5 text-center text-slate-100 font-semibold">{losersPerGroup}</span>
-                        <button type="button" onClick={() => setLosersPerGroup(Math.min(8, losersPerGroup + 1))} className="w-6 h-6 rounded border border-border text-slate-400 hover:text-slate-200 text-sm font-bold leading-none">+</button>
+                        <button type="button" onClick={() => setLosersPerGroup(Math.max(0, losersPerGroup - 1))} className="w-6 h-6 rounded border border-border text-stone-500 hover:text-stone-800 text-sm font-bold leading-none">−</button>
+                        <span className="w-5 text-center text-stone-900 font-semibold">{losersPerGroup}</span>
+                        <button type="button" onClick={() => setLosersPerGroup(Math.min(8, losersPerGroup + 1))} className="w-6 h-6 rounded border border-border text-stone-500 hover:text-stone-800 text-sm font-bold leading-none">+</button>
                       </div>
                     </div>
                   )}
 
-                  <p className="text-xs text-slate-500 pt-1 border-t border-border">
+                  <p className="text-xs text-stone-500 pt-1 border-t border-border">
                     Top {winnersPerGroup} × {numGroups} poule{numGroups > 1 ? 's' : ''} ={' '}
-                    <span className="text-slate-300 font-medium">{winnersPerGroup * numGroups} spelers</span> in winnaarsbracket
+                    <span className="text-stone-700 font-medium">{winnersPerGroup * numGroups} spelers</span> in winnaarsbracket
                     {enableLosers && losersPerGroup > 0 && (
                       <>, volgende {losersPerGroup} × {numGroups} ={' '}
-                      <span className="text-slate-300 font-medium">{losersPerGroup * numGroups}</span> in verlizersbracket</>
+                      <span className="text-stone-700 font-medium">{losersPerGroup * numGroups}</span> in verlizersbracket</>
                     )}
                   </p>
                 </div>
@@ -200,17 +200,17 @@ export function SettingsForm({ tournament }: { tournament: Tournament }) {
 
       {/* Venue */}
       <div className="card space-y-4">
-        <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Locatie</h2>
+        <h2 className="text-sm font-semibold text-stone-500 uppercase tracking-wider">Locatie</h2>
 
         <div>
-          <label className="text-sm font-medium text-slate-300">Aantal borden</label>
+          <label className="text-sm font-medium text-stone-700">Aantal borden</label>
           <div className="mt-1.5 flex items-center gap-3">
             <input
               type="range" min={1} max={16} value={numBoards}
               onChange={(e) => setNumBoards(parseInt(e.target.value))}
               className="flex-1 accent-accent"
             />
-            <span className="w-8 text-center text-slate-200 font-medium">{numBoards}</span>
+            <span className="w-8 text-center text-stone-800 font-medium">{numBoards}</span>
           </div>
         </div>
 

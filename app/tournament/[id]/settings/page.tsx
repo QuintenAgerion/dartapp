@@ -25,7 +25,7 @@ export default async function SettingsPage({ params }: PageProps) {
   if (role !== 'organizer') {
     return (
       <div className="card text-center py-8">
-        <p className="text-slate-400">Only the organizer can access settings.</p>
+        <p className="text-stone-500">Only the organizer can access settings.</p>
       </div>
     )
   }

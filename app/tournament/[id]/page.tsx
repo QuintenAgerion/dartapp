@@ -53,13 +53,13 @@ export default async function TournamentOverviewPage({ params }: PageProps) {
       {/* Organizer actions */}
       {role === 'organizer' && (
         <div className="card space-y-4">
-          <h3 className="font-semibold text-slate-200">Organisator Tools</h3>
+          <h3 className="font-semibold text-stone-900 font-display uppercase tracking-wide">Organisator Tools</h3>
 
           {t.status === 'draft' && (
             <>
               <InviteLink inviteCode={t.invite_code} />
               <div className="border-t border-border pt-4">
-                <p className="text-sm text-slate-400 mb-3">
+                <p className="text-sm text-stone-500 mb-3">
                   Zodra alle spelers zijn ingeschreven, start je het toernooi om poules en wedstrijden te genereren.
                 </p>
                 <StartTournamentButton tournamentId={id} playerCount={playerCount ?? 0} />
@@ -72,7 +72,7 @@ export default async function TournamentOverviewPage({ params }: PageProps) {
               <InviteLink inviteCode={t.invite_code} />
               {t.enable_winners_bracket && (
                 <div className="border-t border-border pt-4">
-                  <p className="text-sm text-slate-400 mb-3">
+                  <p className="text-sm text-stone-500 mb-3">
                     Zodra de pouleronde klaar is, genereer je de knockoutbracket.
                   </p>
                   <GenerateBracketButton
@@ -90,7 +90,7 @@ export default async function TournamentOverviewPage({ params }: PageProps) {
           )}
 
           {t.status === 'completed' && (
-            <p className="text-sm text-slate-400">Dit toernooi is afgelopen.</p>
+            <p className="text-sm text-stone-500">Dit toernooi is afgelopen.</p>
           )}
 
           <div className="border-t border-border pt-4">
@@ -102,31 +102,31 @@ export default async function TournamentOverviewPage({ params }: PageProps) {
       {/* Info card for non-organizers in draft */}
       {role !== 'organizer' && t.status === 'draft' && (
         <div className="card text-center py-8">
-          <p className="text-slate-400">Wachten tot de organisator het toernooi start...</p>
+          <p className="text-stone-500">Wachten tot de organisator het toernooi start...</p>
         </div>
       )}
 
       {/* Match format info */}
       <div className="card">
-        <h3 className="font-semibold text-slate-200 mb-3">Toernooigegevens</h3>
+        <h3 className="font-semibold text-stone-900 font-display uppercase tracking-wide mb-3">Toernooigegevens</h3>
         <dl className="grid grid-cols-2 gap-3 text-sm">
           <div>
-            <dt className="text-slate-500">Wedstrijdformaat</dt>
-            <dd className="text-slate-200 font-medium">
+            <dt className="text-stone-500">Wedstrijdformaat</dt>
+            <dd className="text-stone-800 font-medium">
               {t.match_format === 'bo1' ? 'Best of 1' : t.match_format === 'bo3' ? 'Best of 3' : 'Best of 5'}
             </dd>
           </div>
           <div>
-            <dt className="text-slate-500">Gem. wedstrijdduur</dt>
-            <dd className="text-slate-200 font-medium">{t.avg_match_duration} min</dd>
+            <dt className="text-stone-500">Gem. wedstrijdduur</dt>
+            <dd className="text-stone-800 font-medium">{t.avg_match_duration} min</dd>
           </div>
           <div>
-            <dt className="text-slate-500">Winnaarsbracket</dt>
-            <dd className="text-slate-200 font-medium">{t.enable_winners_bracket ? 'Ja' : 'Nee'}</dd>
+            <dt className="text-stone-500">Winnaarsbracket</dt>
+            <dd className="text-stone-800 font-medium">{t.enable_winners_bracket ? 'Ja' : 'Nee'}</dd>
           </div>
           <div>
-            <dt className="text-slate-500">Verlizersbracket</dt>
-            <dd className="text-slate-200 font-medium">{t.enable_losers_bracket ? 'Ja' : 'Nee'}</dd>
+            <dt className="text-stone-500">Verlizersbracket</dt>
+            <dd className="text-stone-800 font-medium">{t.enable_losers_bracket ? 'Ja' : 'Nee'}</dd>
           </div>
         </dl>
       </div>
@@ -137,8 +137,8 @@ export default async function TournamentOverviewPage({ params }: PageProps) {
 function StatCard({ label, value }: { label: string; value: number | string }) {
   return (
     <div className="card text-center">
-      <p className="text-2xl font-bold text-slate-100">{value}</p>
-      <p className="text-xs text-slate-500 mt-0.5">{label}</p>
+      <p className="text-2xl font-bold text-stone-900">{value}</p>
+      <p className="text-xs text-stone-500 mt-0.5">{label}</p>
     </div>
   )
 }

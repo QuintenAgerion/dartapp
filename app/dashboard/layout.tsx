@@ -35,18 +35,18 @@ export default async function DashboardLayout({
           <div className="flex items-center gap-3">
             <Link
               href="/profile"
-              className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border bg-surface-2 hover:border-accent/50 hover:bg-surface-2 transition-colors"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border bg-surface hover:border-accent/50 transition-colors"
             >
               <Avatar src={profile?.avatar_url} name={displayName} size="sm" />
-              <span className="text-sm text-slate-300 font-medium max-w-[120px] truncate">{displayName}</span>
+              <span className="text-sm text-stone-700 font-medium max-w-[120px] truncate">{displayName}</span>
             </Link>
 
             <form action="/api/auth/signout" method="POST">
               <button
                 type="submit"
-                className="text-sm text-neutral-500 hover:text-neutral-300 transition-colors"
+                className="text-sm text-stone-400 hover:text-stone-700 transition-colors"
               >
-                Sign out
+                Uitloggen
               </button>
             </form>
           </div>

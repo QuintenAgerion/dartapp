@@ -36,7 +36,7 @@ export function LoginForm() {
 
   return (
     <div className="card">
-      <h2 className="text-xl font-semibold text-slate-100 mb-6">Sign in</h2>
+      <h2 className="text-xl font-semibold text-stone-900 mb-6">Inloggen</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <Input
@@ -60,27 +60,27 @@ export function LoginForm() {
             autoComplete="current-password"
           />
           <div className="mt-1 text-right">
-            <Link href="/forgot-password" className="text-xs text-slate-500 hover:text-slate-300 transition-colors">
-              Forgot password?
+            <Link href="/forgot-password" className="text-xs text-stone-400 hover:text-stone-700 transition-colors">
+              Wachtwoord vergeten?
             </Link>
           </div>
         </div>
 
         {error && (
-          <p className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
+          <p className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
             {error}
           </p>
         )}
 
         <Button type="submit" loading={loading} className="w-full">
-          Sign in
+          Inloggen
         </Button>
       </form>
 
-      <p className="mt-4 text-center text-sm text-slate-500">
-        Don&apos;t have an account?{' '}
-        <Link href="/register" className="text-accent hover:underline">
-          Create one
+      <p className="mt-4 text-center text-sm text-stone-500">
+        Nog geen account?{' '}
+        <Link href="/register" className="text-accent hover:underline font-semibold">
+          Registreer
         </Link>
       </p>
     </div>

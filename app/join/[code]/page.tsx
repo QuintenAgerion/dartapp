@@ -23,8 +23,8 @@ export default async function JoinPage({ params }: PageProps) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="card max-w-sm text-center">
-          <h2 className="text-lg font-semibold text-slate-100 mb-2">Tournament Ended</h2>
-          <p className="text-sm text-slate-400">This tournament has already been completed.</p>
+          <h2 className="text-lg font-semibold text-stone-900 mb-2">Tournament Ended</h2>
+          <p className="text-sm text-stone-500">This tournament has already been completed.</p>
         </div>
       </div>
     )

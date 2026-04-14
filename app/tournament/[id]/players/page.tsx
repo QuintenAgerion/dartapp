@@ -88,8 +88,8 @@ export default async function PlayersPage({ params, searchParams }: PageProps) {
       {/* Players list */}
       <div className="card">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold text-slate-200">
-            Spelers <span className="text-slate-500 font-normal">({players.length})</span>
+          <h3 className="font-semibold text-stone-800">
+            Spelers <span className="text-stone-500 font-normal">({players.length})</span>
           </h3>
         </div>
 
@@ -107,13 +107,13 @@ export default async function PlayersPage({ params, searchParams }: PageProps) {
               >
                 <div className="flex items-center gap-2">
                   <Avatar src={avatarMap[member.id]} name={member.display_name} size="sm" />
-                  <span className="text-sm text-slate-200">{member.display_name}</span>
+                  <span className="text-sm text-stone-800">{member.display_name}</span>
                   {memberGroupMap.has(member.id) && (
                     <Badge color="blue">{memberGroupMap.get(member.id)}</Badge>
                   )}
                 </div>
                 {!member.user_id && (
-                  <span className="text-xs text-slate-500">Gast</span>
+                  <span className="text-xs text-stone-500">Gast</span>
                 )}
               </div>
             ))}
@@ -134,12 +134,12 @@ export default async function PlayersPage({ params, searchParams }: PageProps) {
       {/* Organizers */}
       {organizers.length > 0 && (
         <div className="card">
-          <h3 className="font-semibold text-slate-200 mb-3">
+          <h3 className="font-semibold text-stone-800 mb-3">
             Organisatoren
           </h3>
           <div className="space-y-2">
             {organizers.map((m) => (
-              <div key={m.id} className="flex items-center gap-2 text-sm text-slate-400">
+              <div key={m.id} className="flex items-center gap-2 text-sm text-stone-500">
                 <Avatar src={avatarMap[m.id]} name={m.display_name} size="sm" />
                 {m.display_name}
               </div>
@@ -155,7 +155,7 @@ export default async function PlayersPage({ params, searchParams }: PageProps) {
 function JoinPrompt({ tournamentId, userId }: { tournamentId: string; userId: string }) {
   return (
     <div className="card border-accent/30 bg-accent/5">
-      <p className="text-sm text-slate-300">Je bent uitgenodigd om aan dit toernooi deel te nemen.</p>
+      <p className="text-sm text-stone-700">Je bent uitgenodigd om aan dit toernooi deel te nemen.</p>
     </div>
   )
 }

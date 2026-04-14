@@ -14,25 +14,25 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <label htmlFor={inputId} className="text-sm font-medium text-neutral-300">
+          <label htmlFor={inputId} className="text-sm font-semibold text-stone-700">
             {label}
-            {props.required && <span className="text-red-400 ml-1">*</span>}
+            {props.required && <span className="text-accent ml-1">*</span>}
           </label>
         )}
         <input
           ref={ref}
           id={inputId}
           className={cn(
-            'bg-surface-2 border rounded-lg px-3 py-2 text-neutral-100',
-            'placeholder-neutral-600 focus:outline-none focus:ring-2',
-            'focus:ring-white/20 focus:border-white/40 transition-colors w-full',
-            error ? 'border-red-500' : 'border-border',
+            'bg-surface border rounded-lg px-3 py-2.5 text-stone-900',
+            'placeholder-stone-400 focus:outline-none focus:ring-2',
+            'focus:ring-accent/20 focus:border-accent/50 transition-colors w-full',
+            error ? 'border-red-400 bg-red-50/50' : 'border-border',
             className
           )}
           {...props}
         />
-        {error && <p className="text-xs text-red-400">{error}</p>}
-        {hint && !error && <p className="text-xs text-neutral-500">{hint}</p>}
+        {error && <p className="text-xs text-red-600">{error}</p>}
+        {hint && !error && <p className="text-xs text-stone-400">{hint}</p>}
       </div>
     )
   }
@@ -52,25 +52,25 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <label htmlFor={inputId} className="text-sm font-medium text-neutral-300">
+          <label htmlFor={inputId} className="text-sm font-semibold text-stone-700">
             {label}
-            {props.required && <span className="text-red-400 ml-1">*</span>}
+            {props.required && <span className="text-accent ml-1">*</span>}
           </label>
         )}
         <textarea
           ref={ref}
           id={inputId}
           className={cn(
-            'bg-surface-2 border rounded-lg px-3 py-2 text-neutral-100',
-            'placeholder-neutral-600 focus:outline-none focus:ring-2',
-            'focus:ring-white/20 focus:border-white/40 transition-colors w-full resize-y min-h-[80px]',
-            error ? 'border-red-500' : 'border-border',
+            'bg-surface border rounded-lg px-3 py-2.5 text-stone-900',
+            'placeholder-stone-400 focus:outline-none focus:ring-2',
+            'focus:ring-accent/20 focus:border-accent/50 transition-colors w-full resize-y min-h-[80px]',
+            error ? 'border-red-400 bg-red-50/50' : 'border-border',
             className
           )}
           {...props}
         />
-        {error && <p className="text-xs text-red-400">{error}</p>}
-        {hint && !error && <p className="text-xs text-neutral-500">{hint}</p>}
+        {error && <p className="text-xs text-red-600">{error}</p>}
+        {hint && !error && <p className="text-xs text-stone-400">{hint}</p>}
       </div>
     )
   }

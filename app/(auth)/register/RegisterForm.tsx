@@ -63,7 +63,7 @@ export function RegisterForm() {
 
   return (
     <div className="card">
-      <h2 className="text-xl font-semibold text-slate-100 mb-6">Account aanmaken</h2>
+      <h2 className="text-xl font-semibold text-stone-900 mb-6">Account aanmaken</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <Input
@@ -109,7 +109,7 @@ export function RegisterForm() {
         </Button>
       </form>
 
-      <p className="mt-4 text-center text-sm text-slate-500">
+      <p className="mt-4 text-center text-sm text-stone-500">
         Al een account?{' '}
         <Link href="/login" className="text-accent hover:underline">
           Inloggen

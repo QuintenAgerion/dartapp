@@ -107,10 +107,10 @@ export function BracketMatchesClient({
 
     return (
       <div className="space-y-4">
-        <h2 className="text-base font-semibold text-slate-200">{title}</h2>
+        <h2 className="text-base font-semibold text-stone-800">{title}</h2>
         {[...byRound.entries()].map(([round, roundMatches]) => (
           <div key={round}>
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+            <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-2">
               {roundLabel(round, maxRound)}
             </p>
             <div className="grid gap-3 sm:grid-cols-2">
@@ -130,7 +130,7 @@ export function BracketMatchesClient({
                   >
                     {/* Header */}
                     <div className="flex items-center justify-between gap-2 mb-3">
-                      <div className="flex items-center gap-2 text-xs text-slate-500">
+                      <div className="flex items-center gap-2 text-xs text-stone-500">
                         {match.board_number && <span>Bord {match.board_number}</span>}
                         {match.board_number && match.scheduled_at && <span>·</span>}
                         {match.scheduled_at && !isCompleted && (
@@ -158,7 +158,7 @@ export function BracketMatchesClient({
                           'font-semibold',
                           isCompleted && match.winner_member_id === match.home_member_id
                             ? 'text-accent'
-                            : home ? 'text-slate-200' : 'text-slate-600 italic text-sm'
+                            : home ? 'text-stone-800' : 'text-stone-400 italic text-sm'
                         )}>
                           {home?.display_name ?? 'TBD'}
                         </p>
@@ -169,16 +169,16 @@ export function BracketMatchesClient({
                           'text-2xl font-bold w-8 text-center',
                           isCompleted && match.winner_member_id === match.home_member_id
                             ? 'text-accent'
-                            : 'text-slate-100'
+                            : 'text-stone-900'
                         )}>
                           {isPending ? '–' : match.home_score}
                         </span>
-                        <span className="text-slate-600 font-light">—</span>
+                        <span className="text-stone-400 font-light">—</span>
                         <span className={cn(
                           'text-2xl font-bold w-8 text-center',
                           isCompleted && match.winner_member_id === match.away_member_id
                             ? 'text-accent'
-                            : 'text-slate-100'
+                            : 'text-stone-900'
                         )}>
                           {isPending ? '–' : match.away_score}
                         </span>
@@ -192,7 +192,7 @@ export function BracketMatchesClient({
                           'font-semibold',
                           isCompleted && match.winner_member_id === match.away_member_id
                             ? 'text-accent'
-                            : away ? 'text-slate-200' : 'text-slate-600 italic text-sm'
+                            : away ? 'text-stone-800' : 'text-stone-400 italic text-sm'
                         )}>
                           {away?.display_name ?? 'TBD'}
                         </p>
@@ -201,8 +201,8 @@ export function BracketMatchesClient({
 
                     {/* Scorer */}
                     {match.scorer_member_id && memberMap.get(match.scorer_member_id) && (
-                      <div className="mt-2 text-xs text-slate-500 text-center">
-                        Schrijver: <span className="text-slate-400">{memberMap.get(match.scorer_member_id)!.display_name}</span>
+                      <div className="mt-2 text-xs text-stone-500 text-center">
+                        Schrijver: <span className="text-stone-500">{memberMap.get(match.scorer_member_id)!.display_name}</span>
                       </div>
                     )}
 

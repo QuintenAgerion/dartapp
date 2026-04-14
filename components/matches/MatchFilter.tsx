@@ -32,7 +32,7 @@ export function MatchFilter({ filters, onChange, groups, rounds, boards }: Match
                 'px-3 py-1.5 text-xs font-medium transition-colors',
                 filters.status === s
                   ? 'bg-accent text-white'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-surface-2'
+                  : 'text-stone-500 hover:text-stone-800 hover:bg-surface-2'
               )}
             >
               {label}
@@ -46,7 +46,7 @@ export function MatchFilter({ filters, onChange, groups, rounds, boards }: Match
         <select
           value={filters.groupId ?? ''}
           onChange={(e) => onChange({ ...filters, groupId: e.target.value || null })}
-          className="bg-surface-2 border border-border rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:ring-2 focus:ring-accent/50"
+          className="bg-surface-2 border border-border rounded-lg px-2.5 py-1.5 text-xs text-stone-700 focus:outline-none focus:ring-2 focus:ring-accent/50"
         >
           <option value="">Alle poules</option>
           {groups.map((g) => (
@@ -62,7 +62,7 @@ export function MatchFilter({ filters, onChange, groups, rounds, boards }: Match
         <select
           value={filters.round ?? ''}
           onChange={(e) => onChange({ ...filters, round: e.target.value ? parseInt(e.target.value) : null })}
-          className="bg-surface-2 border border-border rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:ring-2 focus:ring-accent/50"
+          className="bg-surface-2 border border-border rounded-lg px-2.5 py-1.5 text-xs text-stone-700 focus:outline-none focus:ring-2 focus:ring-accent/50"
         >
           <option value="">Alle rondes</option>
           {rounds.map((r) => (
@@ -78,7 +78,7 @@ export function MatchFilter({ filters, onChange, groups, rounds, boards }: Match
         <select
           value={filters.boardNumber ?? ''}
           onChange={(e) => onChange({ ...filters, boardNumber: e.target.value ? parseInt(e.target.value) : null })}
-          className="bg-surface-2 border border-border rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:ring-2 focus:ring-accent/50"
+          className="bg-surface-2 border border-border rounded-lg px-2.5 py-1.5 text-xs text-stone-700 focus:outline-none focus:ring-2 focus:ring-accent/50"
         >
           <option value="">Alle borden</option>
           {boards.map((b) => (

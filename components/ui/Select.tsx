@@ -21,17 +21,17 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <label htmlFor={inputId} className="text-sm font-medium text-slate-300">
+          <label htmlFor={inputId} className="text-sm font-semibold text-stone-700">
             {label}
-            {props.required && <span className="text-red-400 ml-1">*</span>}
+            {props.required && <span className="text-accent ml-1">*</span>}
           </label>
         )}
         <select
           ref={ref}
           id={inputId}
           className={cn(
-            'bg-surface-2 border rounded-lg px-3 py-2 text-slate-100',
-            'focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent',
+            'bg-surface border rounded-lg px-3 py-2.5 text-stone-900',
+            'focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent/50',
             'transition-colors w-full appearance-none cursor-pointer',
             error ? 'border-red-500' : 'border-border',
             className
@@ -44,13 +44,13 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             </option>
           )}
           {options.map((opt) => (
-            <option key={opt.value} value={opt.value} className="bg-surface">
+            <option key={opt.value} value={opt.value} className="bg-white text-stone-900">
               {opt.label}
             </option>
           ))}
         </select>
-        {error && <p className="text-xs text-red-400">{error}</p>}
-        {hint && !error && <p className="text-xs text-slate-500">{hint}</p>}
+        {error && <p className="text-xs text-red-600">{error}</p>}
+        {hint && !error && <p className="text-xs text-stone-400">{hint}</p>}
       </div>
     )
   }

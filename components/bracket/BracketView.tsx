@@ -35,7 +35,7 @@ export function BracketView({ matches, members, format, canSubmitScore, title }:
 
   if (matches.length === 0) {
     return (
-      <div className="text-center py-12 text-slate-500">
+      <div className="text-center py-12 text-stone-500">
         <p className="text-sm">{title ? `${title} bracket` : 'Bracket'} not yet generated</p>
       </div>
     )
@@ -44,7 +44,7 @@ export function BracketView({ matches, members, format, canSubmitScore, title }:
   return (
     <div className="w-full overflow-x-auto pb-4">
       {title && (
-        <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-6">{title}</h3>
+        <h3 className="text-sm font-semibold text-stone-500 uppercase tracking-wider mb-6">{title}</h3>
       )}
 
       <div className="flex flex-row gap-12 min-w-max items-center">
@@ -57,7 +57,7 @@ export function BracketView({ matches, members, format, canSubmitScore, title }:
           return (
             <div key={round} className="flex flex-col">
               {/* Round label */}
-              <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-6 text-center">
+              <p className="text-xs font-medium text-stone-500 uppercase tracking-wider mb-6 text-center">
                 {label}
               </p>
 

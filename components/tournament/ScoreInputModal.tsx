@@ -87,16 +87,16 @@ export function ScoreInputModal({
   return (
     <Modal open={open} onClose={onClose} title="Score invoeren" size="sm">
       <form onSubmit={handleSubmit} className="space-y-4">
-        <p className="text-sm text-slate-400">
-          Formaat: <span className="text-slate-200 font-medium">Best of {maxLegs}</span> (eerste tot {required} legs)
+        <p className="text-sm text-stone-500">
+          Formaat: <span className="text-stone-800 font-medium">Best of {maxLegs}</span> (eerste tot {required} legs)
         </p>
 
         <div className="space-y-3">
           {/* Home player */}
           <div className="flex items-center gap-3">
             <div className="flex-1 truncate">
-              <p className="text-sm font-medium text-slate-200">{homeMember.display_name}</p>
-              <p className="text-xs text-slate-500">Thuis</p>
+              <p className="text-sm font-medium text-stone-800">{homeMember.display_name}</p>
+              <p className="text-xs text-stone-500">Thuis</p>
             </div>
             <input
               type="number"
@@ -105,18 +105,18 @@ export function ScoreInputModal({
               value={homeScore}
               onChange={(e) => setHomeScore(e.target.value)}
               placeholder="0"
-              className="w-16 text-center bg-surface-2 border border-border rounded-lg px-2 py-2 text-slate-100 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent"
+              className="w-16 text-center bg-surface-2 border border-border rounded-lg px-2 py-2 text-stone-900 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent"
               required
             />
           </div>
 
-          <div className="text-center text-slate-600 text-sm font-medium">vs</div>
+          <div className="text-center text-stone-400 text-sm font-medium">vs</div>
 
           {/* Away player */}
           <div className="flex items-center gap-3">
             <div className="flex-1 truncate">
-              <p className="text-sm font-medium text-slate-200">{awayMember.display_name}</p>
-              <p className="text-xs text-slate-500">Uit</p>
+              <p className="text-sm font-medium text-stone-800">{awayMember.display_name}</p>
+              <p className="text-xs text-stone-500">Uit</p>
             </div>
             <input
               type="number"
@@ -125,7 +125,7 @@ export function ScoreInputModal({
               value={awayScore}
               onChange={(e) => setAwayScore(e.target.value)}
               placeholder="0"
-              className="w-16 text-center bg-surface-2 border border-border rounded-lg px-2 py-2 text-slate-100 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent"
+              className="w-16 text-center bg-surface-2 border border-border rounded-lg px-2 py-2 text-stone-900 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent"
               required
             />
           </div>

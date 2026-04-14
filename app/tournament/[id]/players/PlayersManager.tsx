@@ -92,8 +92,8 @@ export function PlayersManager({ tournamentId, organizerUserId, organizerDisplay
       {/* Join as player */}
       <div className="card flex items-center justify-between gap-4">
         <div>
-          <p className="text-sm font-medium text-slate-200">Meedoen als speler</p>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-sm font-medium text-stone-800">Meedoen als speler</p>
+          <p className="text-xs text-stone-500 mt-0.5">
             {isOrganizerPlayer
               ? `Je doet mee als speler (${organizerDisplayName})`
               : 'Voeg jezelf toe als speler aan dit toernooi'}
@@ -111,8 +111,8 @@ export function PlayersManager({ tournamentId, organizerUserId, organizerDisplay
       </div>
 
     <div className="card">
-      <h3 className="font-semibold text-slate-200 mb-3">Speler handmatig toevoegen</h3>
-      <p className="text-sm text-slate-500 mb-3">
+      <h3 className="font-semibold text-stone-800 mb-3">Speler handmatig toevoegen</h3>
+      <p className="text-sm text-stone-500 mb-3">
         Voeg een gastspeler toe op naam (geen account nodig).
       </p>
       <form onSubmit={handleAddPlayer} className="flex gap-2">

@@ -55,8 +55,8 @@ export default async function DashboardPage() {
         <div className="flex-1">
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div>
-              <h1 className="text-2xl font-bold text-slate-100">Mijn Toernooien</h1>
-              <p className="text-slate-500 text-sm mt-0.5">Beheer en volg je darttoernooien</p>
+              <h1 className="text-2xl font-bold text-stone-900 font-display uppercase tracking-wide">Mijn Toernooien</h1>
+              <p className="text-stone-500 text-sm mt-0.5">Beheer en volg je darttoernooien</p>
             </div>
             <Link href="/tournament/create">
               <Button>
@@ -76,7 +76,7 @@ export default async function DashboardPage() {
       {/* Eigen toernooien */}
       {owned.length > 0 && (
         <section>
-          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">
+          <h2 className="text-sm font-semibold text-stone-400 uppercase tracking-wider mb-3">
             Organisator
           </h2>
           <div className="grid gap-3">
@@ -90,7 +90,7 @@ export default async function DashboardPage() {
       {/* Deelnemende toernooien */}
       {joined.length > 0 && (
         <section>
-          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">
+          <h2 className="text-sm font-semibold text-stone-400 uppercase tracking-wider mb-3">
             Deelnemer
           </h2>
           <div className="grid gap-3">

@@ -47,14 +47,14 @@ export function StandingsTable({
         <table className="w-full">
           <thead>
             <tr className="border-b border-border">
-              <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 w-8">#</th>
-              <th className="px-4 py-2 text-left text-xs font-medium text-slate-500">Speler</th>
-              <th className="px-4 py-2 text-center text-xs font-medium text-slate-500 w-10">P</th>
-              <th className="px-4 py-2 text-center text-xs font-medium text-slate-500 w-10">W</th>
-              <th className="px-4 py-2 text-center text-xs font-medium text-slate-500 w-10">L</th>
-              <th className="px-4 py-2 text-center text-xs font-medium text-slate-500 w-16 hidden sm:table-cell">Legs</th>
-              <th className="px-4 py-2 text-center text-xs font-medium text-slate-500 w-12 hidden sm:table-cell">Diff</th>
-              <th className="px-4 py-2 text-center text-xs font-medium text-slate-500 w-12">Pts</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-stone-500 w-8">#</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-stone-500">Speler</th>
+              <th className="px-4 py-2 text-center text-xs font-medium text-stone-500 w-10">P</th>
+              <th className="px-4 py-2 text-center text-xs font-medium text-stone-500 w-10">W</th>
+              <th className="px-4 py-2 text-center text-xs font-medium text-stone-500 w-10">L</th>
+              <th className="px-4 py-2 text-center text-xs font-medium text-stone-500 w-16 hidden sm:table-cell">Legs</th>
+              <th className="px-4 py-2 text-center text-xs font-medium text-stone-500 w-12 hidden sm:table-cell">Diff</th>
+              <th className="px-4 py-2 text-center text-xs font-medium text-stone-500 w-12">Pts</th>
               {isOrganizer && <th className="px-2 py-2 w-14" />}
             </tr>
           </thead>
@@ -84,7 +84,7 @@ export function StandingsTable({
                 >
                   <td className="px-4 py-2.5 text-sm">
                     <div className="flex items-center gap-1.5">
-                      <span className="text-slate-500">{displayPosition}</span>
+                      <span className="text-stone-500">{displayPosition}</span>
                       <AdvancementIndicator
                         position={displayPosition}
                         advancingCount={advancingCount}
@@ -98,26 +98,26 @@ export function StandingsTable({
                       <span
                         className={cn(
                           'text-sm font-medium',
-                          isHighlighted ? 'text-accent' : 'text-slate-200'
+                          isHighlighted ? 'text-accent' : 'text-stone-800'
                         )}
                       >
                         {row.member.display_name}
                       </span>
                     </div>
                   </td>
-                  <td className="px-4 py-2.5 text-center text-sm text-slate-400">{row.played}</td>
+                  <td className="px-4 py-2.5 text-center text-sm text-stone-500">{row.played}</td>
                   <td className="px-4 py-2.5 text-center text-sm text-green-400 font-medium">{row.wins}</td>
                   <td className="px-4 py-2.5 text-center text-sm text-red-400 font-medium">{row.losses}</td>
-                  <td className="px-4 py-2.5 text-center text-sm text-slate-400 hidden sm:table-cell">
+                  <td className="px-4 py-2.5 text-center text-sm text-stone-500 hidden sm:table-cell">
                     {row.legs_for}/{row.legs_against}
                   </td>
                   <td className={cn(
                     'px-4 py-2.5 text-center text-sm font-medium hidden sm:table-cell',
-                    row.leg_difference > 0 ? 'text-green-400' : row.leg_difference < 0 ? 'text-red-400' : 'text-slate-400'
+                    row.leg_difference > 0 ? 'text-green-400' : row.leg_difference < 0 ? 'text-red-400' : 'text-stone-500'
                   )}>
                     {row.leg_difference > 0 ? '+' : ''}{row.leg_difference}
                   </td>
-                  <td className="px-4 py-2.5 text-center text-sm font-bold text-slate-100">{row.points}</td>
+                  <td className="px-4 py-2.5 text-center text-sm font-bold text-stone-900">{row.points}</td>
 
                   {isOrganizer && (
                     <td className="px-2 py-1.5 text-center">
@@ -130,7 +130,7 @@ export function StandingsTable({
                             className={cn(
                               'w-5 h-5 flex items-center justify-center rounded text-xs transition-colors',
                               canMoveUp
-                                ? 'text-slate-400 hover:text-slate-100 hover:bg-surface-2'
+                                ? 'text-stone-500 hover:text-stone-900 hover:bg-surface-2'
                                 : 'text-transparent cursor-default'
                             )}
                           >
@@ -143,7 +143,7 @@ export function StandingsTable({
                             className={cn(
                               'w-5 h-5 flex items-center justify-center rounded text-xs transition-colors',
                               canMoveDown
-                                ? 'text-slate-400 hover:text-slate-100 hover:bg-surface-2'
+                                ? 'text-stone-500 hover:text-stone-900 hover:bg-surface-2'
                                 : 'text-transparent cursor-default'
                             )}
                           >
@@ -159,7 +159,7 @@ export function StandingsTable({
 
             {rows.length === 0 && (
               <tr>
-                <td colSpan={isOrganizer ? 9 : 8} className="px-4 py-8 text-center text-sm text-slate-500">
+                <td colSpan={isOrganizer ? 9 : 8} className="px-4 py-8 text-center text-sm text-stone-500">
                   Geen spelers in deze poule
                 </td>
               </tr>
@@ -171,13 +171,13 @@ export function StandingsTable({
       {(advancingCount > 0 || losersCount > 0) && (
         <div className="px-4 py-2 border-t border-border flex flex-wrap gap-3">
           {advancingCount > 0 && (
-            <span className="flex items-center gap-1.5 text-xs text-slate-500">
+            <span className="flex items-center gap-1.5 text-xs text-stone-500">
               <span className="w-2 h-2 rounded-full bg-green-400 inline-block" />
               Top {advancingCount} naar winnaarsbracket
             </span>
           )}
           {losersCount > 0 && (
-            <span className="flex items-center gap-1.5 text-xs text-slate-500">
+            <span className="flex items-center gap-1.5 text-xs text-stone-500">
               <span className="w-2 h-2 rounded-full bg-yellow-400 inline-block" />
               Volgende {losersCount} naar verlizersbracket
             </span>

@@ -48,7 +48,7 @@ export function MatchCard({
       >
         {/* Header */}
         <div className="flex items-center justify-between gap-2 mb-3">
-          <div className="flex items-center gap-2 text-xs text-slate-500">
+          <div className="flex items-center gap-2 text-xs text-stone-500">
             {groupName && (
               <span className={cn('px-1.5 py-0.5 rounded font-medium text-xs', getGroupColorClass(groupName))}>
                 {groupName}
@@ -66,7 +66,7 @@ export function MatchCard({
 
           <div className="flex items-center gap-2">
             {match.scheduled_at && !isCompleted && (
-              <span className="text-xs text-slate-500">{formatDate(match.scheduled_at)}</span>
+              <span className="text-xs text-stone-500">{formatDate(match.scheduled_at)}</span>
             )}
             {isLive ? <LiveBadge /> : <MatchStatusBadge status={match.status} />}
           </div>
@@ -80,7 +80,7 @@ export function MatchCard({
               'font-semibold text-right',
               isCompleted && match.winner_member_id === homeMember.id
                 ? 'text-accent'
-                : 'text-slate-200'
+                : 'text-stone-800'
             )}>
               {homeMember.display_name}
             </p>
@@ -91,14 +91,14 @@ export function MatchCard({
           <div className="flex items-center gap-2 shrink-0">
             <span className={cn(
               'text-2xl font-bold w-8 text-center',
-              isCompleted && match.winner_member_id === homeMember.id ? 'text-accent' : 'text-slate-100'
+              isCompleted && match.winner_member_id === homeMember.id ? 'text-accent' : 'text-stone-900'
             )}>
               {match.home_score}
             </span>
-            <span className="text-slate-600 font-light">—</span>
+            <span className="text-stone-400 font-light">—</span>
             <span className={cn(
               'text-2xl font-bold w-8 text-center',
-              isCompleted && match.winner_member_id === awayMember.id ? 'text-accent' : 'text-slate-100'
+              isCompleted && match.winner_member_id === awayMember.id ? 'text-accent' : 'text-stone-900'
             )}>
               {match.away_score}
             </span>
@@ -111,7 +111,7 @@ export function MatchCard({
               'font-semibold',
               isCompleted && match.winner_member_id === awayMember.id
                 ? 'text-accent'
-                : 'text-slate-200'
+                : 'text-stone-800'
             )}>
               {awayMember.display_name}
             </p>
@@ -120,8 +120,8 @@ export function MatchCard({
 
         {/* Scorer */}
         {scorerMember && (
-          <div className="mt-2 text-xs text-slate-500 text-center">
-            Schrijver: <span className="text-slate-400">{scorerMember.display_name}</span>
+          <div className="mt-2 text-xs text-stone-500 text-center">
+            Schrijver: <span className="text-stone-500">{scorerMember.display_name}</span>
           </div>
         )}
 

@@ -181,7 +181,7 @@ export function StartTournamentButton({ tournamentId, playerCount }: StartTourna
         title="Schrijvers genereren?"
         size="sm"
       >
-        <p className="text-sm text-slate-400 mb-6">
+        <p className="text-sm text-stone-500 mb-6">
           Wil je automatisch een schrijver toewijzen aan elke wedstrijd? Schrijvers worden zo gepland
           dat ze niet tegelijk op twee borden schrijven en idealiter niet vlak voor of na hun eigen wedstrijd.
         </p>

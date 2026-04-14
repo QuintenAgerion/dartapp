@@ -15,13 +15,13 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    'bg-white hover:bg-neutral-200 text-black border border-transparent',
+    'bg-accent hover:bg-accent-hover text-white border border-transparent font-semibold tracking-wide',
   secondary:
-    'bg-surface-2 hover:bg-border text-neutral-100 border border-border',
+    'bg-surface hover:bg-surface-2 text-stone-700 border border-border hover:border-stone-400',
   ghost:
-    'bg-transparent hover:bg-surface-2 text-neutral-400 hover:text-neutral-100 border border-transparent',
+    'bg-transparent hover:bg-surface-2 text-stone-500 hover:text-stone-800 border border-transparent',
   danger:
-    'bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-600/30',
+    'bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 hover:border-red-300',
 }
 
 const sizeClasses: Record<ButtonSize, string> = {
@@ -50,7 +50,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           'inline-flex items-center justify-center gap-2 font-medium rounded-lg',
           'transition-colors focus-visible:outline-none focus-visible:ring-2',
-          'focus-visible:ring-accent/50 disabled:opacity-50 disabled:cursor-not-allowed',
+          'focus-visible:ring-accent/40 disabled:opacity-50 disabled:cursor-not-allowed',
           variantClasses[variant],
           sizeClasses[size],
           className

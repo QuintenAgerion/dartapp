@@ -13,16 +13,16 @@ export function TournamentHeader({ tournament, playerCount }: TournamentHeaderPr
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <div className="flex items-center gap-3 flex-wrap">
-            <h1 className="text-2xl font-bold text-slate-100">{tournament.name}</h1>
+            <h1 className="text-2xl font-bold text-stone-900 font-display uppercase tracking-wide">{tournament.name}</h1>
             <TournamentStatusBadge status={tournament.status} />
           </div>
           {tournament.description && (
-            <p className="mt-1 text-slate-400">{tournament.description}</p>
+            <p className="mt-1 text-stone-500">{tournament.description}</p>
           )}
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-4 text-sm text-slate-400">
+      <div className="flex flex-wrap gap-4 text-sm text-stone-500">
         {tournament.start_date && (
           <span className="flex items-center gap-1.5">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -41,14 +41,14 @@ export function TournamentHeader({ tournament, playerCount }: TournamentHeaderPr
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" />
           </svg>
-          {tournament.num_groups} group{tournament.num_groups !== 1 ? 's' : ''}
-          {playerCount != null && ` · ${playerCount} player${playerCount !== 1 ? 's' : ''}`}
+          {tournament.num_groups} poule{tournament.num_groups !== 1 ? 's' : ''}
+          {playerCount != null && ` · ${playerCount} speler${playerCount !== 1 ? 's' : ''}`}
         </span>
         <span className="flex items-center gap-1.5">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
           </svg>
-          {tournament.num_boards} board{tournament.num_boards !== 1 ? 's' : ''}
+          {tournament.num_boards} bord{tournament.num_boards !== 1 ? 'en' : ''}
         </span>
       </div>
     </div>

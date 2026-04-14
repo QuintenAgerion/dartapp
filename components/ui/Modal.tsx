@@ -67,10 +67,10 @@ export function Modal({ open, onClose, title, children, className, size = 'md' }
       >
         {title && (
           <div className="flex items-center justify-between p-5 border-b border-border shrink-0">
-            <h2 className="text-lg font-semibold text-neutral-100">{title}</h2>
+            <h2 className="text-lg font-semibold text-stone-900">{title}</h2>
             <button
               onClick={onClose}
-              className="text-neutral-400 hover:text-neutral-100 transition-colors p-1 rounded-lg hover:bg-surface-2"
+              className="text-stone-400 hover:text-stone-700 transition-colors p-1 rounded-lg hover:bg-surface-2"
               aria-label="Close modal"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
