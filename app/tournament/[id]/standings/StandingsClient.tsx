@@ -16,6 +16,7 @@ interface StandingsClientProps {
   initialMatches: GroupMatch[]
   myMemberId: string | null
   isOrganizer: boolean
+  avatarMap: Record<string, string>
 }
 
 type StandingsRow = GroupStanding & { member: TournamentMember }
@@ -68,6 +69,7 @@ export function StandingsClient({
   initialMatches,
   myMemberId,
   isOrganizer,
+  avatarMap,
 }: StandingsClientProps) {
   const { standings: realtimeStandings } = useRealtimeTournament(tournamentId)
 
@@ -147,6 +149,7 @@ export function StandingsClient({
             isOrganizer={isOrganizer}
             allMatchesPlayed={allMatchesPlayed}
             onSwap={(idxA, idxB) => handleSwap(group.id, sorted, idxA, idxB)}
+            avatarMap={avatarMap}
           />
         )
       })}

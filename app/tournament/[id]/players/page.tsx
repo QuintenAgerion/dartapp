@@ -1,9 +1,11 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getMyRole } from '@/lib/tournament/permissions'
+import { buildAvatarMap } from '@/lib/tournament/avatars'
 import { InviteLink } from '@/components/tournament/InviteLink'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { Badge } from '@/components/ui/Badge'
+import { Avatar } from '@/components/ui/Avatar'
 import { PlayersManager } from './PlayersManager'
 import type { Tournament, TournamentMember, Group, GroupMember } from '@/types/database'
 
@@ -63,6 +65,8 @@ export default async function PlayersPage({ params, searchParams }: PageProps) {
   const players = allMembers.filter((m) => m.role === 'player')
   const organizers = allMembers.filter((m) => m.role === 'organizer')
 
+  const avatarMap = await buildAvatarMap(allMembers, supabase)
+
   return (
     <div className="space-y-6">
       {/* Invite link for organizer */}
@@ -98,9 +102,7 @@ export default async function PlayersPage({ params, searchParams }: PageProps) {
                 className="flex items-center justify-between gap-3 py-2 border-b border-border/50 last:border-0"
               >
                 <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-full bg-surface-2 flex items-center justify-center text-xs font-bold text-slate-400">
-                    {member.display_name.charAt(0).toUpperCase()}
-                  </div>
+                  <Avatar src={avatarMap[member.id]} name={member.display_name} size="sm" />
                   <span className="text-sm text-slate-200">{member.display_name}</span>
                   {memberGroupMap.has(member.id) && (
                     <Badge color="blue">{memberGroupMap.get(member.id)}</Badge>
@@ -129,9 +131,7 @@ export default async function PlayersPage({ params, searchParams }: PageProps) {
           <div className="space-y-2">
             {organizers.map((m) => (
               <div key={m.id} className="flex items-center gap-2 text-sm text-slate-400">
-                <div className="w-7 h-7 rounded-full bg-accent/20 flex items-center justify-center text-xs font-bold text-accent">
-                  {m.display_name.charAt(0).toUpperCase()}
-                </div>
+                <Avatar src={avatarMap[m.id]} name={m.display_name} size="sm" />
                 {m.display_name}
               </div>
             ))}

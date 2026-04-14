@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getMyRole } from '@/lib/tournament/permissions'
+import { buildAvatarMap } from '@/lib/tournament/avatars'
 import { MatchesClient } from './MatchesClient'
 import type { Tournament, Group, TournamentMember, GroupMatch } from '@/types/database'
 
@@ -36,6 +37,8 @@ export default async function MatchesPage({ params }: PageProps) {
     myMemberId = myMember?.id ?? null
   }
 
+  const avatarMap = await buildAvatarMap((members ?? []) as TournamentMember[], supabase)
+
   return (
     <MatchesClient
       tournamentId={id}
@@ -45,6 +48,7 @@ export default async function MatchesPage({ params }: PageProps) {
       initialMatches={(matches ?? []) as GroupMatch[]}
       role={role}
       myMemberId={myMemberId}
+      avatarMap={avatarMap}
     />
   )
 }

@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
+import { Avatar } from '@/components/ui/Avatar'
 import { TournamentCard } from '@/components/tournament/TournamentCard'
 import { useToast } from '@/hooks/useToast'
 import type { Tournament } from '@/types/database'
@@ -13,13 +14,57 @@ interface ProfileClientProps {
   userId: string
   email: string
   username: string
+  initialAvatarUrl: string | null
   tournaments: { tournament: Tournament; role: string }[]
 }
 
-export function ProfileClient({ userId, email, username, tournaments }: ProfileClientProps) {
+export function ProfileClient({ userId, email, username, initialAvatarUrl, tournaments }: ProfileClientProps) {
   const [newUsername, setNewUsername] = useState(username)
   const [loading, setLoading] = useState(false)
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(initialAvatarUrl)
+  const [avatarLoading, setAvatarLoading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const { toast } = useToast()
+
+  async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    if (file.size > 2 * 1024 * 1024) {
+      toast('Photo must be smaller than 2MB', 'error')
+      return
+    }
+
+    setAvatarLoading(true)
+    const supabase = createClient()
+
+    const { error: uploadError } = await supabase.storage
+      .from('avatars')
+      .upload(userId, file, { upsert: true, contentType: file.type })
+
+    if (uploadError) {
+      toast('Failed to upload photo', 'error')
+      setAvatarLoading(false)
+      return
+    }
+
+    const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(userId)
+    const urlWithBust = `${publicUrl}?t=${Date.now()}`
+
+    const { error: updateError } = await supabase
+      .from('users')
+      .update({ avatar_url: urlWithBust })
+      .eq('id', userId)
+
+    if (updateError) {
+      toast('Failed to save photo', 'error')
+    } else {
+      setAvatarUrl(urlWithBust)
+      toast('Profile photo updated!', 'success')
+    }
+
+    setAvatarLoading(false)
+  }
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault()
@@ -69,6 +114,29 @@ export function ProfileClient({ userId, email, username, tournaments }: ProfileC
         {/* Profile info */}
         <div className="card space-y-4">
           <h2 className="font-semibold text-slate-200">Account</h2>
+
+          {/* Avatar */}
+          <div className="flex items-center gap-4">
+            <Avatar src={avatarUrl} name={username || 'U'} size="lg" />
+            <div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleAvatarChange}
+              />
+              <Button
+                variant="secondary"
+                size="sm"
+                loading={avatarLoading}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                {avatarUrl ? 'Change photo' : 'Upload photo'}
+              </Button>
+              <p className="text-xs text-slate-500 mt-1">Max 2MB</p>
+            </div>
+          </div>
 
           <div>
             <p className="text-sm text-slate-500 mb-1">Email</p>

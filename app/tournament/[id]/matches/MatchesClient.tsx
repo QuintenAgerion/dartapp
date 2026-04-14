@@ -16,6 +16,7 @@ interface MatchesClientProps {
   initialMatches: GroupMatch[]
   role: UserRole
   myMemberId: string | null
+  avatarMap: Record<string, string>
 }
 
 export function MatchesClient({
@@ -26,6 +27,7 @@ export function MatchesClient({
   initialMatches,
   role,
   myMemberId,
+  avatarMap,
 }: MatchesClientProps) {
   const [filters, setFilters] = useState<MatchFilters>({
     status: 'all',
@@ -130,6 +132,8 @@ export function MatchesClient({
                 isOrganizer={role === 'organizer'}
                 groupName={group?.name}
                 scorerMember={scorer}
+                homeAvatar={avatarMap[match.home_member_id] ?? null}
+                awayAvatar={avatarMap[match.away_member_id] ?? null}
               />
             )
           })}

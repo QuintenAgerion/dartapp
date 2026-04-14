@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { buildAvatarMap } from '@/lib/tournament/avatars'
 import { StandingsClient } from './StandingsClient'
 import type { Tournament, Group, TournamentMember, GroupStanding, GroupMatch } from '@/types/database'
 
@@ -43,6 +44,7 @@ export default async function StandingsPage({ params }: PageProps) {
   }
 
   const isOrganizer = user?.id === (tournament as Tournament).organizer_id
+  const avatarMap = await buildAvatarMap((members ?? []) as TournamentMember[], supabase)
 
   return (
     <StandingsClient
@@ -54,6 +56,7 @@ export default async function StandingsPage({ params }: PageProps) {
       initialMatches={(matches ?? []) as GroupMatch[]}
       myMemberId={myMemberId}
       isOrganizer={isOrganizer}
+      avatarMap={avatarMap}
     />
   )
 }

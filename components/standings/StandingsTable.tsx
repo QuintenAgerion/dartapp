@@ -2,6 +2,7 @@
 
 import type { GroupStanding, TournamentMember } from '@/types/database'
 import { AdvancementIndicator } from './AdvancementIndicator'
+import { Avatar } from '@/components/ui/Avatar'
 import { cn } from '@/lib/utils'
 
 interface StandingsRow extends GroupStanding {
@@ -17,6 +18,7 @@ interface StandingsTableProps {
   isOrganizer?: boolean
   allMatchesPlayed?: boolean
   onSwap?: (idxA: number, idxB: number) => void
+  avatarMap?: Record<string, string>
 }
 
 export function StandingsTable({
@@ -28,6 +30,7 @@ export function StandingsTable({
   isOrganizer = false,
   allMatchesPlayed = false,
   onSwap,
+  avatarMap = {},
 }: StandingsTableProps) {
   // standings array is pre-sorted by StandingsClient (tiebreakers applied)
   const rows = standings
@@ -88,14 +91,17 @@ export function StandingsTable({
                     </div>
                   </td>
                   <td className="px-4 py-2.5">
-                    <span
-                      className={cn(
-                        'text-sm font-medium',
-                        isHighlighted ? 'text-accent' : 'text-slate-200'
-                      )}
-                    >
-                      {row.member.display_name}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <Avatar src={avatarMap[row.member.id]} name={row.member.display_name} size="sm" />
+                      <span
+                        className={cn(
+                          'text-sm font-medium',
+                          isHighlighted ? 'text-accent' : 'text-slate-200'
+                        )}
+                      >
+                        {row.member.display_name}
+                      </span>
+                    </div>
                   </td>
                   <td className="px-4 py-2.5 text-center text-sm text-slate-400">{row.played}</td>
                   <td className="px-4 py-2.5 text-center text-sm text-green-400 font-medium">{row.wins}</td>

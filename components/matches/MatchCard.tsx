@@ -5,6 +5,7 @@ import type { GroupMatch, TournamentMember, MatchFormat } from '@/types/database
 import { LiveBadge } from './LiveBadge'
 import { MatchStatusBadge } from '@/components/ui/Badge'
 import { ScoreInputModal } from '@/components/tournament/ScoreInputModal'
+import { Avatar } from '@/components/ui/Avatar'
 import { Button } from '@/components/ui/Button'
 import { formatDate, cn } from '@/lib/utils'
 
@@ -17,6 +18,8 @@ interface MatchCardProps {
   isOrganizer?: boolean
   groupName?: string
   scorerMember?: TournamentMember | null
+  homeAvatar?: string | null
+  awayAvatar?: string | null
 }
 
 export function MatchCard({
@@ -28,6 +31,8 @@ export function MatchCard({
   isOrganizer,
   groupName,
   scorerMember,
+  homeAvatar,
+  awayAvatar,
 }: MatchCardProps) {
   const [scoreModalOpen, setScoreModalOpen] = useState(false)
   const isLive = match.status === 'live'
@@ -66,18 +71,16 @@ export function MatchCard({
         {/* Players & Score */}
         <div className="flex items-center gap-3">
           {/* Home player */}
-          <div className={cn(
-            'flex-1 text-right',
-            isCompleted && match.winner_member_id === homeMember.id && 'text-accent'
-          )}>
+          <div className="flex-1 flex items-center justify-end gap-2">
             <p className={cn(
-              'font-semibold',
+              'font-semibold text-right',
               isCompleted && match.winner_member_id === homeMember.id
                 ? 'text-accent'
                 : 'text-slate-200'
             )}>
               {homeMember.display_name}
             </p>
+            <Avatar src={homeAvatar} name={homeMember.display_name} size="sm" />
           </div>
 
           {/* Score */}
@@ -98,10 +101,8 @@ export function MatchCard({
           </div>
 
           {/* Away player */}
-          <div className={cn(
-            'flex-1',
-            isCompleted && match.winner_member_id === awayMember.id && 'text-accent'
-          )}>
+          <div className="flex-1 flex items-center gap-2">
+            <Avatar src={awayAvatar} name={awayMember.display_name} size="sm" />
             <p className={cn(
               'font-semibold',
               isCompleted && match.winner_member_id === awayMember.id
