@@ -67,6 +67,10 @@ export default async function PlayersPage({ params, searchParams }: PageProps) {
 
   const avatarMap = await buildAvatarMap(allMembers, supabase)
 
+  const isOrganizerPlayer = user ? allMembers.some((m) => m.user_id === user.id && m.role === 'player') : false
+  const organizerProfile = user ? await supabase.from('users').select('username').eq('id', user.id).single() : null
+  const organizerDisplayName = organizerProfile?.data?.username ?? 'Organizer'
+
   return (
     <div className="space-y-6">
       {/* Invite link for organizer */}
@@ -119,7 +123,12 @@ export default async function PlayersPage({ params, searchParams }: PageProps) {
 
       {/* Organizer management tools */}
       {role === 'organizer' && t.status === 'draft' && (
-        <PlayersManager tournamentId={id} />
+        <PlayersManager
+          tournamentId={id}
+          organizerUserId={user!.id}
+          organizerDisplayName={organizerDisplayName}
+          isOrganizerPlayer={isOrganizerPlayer}
+        />
       )}
 
       {/* Organizers */}

@@ -9,13 +9,53 @@ import { useToast } from '@/hooks/useToast'
 
 interface PlayersManagerProps {
   tournamentId: string
+  organizerUserId: string
+  organizerDisplayName: string
+  isOrganizerPlayer: boolean
 }
 
-export function PlayersManager({ tournamentId }: PlayersManagerProps) {
+export function PlayersManager({ tournamentId, organizerUserId, organizerDisplayName, isOrganizerPlayer }: PlayersManagerProps) {
   const [playerName, setPlayerName] = useState('')
   const [loading, setLoading] = useState(false)
+  const [joinLoading, setJoinLoading] = useState(false)
   const router = useRouter()
   const { toast } = useToast()
+
+  async function handleJoinAsPlayer() {
+    setJoinLoading(true)
+    const supabase = createClient()
+    const { error } = await supabase.from('tournament_members').insert({
+      tournament_id: tournamentId,
+      user_id: organizerUserId,
+      display_name: organizerDisplayName,
+      role: 'player',
+    })
+    if (error) {
+      toast(error.message, 'error')
+    } else {
+      toast('Je doet nu mee als speler', 'success')
+      router.refresh()
+    }
+    setJoinLoading(false)
+  }
+
+  async function handleLeaveAsPlayer() {
+    setJoinLoading(true)
+    const supabase = createClient()
+    const { error } = await supabase
+      .from('tournament_members')
+      .delete()
+      .eq('tournament_id', tournamentId)
+      .eq('user_id', organizerUserId)
+      .eq('role', 'player')
+    if (error) {
+      toast(error.message, 'error')
+    } else {
+      toast('Je doet niet meer mee als speler', 'success')
+      router.refresh()
+    }
+    setJoinLoading(false)
+  }
 
   async function handleAddPlayer(e: React.FormEvent) {
     e.preventDefault()
@@ -44,6 +84,28 @@ export function PlayersManager({ tournamentId }: PlayersManagerProps) {
   }
 
   return (
+    <div className="space-y-3">
+      {/* Join as player */}
+      <div className="card flex items-center justify-between gap-4">
+        <div>
+          <p className="text-sm font-medium text-slate-200">Meedoen als speler</p>
+          <p className="text-xs text-slate-500 mt-0.5">
+            {isOrganizerPlayer
+              ? `Je doet mee als speler (${organizerDisplayName})`
+              : 'Voeg jezelf toe als speler aan dit toernooi'}
+          </p>
+        </div>
+        {isOrganizerPlayer ? (
+          <Button variant="secondary" size="sm" loading={joinLoading} onClick={handleLeaveAsPlayer}>
+            Niet meer meedoen
+          </Button>
+        ) : (
+          <Button size="sm" loading={joinLoading} onClick={handleJoinAsPlayer}>
+            Meedoen
+          </Button>
+        )}
+      </div>
+
     <div className="card">
       <h3 className="font-semibold text-slate-200 mb-3">Add player manually</h3>
       <p className="text-sm text-slate-500 mb-3">
@@ -61,6 +123,7 @@ export function PlayersManager({ tournamentId }: PlayersManagerProps) {
           Add
         </Button>
       </form>
+    </div>
     </div>
   )
 }
