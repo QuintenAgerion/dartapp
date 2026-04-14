@@ -43,7 +43,7 @@ export function ProfileClient({ userId, email, username, initialAvatarUrl, tourn
       .upload(userId, file, { upsert: true, contentType: file.type })
 
     if (uploadError) {
-      toast('Failed to upload photo', 'error')
+      toast(uploadError.message || 'Failed to upload photo', 'error')
       setAvatarLoading(false)
       return
     }

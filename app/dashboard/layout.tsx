@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { Avatar } from '@/components/ui/Avatar'
 
 export default async function DashboardLayout({
   children,
@@ -16,9 +17,11 @@ export default async function DashboardLayout({
 
   const { data: profile } = await supabase
     .from('users')
-    .select('username')
+    .select('username, avatar_url')
     .eq('id', user.id)
     .single()
+
+  const displayName = profile?.username ?? user.email ?? 'Profile'
 
   return (
     <div className="min-h-screen bg-background">
@@ -32,9 +35,10 @@ export default async function DashboardLayout({
           <div className="flex items-center gap-3">
             <Link
               href="/profile"
-              className="text-sm text-neutral-400 hover:text-neutral-100 transition-colors"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border bg-surface-2 hover:border-accent/50 hover:bg-surface-2 transition-colors"
             >
-              {profile?.username ?? user.email}
+              <Avatar src={profile?.avatar_url} name={displayName} size="sm" />
+              <span className="text-sm text-slate-300 font-medium max-w-[120px] truncate">{displayName}</span>
             </Link>
 
             <form action="/api/auth/signout" method="POST">
