@@ -31,6 +31,7 @@ export function MatchesClient({
     status: 'all',
     groupId: null,
     round: null,
+    boardNumber: null,
   })
 
   const { groupMatches: realtimeMatches } = useRealtimeTournament(tournamentId)
@@ -58,11 +59,17 @@ export function MatchesClient({
     [matches]
   )
 
+  const boards = useMemo(
+    () => [...new Set(matches.map((m) => m.board_number).filter((b): b is number => b !== null))].sort((a, b) => a - b),
+    [matches]
+  )
+
   const filtered = useMemo(() => {
     return matches.filter((m) => {
       if (filters.status !== 'all' && m.status !== filters.status) return false
       if (filters.groupId && m.group_id !== filters.groupId) return false
       if (filters.round && m.round !== filters.round) return false
+      if (filters.boardNumber && m.board_number !== filters.boardNumber) return false
       return true
     })
   }, [matches, filters])
@@ -85,6 +92,7 @@ export function MatchesClient({
         onChange={setFilters}
         groups={groups.map((g) => ({ id: g.id, name: g.name }))}
         rounds={rounds}
+        boards={boards}
       />
 
       {filtered.length === 0 ? (

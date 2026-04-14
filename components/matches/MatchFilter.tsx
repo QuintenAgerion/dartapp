@@ -6,6 +6,7 @@ export interface MatchFilters {
   status: 'all' | 'scheduled' | 'live' | 'completed'
   groupId: string | null
   round: number | null
+  boardNumber: number | null
 }
 
 interface MatchFilterProps {
@@ -13,9 +14,10 @@ interface MatchFilterProps {
   onChange: (filters: MatchFilters) => void
   groups: Array<{ id: string; name: string }>
   rounds: number[]
+  boards: number[]
 }
 
-export function MatchFilter({ filters, onChange, groups, rounds }: MatchFilterProps) {
+export function MatchFilter({ filters, onChange, groups, rounds, boards }: MatchFilterProps) {
   return (
     <div className="flex flex-wrap gap-2 items-center">
       {/* Status filter */}
@@ -63,6 +65,22 @@ export function MatchFilter({ filters, onChange, groups, rounds }: MatchFilterPr
           {rounds.map((r) => (
             <option key={r} value={r}>
               Round {r}
+            </option>
+          ))}
+        </select>
+      )}
+
+      {/* Board filter */}
+      {boards.length > 1 && (
+        <select
+          value={filters.boardNumber ?? ''}
+          onChange={(e) => onChange({ ...filters, boardNumber: e.target.value ? parseInt(e.target.value) : null })}
+          className="bg-surface-2 border border-border rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:ring-2 focus:ring-accent/50"
+        >
+          <option value="">All boards</option>
+          {boards.map((b) => (
+            <option key={b} value={b}>
+              Board {b}
             </option>
           ))}
         </select>

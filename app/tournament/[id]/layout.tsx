@@ -49,7 +49,13 @@ export default async function TournamentLayout({ children, params }: TournamentL
       {/* Nav */}
       <nav className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto px-4 h-14 flex items-center gap-4">
-          <a href="/dashboard" className="text-sm text-neutral-500 hover:text-neutral-200 transition-colors shrink-0">
+          <a
+            href="/dashboard"
+            className="flex items-center gap-1.5 text-sm font-medium text-slate-300 bg-surface-2 border border-border hover:border-accent/50 hover:text-accent px-3 py-1.5 rounded-lg transition-colors shrink-0"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
             Dashboard
           </a>
           <span className="text-neutral-600">/</span>
