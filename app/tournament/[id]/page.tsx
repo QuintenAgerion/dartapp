@@ -41,11 +41,11 @@ export default async function TournamentOverviewPage({ params }: PageProps) {
     <div className="space-y-6">
       {/* Stats grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <StatCard label="Players" value={playerCount ?? 0} />
-        <StatCard label="Groups" value={t.num_groups} />
-        <StatCard label="Boards" value={t.num_boards} />
+        <StatCard label="Spelers" value={playerCount ?? 0} />
+        <StatCard label="Poules" value={t.num_groups} />
+        <StatCard label="Borden" value={t.num_boards} />
         <StatCard
-          label="Matches played"
+          label="Gespeelde wedstrijden"
           value={matchCount ? `${completedCount ?? 0}/${matchCount}` : '—'}
         />
       </div>
@@ -53,14 +53,14 @@ export default async function TournamentOverviewPage({ params }: PageProps) {
       {/* Organizer actions */}
       {role === 'organizer' && (
         <div className="card space-y-4">
-          <h3 className="font-semibold text-slate-200">Organizer Tools</h3>
+          <h3 className="font-semibold text-slate-200">Organisator Tools</h3>
 
           {t.status === 'draft' && (
             <>
               <InviteLink inviteCode={t.invite_code} />
               <div className="border-t border-border pt-4">
                 <p className="text-sm text-slate-400 mb-3">
-                  When all players have joined, start the tournament to generate groups and matches.
+                  Zodra alle spelers zijn ingeschreven, start je het toernooi om poules en wedstrijden te genereren.
                 </p>
                 <StartTournamentButton tournamentId={id} playerCount={playerCount ?? 0} />
               </div>
@@ -73,7 +73,7 @@ export default async function TournamentOverviewPage({ params }: PageProps) {
               {t.enable_winners_bracket && (
                 <div className="border-t border-border pt-4">
                   <p className="text-sm text-slate-400 mb-3">
-                    When the group stage is done, generate the knockout bracket.
+                    Zodra de pouleronde klaar is, genereer je de knockoutbracket.
                   </p>
                   <GenerateBracketButton
                     tournamentId={id}
@@ -90,7 +90,7 @@ export default async function TournamentOverviewPage({ params }: PageProps) {
           )}
 
           {t.status === 'completed' && (
-            <p className="text-sm text-slate-400">This tournament has been completed.</p>
+            <p className="text-sm text-slate-400">Dit toernooi is afgelopen.</p>
           )}
 
           <div className="border-t border-border pt-4">
@@ -102,31 +102,31 @@ export default async function TournamentOverviewPage({ params }: PageProps) {
       {/* Info card for non-organizers in draft */}
       {role !== 'organizer' && t.status === 'draft' && (
         <div className="card text-center py-8">
-          <p className="text-slate-400">Waiting for the organizer to start the tournament...</p>
+          <p className="text-slate-400">Wachten tot de organisator het toernooi start...</p>
         </div>
       )}
 
       {/* Match format info */}
       <div className="card">
-        <h3 className="font-semibold text-slate-200 mb-3">Tournament Details</h3>
+        <h3 className="font-semibold text-slate-200 mb-3">Toernooigegevens</h3>
         <dl className="grid grid-cols-2 gap-3 text-sm">
           <div>
-            <dt className="text-slate-500">Match format</dt>
+            <dt className="text-slate-500">Wedstrijdformaat</dt>
             <dd className="text-slate-200 font-medium">
               {t.match_format === 'bo1' ? 'Best of 1' : t.match_format === 'bo3' ? 'Best of 3' : 'Best of 5'}
             </dd>
           </div>
           <div>
-            <dt className="text-slate-500">Avg. match duration</dt>
+            <dt className="text-slate-500">Gem. wedstrijdduur</dt>
             <dd className="text-slate-200 font-medium">{t.avg_match_duration} min</dd>
           </div>
           <div>
-            <dt className="text-slate-500">Winners bracket</dt>
-            <dd className="text-slate-200 font-medium">{t.enable_winners_bracket ? 'Yes' : 'No'}</dd>
+            <dt className="text-slate-500">Winnaarsbracket</dt>
+            <dd className="text-slate-200 font-medium">{t.enable_winners_bracket ? 'Ja' : 'Nee'}</dd>
           </div>
           <div>
-            <dt className="text-slate-500">Losers bracket</dt>
-            <dd className="text-slate-200 font-medium">{t.enable_losers_bracket ? 'Yes' : 'No'}</dd>
+            <dt className="text-slate-500">Verlizersbracket</dt>
+            <dd className="text-slate-200 font-medium">{t.enable_losers_bracket ? 'Ja' : 'Nee'}</dd>
           </div>
         </dl>
       </div>

@@ -18,18 +18,18 @@ export function JoinTournamentForm() {
 
   return (
     <div className="card max-w-sm">
-      <p className="text-sm font-medium text-slate-300 mb-3">Join with invite code</p>
+      <p className="text-sm font-medium text-slate-300 mb-3">Deelnemen via uitnodigingscode</p>
       <form onSubmit={handleSubmit} className="flex gap-2">
         <input
           type="text"
           value={code}
           onChange={(e) => setCode(e.target.value)}
-          placeholder="Enter 8-character code"
+          placeholder="Voer 8-cijferige code in"
           className="flex-1 bg-surface-2 border border-border rounded-lg px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent"
           maxLength={8}
         />
         <Button type="submit" size="sm" disabled={!code.trim()}>
-          Join
+          Meedoen
         </Button>
       </form>
     </div>

@@ -49,30 +49,35 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-10">
-      {/* Header */}
-      <div className="flex items-center justify-between flex-wrap gap-3">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-100">My Tournaments</h1>
-          <p className="text-slate-500 text-sm mt-0.5">Manage and track your dart tournaments</p>
+      {/* Header met logo */}
+      <div className="flex items-center gap-6">
+        <img src="/NSVV logo met bier en pijlen.png" alt="NSVV" className="h-28 w-auto shrink-0 hidden sm:block" />
+        <div className="flex-1">
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <div>
+              <h1 className="text-2xl font-bold text-slate-100">Mijn Toernooien</h1>
+              <p className="text-slate-500 text-sm mt-0.5">Beheer en volg je darttoernooien</p>
+            </div>
+            <Link href="/tournament/create">
+              <Button>
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                Nieuw Toernooi
+              </Button>
+            </Link>
+          </div>
         </div>
-        <Link href="/tournament/create">
-          <Button>
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-            </svg>
-            New Tournament
-          </Button>
-        </Link>
       </div>
 
-      {/* Join with invite code */}
+      {/* Deelnemen met uitnodigingscode */}
       <JoinTournamentForm />
 
-      {/* Owned tournaments */}
+      {/* Eigen toernooien */}
       {owned.length > 0 && (
         <section>
           <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">
-            Organizing
+            Organisator
           </h2>
           <div className="grid gap-3">
             {owned.map((t) => (
@@ -82,11 +87,11 @@ export default async function DashboardPage() {
         </section>
       )}
 
-      {/* Joined tournaments */}
+      {/* Deelnemende toernooien */}
       {joined.length > 0 && (
         <section>
           <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">
-            Playing in
+            Deelnemer
           </h2>
           <div className="grid gap-3">
             {joined.map(({ tournament, role }) => (
@@ -96,11 +101,11 @@ export default async function DashboardPage() {
         </section>
       )}
 
-      {/* Empty state */}
+      {/* Lege staat */}
       {owned.length === 0 && joined.length === 0 && (
         <EmptyState
-          title="No tournaments yet"
-          description="Create your first dart tournament or join one with an invite code."
+          title="Nog geen toernooien"
+          description="Maak je eerste darttoernooi aan of doe mee via een uitnodigingscode."
           icon={
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -108,7 +113,7 @@ export default async function DashboardPage() {
           }
           action={
             <Link href="/tournament/create">
-              <Button>Create Tournament</Button>
+              <Button>Toernooi aanmaken</Button>
             </Link>
           }
         />

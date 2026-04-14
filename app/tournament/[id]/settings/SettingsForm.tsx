@@ -72,31 +72,31 @@ export function SettingsForm({ tournament }: { tournament: Tournament }) {
     <form onSubmit={handleSave} className="space-y-6 max-w-2xl">
       {!isDraft && (
         <div className="rounded-lg bg-yellow-500/10 border border-yellow-500/20 px-4 py-3 text-sm text-yellow-300">
-          The tournament is active — structural settings (format, groups, brackets) are locked.
-          You can still update the name, date, boards and match duration.
+          Het toernooi is actief — structurele instellingen (formaat, poules, brackets) zijn vergrendeld.
+          Je kunt wel de naam, datum, borden en wedstrijdduur aanpassen.
         </div>
       )}
 
       {/* Basic info */}
       <div className="card space-y-4">
-        <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Basic Information</h2>
+        <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Basisinformatie</h2>
 
         <Input
-          label="Tournament name"
+          label="Naam toernooi"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
         />
 
         <Textarea
-          label="Description"
+          label="Omschrijving"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Optional description..."
+          placeholder="Optionele omschrijving..."
         />
 
         <Input
-          label="Start date & time"
+          label="Startdatum &amp; tijd"
           type="datetime-local"
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
@@ -106,10 +106,10 @@ export function SettingsForm({ tournament }: { tournament: Tournament }) {
       {/* Structural format — draft only */}
       {isDraft && (
         <div className="card space-y-4">
-          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Format</h2>
+          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Formaat</h2>
 
           <Select
-            label="Match format"
+            label="Wedstrijdformaat"
             value={matchFormat}
             onChange={(e) => setMatchFormat(e.target.value as MatchFormat)}
             options={[
@@ -120,7 +120,7 @@ export function SettingsForm({ tournament }: { tournament: Tournament }) {
           />
 
           <div>
-            <label className="text-sm font-medium text-slate-300">Number of groups</label>
+            <label className="text-sm font-medium text-slate-300">Aantal poules</label>
             <div className="mt-1.5 flex items-center gap-3">
               <input
                 type="range" min={1} max={8} value={numGroups}
@@ -139,8 +139,8 @@ export function SettingsForm({ tournament }: { tournament: Tournament }) {
                 className="w-4 h-4 accent-accent rounded"
               />
               <div>
-                <p className="text-sm font-medium text-slate-300">Winners bracket</p>
-                <p className="text-xs text-slate-500">Top players from each group advance to a knockout bracket</p>
+                <p className="text-sm font-medium text-slate-300">Winnaarsbracket</p>
+                <p className="text-xs text-slate-500">Topspelers uit elke poule gaan door naar een knockoutbracket</p>
               </div>
             </label>
 
@@ -153,17 +153,17 @@ export function SettingsForm({ tournament }: { tournament: Tournament }) {
                     className="w-4 h-4 accent-accent rounded"
                   />
                   <div>
-                    <p className="text-sm font-medium text-slate-300">Losers bracket</p>
-                    <p className="text-xs text-slate-500">Consolation bracket for lower-ranked qualifiers</p>
+                    <p className="text-sm font-medium text-slate-300">Verlizersbracket</p>
+                    <p className="text-xs text-slate-500">Troostbracket voor lager geplaatste kwalificanten</p>
                   </div>
                 </label>
 
                 <div className="ml-7 space-y-3 rounded-lg bg-surface-2 border border-border p-3">
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Advancement per group</p>
+                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Doorstroming per poule</p>
 
                   <div className="flex items-center gap-3">
                     <div className="w-3 h-3 rounded-full bg-accent shrink-0" />
-                    <span className="text-sm text-slate-300 flex-1">Players to winners bracket</span>
+                    <span className="text-sm text-slate-300 flex-1">Spelers naar winnaarsbracket</span>
                     <div className="flex items-center gap-2">
                       <button type="button" onClick={() => setWinnersPerGroup(Math.max(1, winnersPerGroup - 1))} className="w-6 h-6 rounded border border-border text-slate-400 hover:text-slate-200 text-sm font-bold leading-none">−</button>
                       <span className="w-5 text-center text-slate-100 font-semibold">{winnersPerGroup}</span>
@@ -174,7 +174,7 @@ export function SettingsForm({ tournament }: { tournament: Tournament }) {
                   {enableLosers && (
                     <div className="flex items-center gap-3">
                       <div className="w-3 h-3 rounded-full bg-slate-500 shrink-0" />
-                      <span className="text-sm text-slate-300 flex-1">Players to losers bracket</span>
+                      <span className="text-sm text-slate-300 flex-1">Spelers naar verlizersbracket</span>
                       <div className="flex items-center gap-2">
                         <button type="button" onClick={() => setLosersPerGroup(Math.max(0, losersPerGroup - 1))} className="w-6 h-6 rounded border border-border text-slate-400 hover:text-slate-200 text-sm font-bold leading-none">−</button>
                         <span className="w-5 text-center text-slate-100 font-semibold">{losersPerGroup}</span>
@@ -184,11 +184,11 @@ export function SettingsForm({ tournament }: { tournament: Tournament }) {
                   )}
 
                   <p className="text-xs text-slate-500 pt-1 border-t border-border">
-                    Top {winnersPerGroup} × {numGroups} group{numGroups > 1 ? 's' : ''} ={' '}
-                    <span className="text-slate-300 font-medium">{winnersPerGroup * numGroups} players</span> in winners bracket
+                    Top {winnersPerGroup} × {numGroups} poule{numGroups > 1 ? 's' : ''} ={' '}
+                    <span className="text-slate-300 font-medium">{winnersPerGroup * numGroups} spelers</span> in winnaarsbracket
                     {enableLosers && losersPerGroup > 0 && (
-                      <>, next {losersPerGroup} × {numGroups} ={' '}
-                      <span className="text-slate-300 font-medium">{losersPerGroup * numGroups}</span> in losers bracket</>
+                      <>, volgende {losersPerGroup} × {numGroups} ={' '}
+                      <span className="text-slate-300 font-medium">{losersPerGroup * numGroups}</span> in verlizersbracket</>
                     )}
                   </p>
                 </div>
@@ -200,10 +200,10 @@ export function SettingsForm({ tournament }: { tournament: Tournament }) {
 
       {/* Venue */}
       <div className="card space-y-4">
-        <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Venue</h2>
+        <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Locatie</h2>
 
         <div>
-          <label className="text-sm font-medium text-slate-300">Number of boards</label>
+          <label className="text-sm font-medium text-slate-300">Aantal borden</label>
           <div className="mt-1.5 flex items-center gap-3">
             <input
               type="range" min={1} max={16} value={numBoards}
@@ -215,18 +215,18 @@ export function SettingsForm({ tournament }: { tournament: Tournament }) {
         </div>
 
         <Input
-          label="Average match duration (minutes)"
+          label="Gemiddelde wedstrijdduur (minuten)"
           type="number"
           min={5}
           max={120}
           value={avgDuration}
           onChange={(e) => setAvgDuration(parseInt(e.target.value) || 20)}
-          hint="Used to estimate match schedules"
+          hint="Gebruikt voor het schatten van wedstrijdschema's"
         />
       </div>
 
       <Button type="submit" loading={loading}>
-        Save settings
+        Instellingen opslaan
       </Button>
     </form>
   )

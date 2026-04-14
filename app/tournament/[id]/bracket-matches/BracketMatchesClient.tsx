@@ -23,10 +23,10 @@ interface BracketMatchesClientProps {
 
 function roundLabel(round: number, totalRounds: number): string {
   const fromEnd = totalRounds - round
-  if (fromEnd === 0) return 'Final'
-  if (fromEnd === 1) return 'Semi-Final'
-  if (fromEnd === 2) return 'Quarter-Final'
-  return `Round ${round}`
+  if (fromEnd === 0) return 'Finale'
+  if (fromEnd === 1) return 'Halve Finale'
+  if (fromEnd === 2) return 'Kwartfinale'
+  return `Ronde ${round}`
 }
 
 export function BracketMatchesClient({
@@ -60,8 +60,8 @@ export function BracketMatchesClient({
   if (tournament.status === 'draft') {
     return (
       <EmptyState
-        title="Tournament not started"
-        description="Start the tournament first to generate groups and matches."
+        title="Toernooi nog niet gestart"
+        description="Start het toernooi eerst om poules en wedstrijden te genereren."
       />
     )
   }
@@ -69,11 +69,11 @@ export function BracketMatchesClient({
   if (brackets.length === 0) {
     return (
       <EmptyState
-        title="No bracket yet"
+        title="Nog geen bracket"
         description={
           role === 'organizer'
-            ? 'Go to the Overview tab and click "Generate Bracket" to create the knockout stage.'
-            : 'The bracket has not been generated yet. The organizer can generate it from the Overview tab.'
+            ? 'Ga naar het Overzicht-tabblad en klik op "Bracket genereren" om de knockoutfase aan te maken.'
+            : 'De bracket is nog niet gegenereerd. De organisator kan dit doen via het Overzicht-tabblad.'
         }
       />
     )
@@ -131,7 +131,7 @@ export function BracketMatchesClient({
                     {/* Header */}
                     <div className="flex items-center justify-between gap-2 mb-3">
                       <div className="flex items-center gap-2 text-xs text-slate-500">
-                        {match.board_number && <span>Board {match.board_number}</span>}
+                        {match.board_number && <span>Bord {match.board_number}</span>}
                         {match.board_number && match.scheduled_at && <span>·</span>}
                         {match.scheduled_at && !isCompleted && (
                           <span>{formatDate(match.scheduled_at)}</span>
@@ -214,7 +214,7 @@ export function BracketMatchesClient({
                           size="sm"
                           onClick={() => setModalMatch(match)}
                         >
-                          {isCompleted ? 'Edit Score' : match.status === 'live' ? 'Update Score' : 'Submit Score'}
+                          {isCompleted ? 'Score bewerken' : match.status === 'live' ? 'Score bijwerken' : 'Score invoeren'}
                         </Button>
                       </div>
                     )}
@@ -235,9 +235,9 @@ export function BracketMatchesClient({
     <div className="space-y-8">
       {winnersBracket && renderBracketSection(
         winnersBracket,
-        losersBracket ? 'Winners Bracket' : 'Bracket Matches'
+        losersBracket ? 'Winnaarsbracket' : 'Bracketwedstrijden'
       )}
-      {losersBracket && renderBracketSection(losersBracket, 'Losers Bracket')}
+      {losersBracket && renderBracketSection(losersBracket, 'Verlizersbracket')}
 
       {modalMatch && homeMember && awayMember && (
         <ScoreInputModal

@@ -24,7 +24,7 @@ export function StartTournamentButton({ tournamentId, playerCount }: StartTourna
 
   function handleStart() {
     if (playerCount < 2) {
-      toast('You need at least 2 players to start', 'error')
+      toast('Je hebt minimaal 2 spelers nodig om te starten', 'error')
       return
     }
     setShowScorerModal(true)
@@ -156,7 +156,7 @@ export function StartTournamentButton({ tournamentId, playerCount }: StartTourna
 
       if (updateErr) throw new Error('Failed to update tournament status')
 
-      toast('Tournament started! Groups and matches have been generated.', 'success')
+      toast('Toernooi gestart! Poules en wedstrijden zijn gegenereerd.', 'success')
       router.refresh()
     } catch (err) {
       toast(err instanceof Error ? err.message : 'Failed to start tournament', 'error')
@@ -172,7 +172,7 @@ export function StartTournamentButton({ tournamentId, playerCount }: StartTourna
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        Start Tournament ({playerCount} player{playerCount !== 1 ? 's' : ''})
+        Toernooi starten ({playerCount} speler{playerCount !== 1 ? 's' : ''})
       </Button>
 
       <Modal

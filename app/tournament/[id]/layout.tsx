@@ -35,13 +35,13 @@ export default async function TournamentLayout({ children, params }: TournamentL
     .eq('role', 'player')
 
   const tabs = [
-    { label: 'Overview', href: `/tournament/${id}` },
-    { label: 'Players', href: `/tournament/${id}/players` },
-    { label: 'Matches', href: `/tournament/${id}/matches` },
-    { label: 'Standings', href: `/tournament/${id}/standings` },
+    { label: 'Overzicht', href: `/tournament/${id}` },
+    { label: 'Spelers', href: `/tournament/${id}/players` },
+    { label: 'Wedstrijden', href: `/tournament/${id}/matches` },
+    { label: 'Standen', href: `/tournament/${id}/standings` },
     { label: 'Bracket', href: `/tournament/${id}/bracket` },
-    { label: 'Bracket Matches', href: `/tournament/${id}/bracket-matches` },
-    { label: 'Settings', href: `/tournament/${id}/settings` },
+    { label: 'Bracket Wedstrijden', href: `/tournament/${id}/bracket-matches` },
+    { label: 'Instellingen', href: `/tournament/${id}/settings` },
   ]
 
   return (

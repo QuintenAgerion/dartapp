@@ -30,10 +30,10 @@ function nextPowerOfTwo(n: number): number {
 }
 
 function roundLabel(fromEnd: number): string {
-  if (fromEnd === 0) return 'Final'
-  if (fromEnd === 1) return 'Semi-Final'
-  if (fromEnd === 2) return 'Quarter-Final'
-  return `Round of ${Math.pow(2, fromEnd + 1)}`
+  if (fromEnd === 0) return 'Finale'
+  if (fromEnd === 1) return 'Halve Finale'
+  if (fromEnd === 2) return 'Kwartfinale'
+  return `Ronde van ${Math.pow(2, fromEnd + 1)}`
 }
 
 function buildDefaultOverrides(totalRounds: number, defaultFormat: MatchFormat): Record<number, MatchFormat> {
@@ -84,7 +84,7 @@ export function GenerateBracketButton({
   )
 
   if (hasBracket) {
-    return <p className="text-sm text-green-400">Bracket has been generated.</p>
+    return <p className="text-sm text-green-400">Bracket is gegenereerd.</p>
   }
 
   async function handleGenerate() {
@@ -102,8 +102,8 @@ export function GenerateBracketButton({
         }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? 'Failed to generate bracket')
-      toast('Bracket generated!', 'success')
+      if (!res.ok) throw new Error(data.error ?? 'Bracket genereren mislukt')
+      toast('Bracket gegenereerd!', 'success')
       setConfigOpen(false)
       router.refresh()
     } catch (err) {
@@ -124,7 +124,7 @@ export function GenerateBracketButton({
       <div key={fromEnd} className="flex items-center gap-3 py-2 border-b border-border last:border-0">
         <div className="flex-1">
           <p className="text-sm font-medium text-slate-200">{roundLabel(fromEnd)}</p>
-          <p className="text-xs text-slate-500">Round {actualRound}</p>
+          <p className="text-xs text-slate-500">Ronde {actualRound}</p>
         </div>
         <div className="flex gap-1">
           {FORMAT_OPTIONS.map((opt) => (
@@ -152,19 +152,19 @@ export function GenerateBracketButton({
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
         </svg>
-        Generate Bracket
+        Bracket genereren
       </Button>
 
-      <Modal open={configOpen} onClose={() => setConfigOpen(false)} title="Configure Bracket" size="sm">
+      <Modal open={configOpen} onClose={() => setConfigOpen(false)} title="Bracket instellen" size="sm">
         <div className="space-y-5">
           {/* Winners bracket rounds */}
           <div>
             <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">
-              Winners Bracket
+              Winnaarsbracket
             </p>
             <p className="text-sm text-slate-500 mb-3">
-              {winnersQualifierCount} players ({winnersPerGroup}/group × {numGroups} groups)
-              {' → '}<span className="text-slate-300">{winnersTotalRounds} rounds</span>
+              {winnersQualifierCount} spelers ({winnersPerGroup}/poule × {numGroups} poules)
+              {' → '}<span className="text-slate-300">{winnersTotalRounds} rondes</span>
             </p>
             <div className="space-y-0">
               {winnersRounds.map((fromEnd) =>
@@ -177,11 +177,11 @@ export function GenerateBracketButton({
           {enableLosers && losersQualifierCount >= 2 && (
             <div>
               <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">
-                Losers Bracket
+                Verlizersbracket
               </p>
               <p className="text-sm text-slate-500 mb-3">
-                {losersQualifierCount} players ({losersPerGroup}/group × {numGroups} groups)
-                {' → '}<span className="text-slate-300">{losersTotalRounds} rounds</span>
+                {losersQualifierCount} spelers ({losersPerGroup}/poule × {numGroups} poules)
+                {' → '}<span className="text-slate-300">{losersTotalRounds} rondes</span>
               </p>
               <div className="space-y-0">
                 {losersRounds.map((fromEnd) =>
@@ -193,10 +193,10 @@ export function GenerateBracketButton({
 
           <div className="flex gap-2 pt-1">
             <Button variant="secondary" onClick={() => setConfigOpen(false)} className="flex-1" disabled={loading}>
-              Cancel
+              Annuleren
             </Button>
             <Button onClick={handleGenerate} loading={loading} className="flex-1">
-              Generate Bracket
+              Bracket genereren
             </Button>
           </div>
         </div>

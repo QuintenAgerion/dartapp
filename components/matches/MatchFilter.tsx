@@ -22,20 +22,23 @@ export function MatchFilter({ filters, onChange, groups, rounds, boards }: Match
     <div className="flex flex-wrap gap-2 items-center">
       {/* Status filter */}
       <div className="flex rounded-lg border border-border overflow-hidden">
-        {(['all', 'scheduled', 'live', 'completed'] as const).map((s) => (
-          <button
-            key={s}
-            onClick={() => onChange({ ...filters, status: s })}
-            className={cn(
-              'px-3 py-1.5 text-xs font-medium transition-colors capitalize',
-              filters.status === s
-                ? 'bg-accent text-white'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-surface-2'
-            )}
-          >
-            {s}
-          </button>
-        ))}
+        {(['all', 'scheduled', 'live', 'completed'] as const).map((s) => {
+          const label = s === 'all' ? 'Alles' : s === 'scheduled' ? 'Gepland' : s === 'live' ? 'Live' : 'Gespeeld'
+          return (
+            <button
+              key={s}
+              onClick={() => onChange({ ...filters, status: s })}
+              className={cn(
+                'px-3 py-1.5 text-xs font-medium transition-colors',
+                filters.status === s
+                  ? 'bg-accent text-white'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-surface-2'
+              )}
+            >
+              {label}
+            </button>
+          )
+        })}
       </div>
 
       {/* Group filter */}
@@ -45,7 +48,7 @@ export function MatchFilter({ filters, onChange, groups, rounds, boards }: Match
           onChange={(e) => onChange({ ...filters, groupId: e.target.value || null })}
           className="bg-surface-2 border border-border rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:ring-2 focus:ring-accent/50"
         >
-          <option value="">All groups</option>
+          <option value="">Alle poules</option>
           {groups.map((g) => (
             <option key={g.id} value={g.id}>
               {g.name}
@@ -61,10 +64,10 @@ export function MatchFilter({ filters, onChange, groups, rounds, boards }: Match
           onChange={(e) => onChange({ ...filters, round: e.target.value ? parseInt(e.target.value) : null })}
           className="bg-surface-2 border border-border rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:ring-2 focus:ring-accent/50"
         >
-          <option value="">All rounds</option>
+          <option value="">Alle rondes</option>
           {rounds.map((r) => (
             <option key={r} value={r}>
-              Round {r}
+              Ronde {r}
             </option>
           ))}
         </select>
@@ -77,10 +80,10 @@ export function MatchFilter({ filters, onChange, groups, rounds, boards }: Match
           onChange={(e) => onChange({ ...filters, boardNumber: e.target.value ? parseInt(e.target.value) : null })}
           className="bg-surface-2 border border-border rounded-lg px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:ring-2 focus:ring-accent/50"
         >
-          <option value="">All boards</option>
+          <option value="">Alle borden</option>
           {boards.map((b) => (
             <option key={b} value={b}>
-              Board {b}
+              Bord {b}
             </option>
           ))}
         </select>

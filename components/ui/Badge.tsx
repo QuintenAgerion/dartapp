@@ -34,9 +34,9 @@ export function Badge({ children, color = 'gray', className }: BadgeProps) {
 
 export function TournamentStatusBadge({ status }: { status: TournamentStatus }) {
   const map: Record<TournamentStatus, { label: string; color: BadgeColor }> = {
-    draft: { label: 'Draft', color: 'yellow' },
-    active: { label: 'Active', color: 'green' },
-    completed: { label: 'Completed', color: 'blue' },
+    draft: { label: 'Concept', color: 'yellow' },
+    active: { label: 'Actief', color: 'green' },
+    completed: { label: 'Afgelopen', color: 'blue' },
   }
   const { label, color } = map[status]
   return <Badge color={color}>{label}</Badge>
@@ -44,10 +44,10 @@ export function TournamentStatusBadge({ status }: { status: TournamentStatus }) 
 
 export function MatchStatusBadge({ status }: { status: MatchStatus | BracketMatchStatus }) {
   const map: Record<string, { label: string; color: BadgeColor }> = {
-    scheduled: { label: 'Scheduled', color: 'gray' },
-    pending: { label: 'Pending', color: 'gray' },
+    scheduled: { label: 'Gepland', color: 'gray' },
+    pending: { label: 'In wachtrij', color: 'gray' },
     live: { label: 'Live', color: 'green' },
-    completed: { label: 'Completed', color: 'blue' },
+    completed: { label: 'Gespeeld', color: 'blue' },
   }
   const { label, color } = map[status] ?? { label: status, color: 'gray' as BadgeColor }
   return <Badge color={color}>{label}</Badge>
@@ -55,9 +55,9 @@ export function MatchStatusBadge({ status }: { status: MatchStatus | BracketMatc
 
 export function RoleBadge({ role }: { role: MemberRole }) {
   const map: Record<MemberRole, { label: string; color: BadgeColor }> = {
-    organizer: { label: 'Organizer', color: 'purple' },
-    player: { label: 'Player', color: 'blue' },
-    viewer: { label: 'Viewer', color: 'gray' },
+    organizer: { label: 'Organisator', color: 'purple' },
+    player: { label: 'Speler', color: 'blue' },
+    viewer: { label: 'Toeschouwer', color: 'gray' },
   }
   const { label, color } = map[role]
   return <Badge color={color}>{label}</Badge>

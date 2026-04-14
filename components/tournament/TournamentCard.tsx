@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import type { Tournament } from '@/types/database'
 import { TournamentStatusBadge } from '@/components/ui/Badge'
-import { formatDateShort, getMatchFormatLabel } from '@/lib/utils'
+import { formatDateShort, getMatchFormatLabel, getTournamentColorClass, cn } from '@/lib/utils'
 
 interface TournamentCardProps {
   tournament: Tournament
@@ -12,7 +12,7 @@ export function TournamentCard({ tournament, role }: TournamentCardProps) {
   return (
     <Link
       href={`/tournament/${tournament.id}`}
-      className="block card-hover group transition-all"
+      className={cn('block card-hover group transition-all rounded-lg overflow-hidden', getTournamentColorClass(tournament.id))}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
@@ -46,20 +46,20 @@ export function TournamentCard({ tournament, role }: TournamentCardProps) {
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" />
               </svg>
-              {tournament.num_groups} group{tournament.num_groups !== 1 ? 's' : ''}
+              {tournament.num_groups} poule{tournament.num_groups !== 1 ? 's' : ''}
             </span>
             <span className="flex items-center gap-1">
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
-              {tournament.num_boards} board{tournament.num_boards !== 1 ? 's' : ''}
+              {tournament.num_boards} bord{tournament.num_boards !== 1 ? 'en' : ''}
             </span>
           </div>
         </div>
 
         {role && (
-          <span className="shrink-0 text-xs font-medium text-slate-500 capitalize">
-            {role}
+          <span className="shrink-0 text-xs font-medium text-slate-500">
+            {role === 'organizer' ? 'Organisator' : role === 'player' ? 'Speler' : 'Toeschouwer'}
           </span>
         )}
       </div>

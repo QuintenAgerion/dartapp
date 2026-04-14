@@ -46,7 +46,7 @@ export function ScoreInputModal({
     const as_ = parseInt(awayScore)
 
     if (isNaN(hs) || isNaN(as_)) {
-      setError('Please enter valid scores')
+      setError('Voer geldige scores in')
       return
     }
 
@@ -72,23 +72,23 @@ export function ScoreInputModal({
         return
       }
 
-      toast('Score submitted!', 'success')
+      toast('Score ingediend!', 'success')
       setHomeScore('')
       setAwayScore('')
       onClose()
       onSuccess?.()
     } catch {
-      setError('Network error — please try again')
+      setError('Netwerkfout — probeer opnieuw')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <Modal open={open} onClose={onClose} title="Submit Score" size="sm">
+    <Modal open={open} onClose={onClose} title="Score invoeren" size="sm">
       <form onSubmit={handleSubmit} className="space-y-4">
         <p className="text-sm text-slate-400">
-          Format: <span className="text-slate-200 font-medium">Best of {maxLegs}</span> (first to {required} legs)
+          Formaat: <span className="text-slate-200 font-medium">Best of {maxLegs}</span> (eerste tot {required} legs)
         </p>
 
         <div className="space-y-3">
@@ -96,7 +96,7 @@ export function ScoreInputModal({
           <div className="flex items-center gap-3">
             <div className="flex-1 truncate">
               <p className="text-sm font-medium text-slate-200">{homeMember.display_name}</p>
-              <p className="text-xs text-slate-500">Home</p>
+              <p className="text-xs text-slate-500">Thuis</p>
             </div>
             <input
               type="number"
@@ -116,7 +116,7 @@ export function ScoreInputModal({
           <div className="flex items-center gap-3">
             <div className="flex-1 truncate">
               <p className="text-sm font-medium text-slate-200">{awayMember.display_name}</p>
-              <p className="text-xs text-slate-500">Away</p>
+              <p className="text-xs text-slate-500">Uit</p>
             </div>
             <input
               type="number"
@@ -139,10 +139,10 @@ export function ScoreInputModal({
 
         <div className="flex gap-2 pt-1">
           <Button variant="secondary" size="md" onClick={onClose} type="button" className="flex-1">
-            Cancel
+            Annuleren
           </Button>
           <Button type="submit" loading={loading} className="flex-1">
-            Submit Score
+            Score invoeren
           </Button>
         </div>
       </form>

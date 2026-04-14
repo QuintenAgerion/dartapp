@@ -21,10 +21,10 @@ export function InviteLink({ inviteCode }: InviteLinkProps) {
     try {
       await navigator.clipboard.writeText(inviteUrl)
       setCopied(true)
-      toast('Invite link copied!', 'success')
+      toast('Uitnodigingslink gekopieerd!', 'success')
       setTimeout(() => setCopied(false), 2000)
     } catch {
-      toast('Failed to copy link', 'error')
+      toast('Kopiëren mislukt', 'error')
     }
   }
 
@@ -32,7 +32,7 @@ export function InviteLink({ inviteCode }: InviteLinkProps) {
     <div className="flex flex-col gap-3">
       {/* Invite code — most important, shown prominently */}
       <div>
-        <p className="text-sm font-medium text-slate-300 mb-1.5">Invite code</p>
+        <p className="text-sm font-medium text-slate-300 mb-1.5">Uitnodigingscode</p>
         <div className="flex items-center gap-3">
           <div className="bg-surface-2 border border-border rounded-lg px-4 py-2.5 font-mono text-2xl font-bold tracking-[0.25em] text-slate-100 select-all">
             {inviteCode}
@@ -48,20 +48,20 @@ export function InviteLink({ inviteCode }: InviteLinkProps) {
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
-                Copied
+                Gekopieerd
               </>
             ) : (
               <>
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
                 </svg>
-                Copy link
+                Link kopiëren
               </>
             )}
           </Button>
         </div>
         <p className="text-xs text-slate-500 mt-1.5">
-          Players enter this code on the dashboard to join — or share the full link below.
+          Spelers voeren deze code in op het dashboard om mee te doen — of deel de volledige link hieronder.
         </p>
       </div>
 

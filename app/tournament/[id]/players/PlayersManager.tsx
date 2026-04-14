@@ -79,7 +79,7 @@ export function PlayersManager({ tournamentId, organizerUserId, organizerDisplay
     if (error) {
       toast(error.message, 'error')
     } else {
-      toast(`${name} added`, 'success')
+      toast(`${name} toegevoegd`, 'success')
       setPlayerName('')
       router.refresh()
     }
@@ -111,20 +111,20 @@ export function PlayersManager({ tournamentId, organizerUserId, organizerDisplay
       </div>
 
     <div className="card">
-      <h3 className="font-semibold text-slate-200 mb-3">Add player manually</h3>
+      <h3 className="font-semibold text-slate-200 mb-3">Speler handmatig toevoegen</h3>
       <p className="text-sm text-slate-500 mb-3">
-        Add a guest player by name (no account required).
+        Voeg een gastspeler toe op naam (geen account nodig).
       </p>
       <form onSubmit={handleAddPlayer} className="flex gap-2">
         <Input
-          placeholder="Player name"
+          placeholder="Naam speler"
           value={playerName}
           onChange={(e) => setPlayerName(e.target.value)}
           className="flex-1"
           required
         />
         <Button type="submit" loading={loading} disabled={!playerName.trim()}>
-          Add
+          Toevoegen
         </Button>
       </form>
     </div>

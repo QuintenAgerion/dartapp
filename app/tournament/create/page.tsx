@@ -56,12 +56,12 @@ export default function CreateTournamentPage() {
 
   function validate(): boolean {
     const newErrors: Record<string, string> = {}
-    if (!name.trim() || name.length < 2) newErrors.name = 'Name must be at least 2 characters'
-    if (name.length > 100) newErrors.name = 'Name must be under 100 characters'
-    if (description.length > 500) newErrors.description = 'Description must be under 500 characters'
-    if (numGroups < 1 || numGroups > 8) newErrors.numGroups = 'Must be between 1 and 8'
-    if (numBoards < 1 || numBoards > 16) newErrors.numBoards = 'Must be between 1 and 16'
-    if (avgDuration < 5 || avgDuration > 120) newErrors.avgDuration = 'Must be between 5 and 120 minutes'
+    if (!name.trim() || name.length < 2) newErrors.name = 'Naam moet minimaal 2 tekens zijn'
+    if (name.length > 100) newErrors.name = 'Naam moet korter zijn dan 100 tekens'
+    if (description.length > 500) newErrors.description = 'Omschrijving moet korter zijn dan 500 tekens'
+    if (numGroups < 1 || numGroups > 8) newErrors.numGroups = 'Moet tussen 1 en 8 zijn'
+    if (numBoards < 1 || numBoards > 16) newErrors.numBoards = 'Moet tussen 1 en 16 zijn'
+    if (avgDuration < 5 || avgDuration > 120) newErrors.avgDuration = 'Moet tussen 5 en 120 minuten zijn'
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
@@ -75,7 +75,7 @@ export default function CreateTournamentPage() {
 
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {
-      toast('You must be logged in', 'error')
+      toast('Je moet ingelogd zijn', 'error')
       setLoading(false)
       return
     }
@@ -133,7 +133,7 @@ export default function CreateTournamentPage() {
       role: 'organizer',
     })
 
-    toast('Tournament created!', 'success')
+    toast('Toernooi aangemaakt!', 'success')
     router.push(`/tournament/${tournament.id}`)
   }
 
@@ -148,19 +148,19 @@ export default function CreateTournamentPage() {
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-            Back
+            Terug
           </button>
-          <h1 className="text-2xl font-bold text-slate-100">Create Tournament</h1>
-          <p className="text-slate-500 text-sm mt-1">Set up a new dart tournament</p>
+          <h1 className="text-2xl font-bold text-slate-100">Toernooi aanmaken</h1>
+          <p className="text-slate-500 text-sm mt-1">Stel een nieuw darttoernooi in</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic info */}
           <div className="card space-y-4">
-            <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Basic Information</h2>
+            <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Basisinformatie</h2>
 
             <Input
-              label="Tournament name"
+              label="Naam toernooi"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Friday Night Darts"
@@ -169,15 +169,15 @@ export default function CreateTournamentPage() {
             />
 
             <Textarea
-              label="Description"
+              label="Omschrijving"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Optional description..."
+              placeholder="Optionele omschrijving..."
               error={errors.description}
             />
 
             <Input
-              label="Start date & time"
+              label="Startdatum &amp; tijd"
               type="datetime-local"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
@@ -186,10 +186,10 @@ export default function CreateTournamentPage() {
 
           {/* Format settings */}
           <div className="card space-y-4">
-            <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Format</h2>
+            <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Formaat</h2>
 
             <Select
-              label="Match format"
+              label="Wedstrijdformaat"
               value={matchFormat}
               onChange={(e) => setMatchFormat(e.target.value)}
               options={formatOptions}
@@ -197,7 +197,7 @@ export default function CreateTournamentPage() {
 
             <div>
               <label className="text-sm font-medium text-slate-300">
-                Number of groups
+                Aantal poules
               </label>
               <div className="mt-1.5 flex items-center gap-3">
                 <input
@@ -226,8 +226,8 @@ export default function CreateTournamentPage() {
                   className="w-4 h-4 accent-accent rounded"
                 />
                 <div>
-                  <p className="text-sm font-medium text-slate-300">Winners bracket</p>
-                  <p className="text-xs text-slate-500">Top players from each group advance to a knockout bracket</p>
+                  <p className="text-sm font-medium text-slate-300">Winnaarsbracket</p>
+                  <p className="text-xs text-slate-500">Topspelers uit elke poule gaan door naar een knockoutbracket</p>
                 </div>
               </label>
 
@@ -240,8 +240,8 @@ export default function CreateTournamentPage() {
                     className="w-4 h-4 accent-accent rounded"
                   />
                   <div>
-                    <p className="text-sm font-medium text-slate-300">Losers bracket</p>
-                    <p className="text-xs text-slate-500">Second-chance bracket for first-round losers</p>
+                    <p className="text-sm font-medium text-slate-300">Verlizersbracket</p>
+                    <p className="text-xs text-slate-500">Herkansing voor verliezers uit de eerste ronde</p>
                   </div>
                 </label>
               )}
@@ -249,11 +249,11 @@ export default function CreateTournamentPage() {
               {/* Advancement config */}
               {enableWinners && (
                 <div className="ml-7 mt-2 space-y-3 rounded-lg bg-surface-2 border border-border p-3">
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Advancement per group</p>
+                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Doorstroming per poule</p>
 
                   <div className="flex items-center gap-3">
                     <div className="w-3 h-3 rounded-full bg-accent shrink-0" />
-                    <span className="text-sm text-slate-300 flex-1">Players to winners bracket</span>
+                    <span className="text-sm text-slate-300 flex-1">Spelers naar winnaarsbracket</span>
                     <div className="flex items-center gap-2">
                       <button
                         type="button"
@@ -272,7 +272,7 @@ export default function CreateTournamentPage() {
                   {enableLosers && (
                     <div className="flex items-center gap-3">
                       <div className="w-3 h-3 rounded-full bg-slate-500 shrink-0" />
-                      <span className="text-sm text-slate-300 flex-1">Players to losers bracket</span>
+                      <span className="text-sm text-slate-300 flex-1">Spelers naar verlizersbracket</span>
                       <div className="flex items-center gap-2">
                         <button
                           type="button"
@@ -290,9 +290,9 @@ export default function CreateTournamentPage() {
                   )}
 
                   <p className="text-xs text-slate-500 pt-1 border-t border-border">
-                    Top {winnersPerGroup} × {numGroups} group{numGroups > 1 ? 's' : ''} = <span className="text-slate-300 font-medium">{winnersPerGroup * numGroups} players</span> in winners bracket
+                    Top {winnersPerGroup} × {numGroups} poule{numGroups > 1 ? 's' : ''} = <span className="text-slate-300 font-medium">{winnersPerGroup * numGroups} spelers</span> in winnaarsbracket
                     {enableLosers && losersPerGroup > 0 && (
-                      <>, next {losersPerGroup} × {numGroups} = <span className="text-slate-300 font-medium">{losersPerGroup * numGroups}</span> in losers bracket</>
+                      <>, volgende {losersPerGroup} × {numGroups} = <span className="text-slate-300 font-medium">{losersPerGroup * numGroups}</span> in verlizersbracket</>
                     )}
                   </p>
                 </div>
@@ -302,11 +302,11 @@ export default function CreateTournamentPage() {
 
           {/* Venue settings */}
           <div className="card space-y-4">
-            <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Venue</h2>
+            <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Locatie</h2>
 
             <div>
               <label className="text-sm font-medium text-slate-300">
-                Number of boards
+                Aantal borden
               </label>
               <div className="mt-1.5 flex items-center gap-3">
                 <input
@@ -323,14 +323,14 @@ export default function CreateTournamentPage() {
             </div>
 
             <Input
-              label="Average match duration (minutes)"
+              label="Gemiddelde wedstrijdduur (minuten)"
               type="number"
               min={5}
               max={120}
               value={avgDuration}
               onChange={(e) => setAvgDuration(parseInt(e.target.value) || 20)}
               error={errors.avgDuration}
-              hint="Used to estimate match schedules"
+              hint="Gebruikt voor het schatten van wedstrijdschema's"
             />
           </div>
 
@@ -341,10 +341,10 @@ export default function CreateTournamentPage() {
               onClick={() => router.back()}
               className="flex-1"
             >
-              Cancel
+              Annuleren
             </Button>
             <Button type="submit" loading={loading} className="flex-1">
-              Create Tournament
+              Toernooi aanmaken
             </Button>
           </div>
         </form>

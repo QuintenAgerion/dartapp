@@ -7,7 +7,7 @@ import { MatchStatusBadge } from '@/components/ui/Badge'
 import { ScoreInputModal } from '@/components/tournament/ScoreInputModal'
 import { Avatar } from '@/components/ui/Avatar'
 import { Button } from '@/components/ui/Button'
-import { formatDate, cn } from '@/lib/utils'
+import { formatDate, cn, getGroupColorClass } from '@/lib/utils'
 
 interface MatchCardProps {
   match: GroupMatch
@@ -49,13 +49,17 @@ export function MatchCard({
         {/* Header */}
         <div className="flex items-center justify-between gap-2 mb-3">
           <div className="flex items-center gap-2 text-xs text-slate-500">
-            {groupName && <span>{groupName}</span>}
+            {groupName && (
+              <span className={cn('px-1.5 py-0.5 rounded font-medium text-xs', getGroupColorClass(groupName))}>
+                {groupName}
+              </span>
+            )}
             {groupName && <span>·</span>}
-            <span>Round {match.round}</span>
+            <span>Ronde {match.round}</span>
             {match.board_number && (
               <>
                 <span>·</span>
-                <span>Board {match.board_number}</span>
+                <span>Bord {match.board_number}</span>
               </>
             )}
           </div>
@@ -129,7 +133,7 @@ export function MatchCard({
               size="sm"
               onClick={() => setScoreModalOpen(true)}
             >
-              {isCompleted ? 'Edit Score' : isLive ? 'Update Score' : 'Submit Score'}
+              {isCompleted ? 'Score bewerken' : isLive ? 'Score bijwerken' : 'Score invoeren'}
             </Button>
           </div>
         )}

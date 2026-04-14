@@ -89,14 +89,14 @@ export default async function PlayersPage({ params, searchParams }: PageProps) {
       <div className="card">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-semibold text-slate-200">
-            Players <span className="text-slate-500 font-normal">({players.length})</span>
+            Spelers <span className="text-slate-500 font-normal">({players.length})</span>
           </h3>
         </div>
 
         {players.length === 0 ? (
           <EmptyState
-            title="No players yet"
-            description="Share the invite link for players to join"
+            title="Nog geen spelers"
+            description="Deel de uitnodigingslink zodat spelers kunnen meedoen"
           />
         ) : (
           <div className="space-y-2">
@@ -113,7 +113,7 @@ export default async function PlayersPage({ params, searchParams }: PageProps) {
                   )}
                 </div>
                 {!member.user_id && (
-                  <span className="text-xs text-slate-500">Guest</span>
+                  <span className="text-xs text-slate-500">Gast</span>
                 )}
               </div>
             ))}
@@ -135,7 +135,7 @@ export default async function PlayersPage({ params, searchParams }: PageProps) {
       {organizers.length > 0 && (
         <div className="card">
           <h3 className="font-semibold text-slate-200 mb-3">
-            Organizers
+            Organisatoren
           </h3>
           <div className="space-y-2">
             {organizers.map((m) => (
@@ -155,7 +155,7 @@ export default async function PlayersPage({ params, searchParams }: PageProps) {
 function JoinPrompt({ tournamentId, userId }: { tournamentId: string; userId: string }) {
   return (
     <div className="card border-accent/30 bg-accent/5">
-      <p className="text-sm text-slate-300">You have been invited to join this tournament.</p>
+      <p className="text-sm text-slate-300">Je bent uitgenodigd om aan dit toernooi deel te nemen.</p>
     </div>
   )
 }

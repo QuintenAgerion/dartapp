@@ -106,8 +106,8 @@ export function StandingsClient({
   if (tournament.status === 'draft') {
     return (
       <EmptyState
-        title="Tournament not started yet"
-        description="Start the tournament to generate group standings"
+        title="Toernooi nog niet gestart"
+        description="Start het toernooi om de poulestanden te genereren"
       />
     )
   }
@@ -115,8 +115,8 @@ export function StandingsClient({
   if (groups.length === 0) {
     return (
       <EmptyState
-        title="No groups yet"
-        description="Groups will appear once the tournament starts"
+        title="Nog geen poules"
+        description="Poules verschijnen zodra het toernooi begint"
       />
     )
   }
