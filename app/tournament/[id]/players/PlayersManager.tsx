@@ -24,12 +24,16 @@ export function PlayersManager({ tournamentId, organizerUserId, organizerDisplay
   async function handleJoinAsPlayer() {
     setJoinLoading(true)
     const supabase = createClient()
-    const { error } = await supabase.from('tournament_members').insert({
-      tournament_id: tournamentId,
-      user_id: organizerUserId,
-      display_name: organizerDisplayName,
-      role: 'player',
-    })
+    // Upsert handles both: organizer already has a row (update) or not (insert)
+    const { error } = await supabase.from('tournament_members').upsert(
+      {
+        tournament_id: tournamentId,
+        user_id: organizerUserId,
+        display_name: organizerDisplayName,
+        role: 'player',
+      },
+      { onConflict: 'tournament_id,user_id' }
+    )
     if (error) {
       toast(error.message, 'error')
     } else {
@@ -42,12 +46,12 @@ export function PlayersManager({ tournamentId, organizerUserId, organizerDisplay
   async function handleLeaveAsPlayer() {
     setJoinLoading(true)
     const supabase = createClient()
+    // Delete the row entirely — organizer status is determined by tournaments.organizer_id, not this row
     const { error } = await supabase
       .from('tournament_members')
       .delete()
       .eq('tournament_id', tournamentId)
       .eq('user_id', organizerUserId)
-      .eq('role', 'player')
     if (error) {
       toast(error.message, 'error')
     } else {
