@@ -30,8 +30,8 @@ export function ProfileClient({ userId, email, username, initialAvatarUrl, tourn
     const file = e.target.files?.[0]
     if (!file) return
 
-    if (file.size > 2 * 1024 * 1024) {
-      toast('Photo must be smaller than 2MB', 'error')
+    if (file.size > 10 * 1024 * 1024) {
+      toast('Photo must be smaller than 10MB', 'error')
       return
     }
 
@@ -134,7 +134,7 @@ export function ProfileClient({ userId, email, username, initialAvatarUrl, tourn
               >
                 {avatarUrl ? 'Change photo' : 'Upload photo'}
               </Button>
-              <p className="text-xs text-slate-500 mt-1">Max 2MB</p>
+              <p className="text-xs text-slate-500 mt-1">Max 10MB</p>
             </div>
           </div>
 
