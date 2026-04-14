@@ -16,6 +16,7 @@ interface MatchCardProps {
   canSubmitScore: boolean
   isOrganizer?: boolean
   groupName?: string
+  scorerMember?: TournamentMember | null
 }
 
 export function MatchCard({
@@ -26,6 +27,7 @@ export function MatchCard({
   canSubmitScore,
   isOrganizer,
   groupName,
+  scorerMember,
 }: MatchCardProps) {
   const [scoreModalOpen, setScoreModalOpen] = useState(false)
   const isLive = match.status === 'live'
@@ -110,6 +112,13 @@ export function MatchCard({
             </p>
           </div>
         </div>
+
+        {/* Scorer */}
+        {scorerMember && (
+          <div className="mt-2 text-xs text-slate-500 text-center">
+            Schrijver: <span className="text-slate-400">{scorerMember.display_name}</span>
+          </div>
+        )}
 
         {/* Actions */}
         {canSubmitScore && (!isCompleted || isOrganizer) && (

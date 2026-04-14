@@ -1,13 +1,27 @@
-import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+'use client'
 
-export default async function RootPage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
+import { PageLoader } from '@/components/ui/LoadingSpinner'
 
-  if (user) {
-    redirect('/dashboard')
-  } else {
-    redirect('/login')
-  }
+export default function RootPage() {
+  const router = useRouter()
+
+  useEffect(() => {
+    const supabase = createClient()
+
+    // Handle implicit flow (magic link, password recovery) — tokens arrive in hash
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session) {
+        router.replace('/dashboard')
+      } else if (event === 'SIGNED_OUT' || event === 'INITIAL_SESSION') {
+        router.replace('/login')
+      }
+    })
+
+    return () => subscription.unsubscribe()
+  }, [router])
+
+  return <PageLoader />
 }

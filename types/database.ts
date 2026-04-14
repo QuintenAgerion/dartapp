@@ -35,6 +35,7 @@ export type Tournament = {
   losers_per_group: number
   num_boards: number
   avg_match_duration: number
+  use_scorers: boolean
   status: TournamentStatus
   invite_code: string
   created_at: string
@@ -76,6 +77,7 @@ export type GroupMatch = {
   home_score: number
   away_score: number
   winner_member_id: string | null
+  scorer_member_id: string | null
   round: number
   created_at: string
 }
@@ -117,6 +119,7 @@ export type BracketMatch = {
   away_score: number
   winner_member_id: string | null
   loser_member_id: string | null
+  scorer_member_id: string | null
   next_match_id: string | null
   loser_next_match_id: string | null
   created_at: string

@@ -49,11 +49,8 @@ export default async function TournamentLayout({ children, params }: TournamentL
       {/* Nav */}
       <nav className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto px-4 h-14 flex items-center gap-4">
-          <a
-            href="/dashboard"
-            className="flex items-center gap-2 hover:opacity-80 transition-opacity shrink-0"
-          >
-            <img src="/NSVV logo met bier en pijlen.png" alt="NSVV" className="h-7 w-auto" />
+          <a href="/dashboard" className="text-sm text-neutral-500 hover:text-neutral-200 transition-colors shrink-0">
+            Dashboard
           </a>
           <span className="text-neutral-600">/</span>
           <span className="text-sm text-neutral-300 font-medium truncate">{(tournament as Tournament).name}</span>
@@ -61,10 +58,13 @@ export default async function TournamentLayout({ children, params }: TournamentL
       </nav>
 
       <div className="max-w-6xl mx-auto px-4 pt-6">
-        <TournamentHeader
-          tournament={tournament as Tournament}
-          playerCount={playerCount ?? 0}
-        />
+        <div className="flex items-center gap-6 mb-2">
+          <img src="/NSVV logo met bier en pijlen.png" alt="NSVV" className="h-[120px] w-auto shrink-0" />
+          <TournamentHeader
+            tournament={tournament as Tournament}
+            playerCount={playerCount ?? 0}
+          />
+        </div>
         <Tabs tabs={tabs} className="mt-6" />
       </div>
 

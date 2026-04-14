@@ -4,9 +4,11 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/Button'
+import { Modal } from '@/components/ui/Modal'
 import { useToast } from '@/hooks/useToast'
 import { distributePlayersIntoGroups, generateRoundRobinPairs } from '@/lib/tournament/groups'
 import { scheduleMatches } from '@/lib/tournament/scheduling'
+import { assignScorers } from '@/lib/tournament/scorers'
 import type { TournamentMember } from '@/types/database'
 
 interface StartTournamentButtonProps {
@@ -16,20 +18,24 @@ interface StartTournamentButtonProps {
 
 export function StartTournamentButton({ tournamentId, playerCount }: StartTournamentButtonProps) {
   const [loading, setLoading] = useState(false)
+  const [showScorerModal, setShowScorerModal] = useState(false)
   const router = useRouter()
   const { toast } = useToast()
 
-  async function handleStart() {
+  function handleStart() {
     if (playerCount < 2) {
       toast('You need at least 2 players to start', 'error')
       return
     }
+    setShowScorerModal(true)
+  }
 
+  async function handleConfirm(useScorers: boolean) {
+    setShowScorerModal(false)
     setLoading(true)
     const supabase = createClient()
 
     try {
-      // Fetch tournament details
       const { data: tournament, error: tErr } = await supabase
         .from('tournaments')
         .select('*')
@@ -38,7 +44,6 @@ export function StartTournamentButton({ tournamentId, playerCount }: StartTourna
 
       if (tErr || !tournament) throw new Error('Tournament not found')
 
-      // Fetch all players
       const { data: members, error: mErr } = await supabase
         .from('tournament_members')
         .select('*')
@@ -50,10 +55,8 @@ export function StartTournamentButton({ tournamentId, playerCount }: StartTourna
       const players = members as TournamentMember[]
       const startTime = tournament.start_date ? new Date(tournament.start_date) : null
 
-      // Distribute into groups
       const groupedPlayers = distributePlayersIntoGroups(players, tournament.num_groups)
 
-      // Collect raw match pairs from all groups before doing board assignment
       type RawSpec = { groupId: string; homeMemberId: string; awayMemberId: string; round: number }
       const allRawSpecs: RawSpec[] = []
 
@@ -61,9 +64,8 @@ export function StartTournamentButton({ tournamentId, playerCount }: StartTourna
         const groupPlayers = groupedPlayers[gi]
         if (groupPlayers.length === 0) continue
 
-        const groupName = String.fromCharCode(65 + gi) // A, B, C, ...
+        const groupName = String.fromCharCode(65 + gi)
 
-        // Create group
         const { data: group, error: gErr } = await supabase
           .from('groups')
           .insert({ tournament_id: tournamentId, name: `Group ${groupName}`, order_index: gi })
@@ -72,26 +74,20 @@ export function StartTournamentButton({ tournamentId, playerCount }: StartTourna
 
         if (gErr || !group) throw new Error(`Failed to create group ${groupName}`)
 
-        // Add members to group
         const groupMemberInserts = groupPlayers.map((p, idx) => ({
           group_id: group.id,
           member_id: p.id,
           position: idx,
         }))
 
-        const { error: gmErr } = await supabase
-          .from('group_members')
-          .insert(groupMemberInserts)
-
+        const { error: gmErr } = await supabase.from('group_members').insert(groupMemberInserts)
         if (gmErr) throw new Error('Failed to add players to group')
 
-        // Collect raw pairs (no board assignment yet — done globally below)
         const memberIds = groupPlayers.map((p) => p.id)
         for (const pair of generateRoundRobinPairs(memberIds)) {
           allRawSpecs.push({ groupId: group.id, ...pair })
         }
 
-        // Initialize standings
         const standingInserts = groupPlayers.map((p) => ({
           group_id: group.id,
           member_id: p.id,
@@ -107,7 +103,6 @@ export function StartTournamentButton({ tournamentId, playerCount }: StartTourna
         if (stErr) throw new Error('Failed to initialize standings')
       }
 
-      // Global scheduling: assign boards across ALL groups so no board is double-booked
       if (allRawSpecs.length > 0) {
         const scheduled = scheduleMatches(
           allRawSpecs,
@@ -115,7 +110,27 @@ export function StartTournamentButton({ tournamentId, playerCount }: StartTourna
           tournament.avg_match_duration,
           startTime
         )
-        const matchInserts = scheduled.map((s) => ({
+
+        // Assign scorers if requested
+        let scorerMap = new Map<string, string>()
+        if (useScorers) {
+          const scorerSpecs = scheduled.map((s) => ({
+            id: `${s.homeMemberId}-${s.awayMemberId}-${s.round}`,
+            homeMemberId: s.homeMemberId,
+            awayMemberId: s.awayMemberId,
+            scheduledAt: s.scheduledAt,
+          }))
+          const tempMap = assignScorers(scorerSpecs, players, tournament.avg_match_duration)
+          // Re-key by index to match scheduled array
+          scorerMap = new Map(
+            scheduled.map((s, i) => [
+              String(i),
+              tempMap.get(`${s.homeMemberId}-${s.awayMemberId}-${s.round}`) ?? '',
+            ])
+          )
+        }
+
+        const matchInserts = scheduled.map((s, i) => ({
           group_id: s.groupId,
           tournament_id: tournamentId,
           home_member_id: s.homeMemberId,
@@ -127,15 +142,16 @@ export function StartTournamentButton({ tournamentId, playerCount }: StartTourna
           home_score: 0,
           away_score: 0,
           winner_member_id: null,
+          scorer_member_id: useScorers ? (scorerMap.get(String(i)) || null) : null,
         }))
+
         const { error: matchErr } = await supabase.from('group_matches').insert(matchInserts)
         if (matchErr) throw new Error('Failed to create matches')
       }
 
-      // Update tournament status
       const { error: updateErr } = await supabase
         .from('tournaments')
-        .update({ status: 'active' })
+        .update({ status: 'active', use_scorers: useScorers })
         .eq('id', tournamentId)
 
       if (updateErr) throw new Error('Failed to update tournament status')
@@ -150,12 +166,34 @@ export function StartTournamentButton({ tournamentId, playerCount }: StartTourna
   }
 
   return (
-    <Button onClick={handleStart} loading={loading} disabled={playerCount < 2}>
-      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-      Start Tournament ({playerCount} player{playerCount !== 1 ? 's' : ''})
-    </Button>
+    <>
+      <Button onClick={handleStart} loading={loading} disabled={playerCount < 2}>
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Start Tournament ({playerCount} player{playerCount !== 1 ? 's' : ''})
+      </Button>
+
+      <Modal
+        open={showScorerModal}
+        onClose={() => setShowScorerModal(false)}
+        title="Schrijvers genereren?"
+        size="sm"
+      >
+        <p className="text-sm text-slate-400 mb-6">
+          Wil je automatisch een schrijver toewijzen aan elke wedstrijd? Schrijvers worden zo gepland
+          dat ze niet tegelijk op twee borden schrijven en idealiter niet vlak voor of na hun eigen wedstrijd.
+        </p>
+        <div className="flex gap-3">
+          <Button className="flex-1" onClick={() => handleConfirm(true)}>
+            Ja, genereer schrijvers
+          </Button>
+          <Button variant="secondary" className="flex-1" onClick={() => handleConfirm(false)}>
+            Nee, zonder schrijvers
+          </Button>
+        </div>
+      </Modal>
+    </>
   )
 }

@@ -44,7 +44,7 @@ export async function updateSession(request: NextRequest) {
   }
 
   // Redirect authenticated users away from auth pages
-  const authPaths = ['/login', '/register']
+  const authPaths = ['/login', '/register', '/forgot-password']
   const isAuthPage = authPaths.some((p) => pathname.startsWith(p))
   if (isAuthPage && user) {
     const url = request.nextUrl.clone()

@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { StandingsClient } from './StandingsClient'
-import type { Tournament, Group, TournamentMember, GroupStanding } from '@/types/database'
+import type { Tournament, Group, TournamentMember, GroupStanding, GroupMatch } from '@/types/database'
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -26,18 +26,23 @@ export default async function StandingsPage({ params }: PageProps) {
   ])
 
   const groupIds = (groups ?? []).map((g) => g.id)
-  const { data: standings } = groupIds.length
-    ? await supabase
-        .from('group_standings')
-        .select('*')
-        .in('group_id', groupIds)
-    : { data: [] }
+
+  const [{ data: standings }, { data: matches }] = await Promise.all([
+    groupIds.length
+      ? supabase.from('group_standings').select('*').in('group_id', groupIds)
+      : Promise.resolve({ data: [] }),
+    groupIds.length
+      ? supabase.from('group_matches').select('*').in('group_id', groupIds)
+      : Promise.resolve({ data: [] }),
+  ])
 
   let myMemberId: string | null = null
   if (user) {
     const myMember = (members ?? []).find((m) => m.user_id === user.id)
     myMemberId = myMember?.id ?? null
   }
+
+  const isOrganizer = user?.id === (tournament as Tournament).organizer_id
 
   return (
     <StandingsClient
@@ -46,7 +51,9 @@ export default async function StandingsPage({ params }: PageProps) {
       groups={(groups ?? []) as Group[]}
       members={(members ?? []) as TournamentMember[]}
       initialStandings={(standings ?? []) as GroupStanding[]}
+      initialMatches={(matches ?? []) as GroupMatch[]}
       myMemberId={myMemberId}
+      isOrganizer={isOrganizer}
     />
   )
 }

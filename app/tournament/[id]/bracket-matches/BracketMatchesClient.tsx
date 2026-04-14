@@ -199,6 +199,13 @@ export function BracketMatchesClient({
                       </div>
                     </div>
 
+                    {/* Scorer */}
+                    {match.scorer_member_id && memberMap.get(match.scorer_member_id) && (
+                      <div className="mt-2 text-xs text-slate-500 text-center">
+                        Schrijver: <span className="text-slate-400">{memberMap.get(match.scorer_member_id)!.display_name}</span>
+                      </div>
+                    )}
+
                     {/* Action */}
                     {canSubmit(match) && (!isCompleted || role === 'organizer') && home && away && (
                       <div className="mt-3 pt-3 border-t border-border">

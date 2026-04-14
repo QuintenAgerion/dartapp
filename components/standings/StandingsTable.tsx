@@ -1,3 +1,5 @@
+'use client'
+
 import type { GroupStanding, TournamentMember } from '@/types/database'
 import { AdvancementIndicator } from './AdvancementIndicator'
 import { cn } from '@/lib/utils'
@@ -12,6 +14,9 @@ interface StandingsTableProps {
   advancingCount?: number
   losersCount?: number
   highlightMemberId?: string
+  isOrganizer?: boolean
+  allMatchesPlayed?: boolean
+  onSwap?: (idxA: number, idxB: number) => void
 }
 
 export function StandingsTable({
@@ -20,8 +25,12 @@ export function StandingsTable({
   advancingCount = 2,
   losersCount = 0,
   highlightMemberId,
+  isOrganizer = false,
+  allMatchesPlayed = false,
+  onSwap,
 }: StandingsTableProps) {
-  const sorted = [...standings].sort((a, b) => a.position - b.position)
+  // standings array is pre-sorted by StandingsClient (tiebreakers applied)
+  const rows = standings
 
   return (
     <div className="card overflow-hidden p-0">
@@ -41,16 +50,23 @@ export function StandingsTable({
               <th className="px-4 py-2 text-center text-xs font-medium text-slate-500 w-16 hidden sm:table-cell">Legs</th>
               <th className="px-4 py-2 text-center text-xs font-medium text-slate-500 w-12 hidden sm:table-cell">Diff</th>
               <th className="px-4 py-2 text-center text-xs font-medium text-slate-500 w-12">Pts</th>
+              {isOrganizer && <th className="px-2 py-2 w-14" />}
             </tr>
           </thead>
           <tbody>
-            {sorted.map((row, idx) => {
-              const isAdvancing = row.position <= advancingCount
+            {rows.map((row, idx) => {
+              const displayPosition = idx + 1
+              const isAdvancing = displayPosition <= advancingCount
               const isLosers =
                 losersCount > 0 &&
-                row.position > advancingCount &&
-                row.position <= advancingCount + losersCount
+                displayPosition > advancingCount &&
+                displayPosition <= advancingCount + losersCount
               const isHighlighted = row.member.id === highlightMemberId
+
+              const prevTied = idx > 0 && rows[idx - 1].points === row.points
+              const nextTied = idx < rows.length - 1 && rows[idx + 1].points === row.points
+              const canMoveUp = isOrganizer && allMatchesPlayed && prevTied
+              const canMoveDown = isOrganizer && allMatchesPlayed && nextTied
 
               return (
                 <tr
@@ -63,9 +79,9 @@ export function StandingsTable({
                 >
                   <td className="px-4 py-2.5 text-sm">
                     <div className="flex items-center gap-1.5">
-                      <span className="text-slate-500">{row.position}</span>
+                      <span className="text-slate-500">{displayPosition}</span>
                       <AdvancementIndicator
-                        position={row.position}
+                        position={displayPosition}
                         advancingCount={advancingCount}
                         losersCount={losersCount}
                       />
@@ -94,13 +110,48 @@ export function StandingsTable({
                     {row.leg_difference > 0 ? '+' : ''}{row.leg_difference}
                   </td>
                   <td className="px-4 py-2.5 text-center text-sm font-bold text-slate-100">{row.points}</td>
+
+                  {isOrganizer && (
+                    <td className="px-2 py-1.5 text-center">
+                      {(canMoveUp || canMoveDown) && (
+                        <div className="flex flex-col gap-0.5 items-center">
+                          <button
+                            onClick={() => canMoveUp && onSwap?.(idx - 1, idx)}
+                            disabled={!canMoveUp}
+                            title="Move up"
+                            className={cn(
+                              'w-5 h-5 flex items-center justify-center rounded text-xs transition-colors',
+                              canMoveUp
+                                ? 'text-slate-400 hover:text-slate-100 hover:bg-surface-2'
+                                : 'text-transparent cursor-default'
+                            )}
+                          >
+                            ▲
+                          </button>
+                          <button
+                            onClick={() => canMoveDown && onSwap?.(idx, idx + 1)}
+                            disabled={!canMoveDown}
+                            title="Move down"
+                            className={cn(
+                              'w-5 h-5 flex items-center justify-center rounded text-xs transition-colors',
+                              canMoveDown
+                                ? 'text-slate-400 hover:text-slate-100 hover:bg-surface-2'
+                                : 'text-transparent cursor-default'
+                            )}
+                          >
+                            ▼
+                          </button>
+                        </div>
+                      )}
+                    </td>
+                  )}
                 </tr>
               )
             })}
 
-            {sorted.length === 0 && (
+            {rows.length === 0 && (
               <tr>
-                <td colSpan={8} className="px-4 py-8 text-center text-sm text-slate-500">
+                <td colSpan={isOrganizer ? 9 : 8} className="px-4 py-8 text-center text-sm text-slate-500">
                   No players in this group
                 </td>
               </tr>

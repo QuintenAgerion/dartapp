@@ -109,6 +109,8 @@ export function MatchesClient({
 
             if (!home || !away) return null
 
+            const scorer = match.scorer_member_id ? memberMap.get(match.scorer_member_id) : null
+
             return (
               <MatchCard
                 key={match.id}
@@ -119,6 +121,7 @@ export function MatchesClient({
                 canSubmitScore={canSubmitScore(match)}
                 isOrganizer={role === 'organizer'}
                 groupName={group?.name}
+                scorerMember={scorer}
               />
             )
           })}

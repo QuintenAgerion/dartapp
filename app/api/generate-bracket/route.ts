@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getMyRole } from '@/lib/tournament/permissions'
 import { selectQualifiers, createWinnersBracket, createLosersBracket } from '@/lib/tournament/brackets'
 import { scheduleMatches } from '@/lib/tournament/scheduling'
+import { assignScorers } from '@/lib/tournament/scorers'
 import type { GroupStanding, TournamentMember } from '@/types/database'
 
 export async function POST(request: NextRequest) {
@@ -134,7 +135,7 @@ export async function POST(request: NextRequest) {
     // Schedule ALL bracket matches across boards and apply format overrides
     const { data: allBracketMatches } = await supabase
       .from('bracket_matches')
-      .select('id, round, bracket_id')
+      .select('id, round, bracket_id, home_member_id, away_member_id')
       .eq('tournament_id', tournamentId)
       .neq('status', 'completed')
       .order('round', { ascending: true })
@@ -164,11 +165,39 @@ export async function POST(request: NextRequest) {
         if (m.round > cur) maxRoundByBracket.set(m.bracket_id, m.round)
       }
 
+      // Build scorer map if use_scorers is enabled
+      let bracketScorerMap = new Map<string, string>()
+      if (tournament.use_scorers) {
+        const scorerSpecs = scheduled
+          .filter((s) => s.scheduledAt !== null)
+          .map((s) => {
+            const fullMatch = allBracketMatches.find((m) => m.id === s.id)
+            return {
+              id: s.id,
+              homeMemberId: (fullMatch as any)?.home_member_id ?? '',
+              awayMemberId: (fullMatch as any)?.away_member_id ?? '',
+              scheduledAt: s.scheduledAt,
+            }
+          })
+          .filter((s) => s.homeMemberId && s.awayMemberId)
+
+        bracketScorerMap = assignScorers(scorerSpecs, allMembers, tournament.avg_match_duration)
+      }
+
       for (const s of scheduled) {
         // Scheduling: always applied
+        const updatePayload: Record<string, unknown> = {
+          board_number: s.boardNumber,
+          scheduled_at: s.scheduledAt,
+        }
+
+        if (tournament.use_scorers) {
+          updatePayload.scorer_member_id = bracketScorerMap.get(s.id) ?? null
+        }
+
         await supabase
           .from('bracket_matches')
-          .update({ board_number: s.boardNumber, scheduled_at: s.scheduledAt })
+          .update(updatePayload)
           .eq('id', s.id)
 
         // Format override: applied separately — silently skipped if match_format column doesn't exist
