@@ -30,6 +30,7 @@ export default async function DashboardLayout({
         <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link href="/dashboard" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <img src="/NSVV logo.png" alt="NSVV" className="h-8 w-auto" />
+            <span className="font-display uppercase tracking-widest text-sm font-bold text-stone-900 hidden sm:block">NSVV Dart</span>
           </Link>
 
           <div className="flex items-center gap-3">

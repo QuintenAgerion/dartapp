@@ -54,6 +54,10 @@ export function JoinTournamentClient({
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
+        <div className="text-center mb-6">
+          <img src="/NSVV logo.png" alt="NSVV" className="h-16 w-auto mx-auto mb-2" />
+          <p className="font-display uppercase tracking-widest text-sm font-bold text-stone-900">NSVV Darttoernooi</p>
+        </div>
         <div className="card">
           <div className="text-center mb-6">
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-accent/20 border border-accent/30 mb-3">

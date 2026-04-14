@@ -100,13 +100,12 @@ export function ProfileClient({ userId, email, username, initialAvatarUrl, tourn
   return (
     <div className="min-h-screen bg-background">
       <nav className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-sm">
-        <div className="max-w-3xl mx-auto px-4 h-14 flex items-center gap-3">
-          <Link href="/dashboard" className="text-stone-500 hover:text-stone-700 transition-colors">
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
+        <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
+          <Link href="/dashboard" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <img src="/NSVV logo.png" alt="NSVV" className="h-7 w-auto" />
+            <span className="font-display uppercase tracking-widest text-sm font-bold text-stone-900 hidden sm:block">NSVV Dart</span>
           </Link>
-          <span className="text-sm text-stone-700 font-medium">Profiel</span>
+          <span className="text-sm text-stone-500 font-medium">Profiel</span>
         </div>
       </nav>
 
