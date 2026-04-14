@@ -173,5 +173,6 @@ export function groupMatchSpecToInsert(spec: GroupMatchSpec): GroupMatchInsert {
     home_score: 0,
     away_score: 0,
     winner_member_id: null,
+    scorer_member_id: null,
   }
 }

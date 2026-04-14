@@ -112,6 +112,7 @@ export default function CreateTournamentPage() {
         losers_per_group: enableWinners && enableLosers ? losersPerGroup : 0,
         num_boards: numBoards,
         avg_match_duration: avgDuration,
+        use_scorers: false,
         status: 'draft',
         invite_code: inviteCode,
       })

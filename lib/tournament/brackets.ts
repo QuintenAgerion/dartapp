@@ -126,6 +126,7 @@ export async function createWinnersBracket(
     loser_next_match_id: null,
     board_number: null,
     scheduled_at: null,
+    scorer_member_id: null,
   }))
 
   const { data: insertedMatches, error: mErr } = await supabase
@@ -206,6 +207,7 @@ export async function createLosersBracket(
     loser_next_match_id: null,
     board_number: null,
     scheduled_at: null,
+    scorer_member_id: null,
   }))
 
   const { data: insertedMatches, error: mErr } = await supabase

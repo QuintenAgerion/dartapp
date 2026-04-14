@@ -197,7 +197,7 @@ export async function POST(request: NextRequest) {
 
         await supabase
           .from('bracket_matches')
-          .update(updatePayload)
+          .update(updatePayload as any)
           .eq('id', s.id)
 
         // Format override: applied separately — silently skipped if match_format column doesn't exist
