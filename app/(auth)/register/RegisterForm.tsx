@@ -22,12 +22,12 @@ export function RegisterForm() {
     setError(null)
 
     if (username.length < 2 || username.length > 30) {
-      setError('Username must be between 2 and 30 characters')
+      setError('Gebruikersnaam moet tussen 2 en 30 tekens zijn')
       return
     }
 
     if (password.length < 8) {
-      setError('Password must be at least 8 characters')
+      setError('Wachtwoord moet minimaal 8 tekens bevatten')
       return
     }
 
@@ -35,30 +35,24 @@ export function RegisterForm() {
 
     const supabase = createClient()
 
-    const { data, error: signUpError } = await supabase.auth.signUp({ email, password })
+    const { data, error: signUpError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { username } },
+    })
 
     if (signUpError) {
-      setError(signUpError.message)
+      if (signUpError.message.includes('already registered')) {
+        setError('Dit e-mailadres is al in gebruik')
+      } else {
+        setError(signUpError.message)
+      }
       setLoading(false)
       return
     }
 
     if (!data.user) {
-      setError('Something went wrong — please try again')
-      setLoading(false)
-      return
-    }
-
-    const { error: profileError } = await supabase
-      .from('users')
-      .insert({ id: data.user.id, username, avatar_url: null })
-
-    if (profileError) {
-      if (profileError.code === '23505') {
-        setError('Username already taken — please choose another')
-      } else {
-        setError(profileError.message)
-      }
+      setError('Er is iets misgegaan — probeer het opnieuw')
       setLoading(false)
       return
     }
@@ -69,39 +63,39 @@ export function RegisterForm() {
 
   return (
     <div className="card">
-      <h2 className="text-xl font-semibold text-slate-100 mb-6">Create an account</h2>
+      <h2 className="text-xl font-semibold text-slate-100 mb-6">Account aanmaken</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <Input
-          label="Username"
+          label="Gebruikersnaam"
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          placeholder="dartzplayer99"
+          placeholder="dartzspeler99"
           required
           autoComplete="username"
-          hint="2–30 characters, used as your display name"
+          hint="2–30 tekens, gebruikt als weergavenaam"
         />
 
         <Input
-          label="Email"
+          label="E-mailadres"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@example.com"
+          placeholder="jij@voorbeeld.com"
           required
           autoComplete="email"
         />
 
         <Input
-          label="Password"
+          label="Wachtwoord"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="••••••••"
           required
           autoComplete="new-password"
-          hint="At least 8 characters"
+          hint="Minimaal 8 tekens"
         />
 
         {error && (
@@ -111,14 +105,14 @@ export function RegisterForm() {
         )}
 
         <Button type="submit" loading={loading} className="w-full">
-          Create account
+          Account aanmaken
         </Button>
       </form>
 
       <p className="mt-4 text-center text-sm text-slate-500">
-        Already have an account?{' '}
+        Al een account?{' '}
         <Link href="/login" className="text-accent hover:underline">
-          Sign in
+          Inloggen
         </Link>
       </p>
     </div>
