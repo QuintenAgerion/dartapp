@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/Input'
 import { Avatar } from '@/components/ui/Avatar'
 import { TournamentCard } from '@/components/tournament/TournamentCard'
 import { useToast } from '@/hooks/useToast'
+import { InstallPWAButton } from '@/components/ui/InstallPWAButton'
 import type { Tournament } from '@/types/database'
 
 interface ProfileClientProps {
@@ -158,6 +159,8 @@ export function ProfileClient({ userId, email, username, initialAvatarUrl, tourn
               Opslaan
             </Button>
           </form>
+
+          <InstallPWAButton />
         </div>
 
         {/* Tournament history */}
