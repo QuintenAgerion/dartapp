@@ -61,13 +61,14 @@ export function InstallPWAButton() {
           </button>
           {showIOSHint && (
             <div className="mt-2 p-3 rounded-lg bg-stone-50 border border-border text-sm text-stone-600 leading-relaxed">
-              Tik op het <strong className="text-stone-800">Deel</strong> icoon{' '}
-              <span className="inline-block">
+              Tik onderaan Safari op het icoon dat eruitziet als een{' '}
+              <strong className="text-stone-800">vierkantje met een pijl omhoog</strong>{' '}
+              <span className="inline-block align-middle">
                 <svg className="w-4 h-4 inline text-stone-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                 </svg>
-              </span>{' '}
-              onderaan in Safari, en kies dan <strong className="text-stone-800">Zet op beginscherm</strong>.
+              </span>
+              , en kies dan <strong className="text-stone-800">Zet op beginscherm</strong>.
             </div>
           )}
         </div>
