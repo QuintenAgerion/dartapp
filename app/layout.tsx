@@ -18,6 +18,12 @@ const plusJakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: 'NSVV Darttoernooi',
   description: 'Beheer darttoernooien met poulefase, brackets en live scores',
+  themeColor: '#E0420C',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'NSVV Dart',
+  },
 }
 
 export default function RootLayout({
