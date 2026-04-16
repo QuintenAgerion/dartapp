@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Oswald, Plus_Jakarta_Sans } from 'next/font/google'
 import './globals.css'
 import { ToastProvider } from '@/components/ui/Toast'
+import { Analytics } from '@vercel/analytics/next'
 
 const oswald = Oswald({
   subsets: ['latin'],
@@ -37,6 +38,7 @@ export default function RootLayout({
         <ToastProvider>
           {children}
         </ToastProvider>
+        <Analytics />
       </body>
     </html>
   )
