@@ -169,7 +169,6 @@ export async function POST(request: NextRequest) {
       let bracketScorerMap = new Map<string, string>()
       if (tournament.use_scorers) {
         const scorerSpecs = scheduled
-          .filter((s) => s.scheduledAt !== null)
           .map((s) => {
             const fullMatch = allBracketMatches.find((m) => m.id === s.id)
             return {
