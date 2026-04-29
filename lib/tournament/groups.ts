@@ -134,10 +134,13 @@ export function generateGroupMatches(
   memberIds: string[],
   numBoards: number,
   startTime: Date | null,
-  avgDurationMinutes: number
+  avgDurationMinutes: number,
+  fixedBoardNumber?: number
 ): GroupMatchSpec[] {
   const pairs = generateRoundRobinPairs(memberIds)
-  const withBoards = assignMatchesToBoards(pairs, numBoards)
+  const withBoards = fixedBoardNumber !== undefined
+    ? pairs.map(m => ({ ...m, boardNumber: fixedBoardNumber }))
+    : assignMatchesToBoards(pairs, numBoards)
 
   // Calculate scheduled times per round
   const roundStartTimes = new Map<number, Date>()

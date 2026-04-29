@@ -36,6 +36,7 @@ export type Tournament = {
   num_boards: number
   avg_match_duration: number
   use_scorers: boolean
+  single_board_per_group: boolean
   status: TournamentStatus
   invite_code: string
   created_at: string

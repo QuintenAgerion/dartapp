@@ -44,6 +44,7 @@ export async function PATCH(request: NextRequest) {
         'match_format', 'num_groups',
         'enable_winners_bracket', 'enable_losers_bracket',
         'winners_per_group', 'losers_per_group',
+        'single_board_per_group',
       ]
       for (const key of draftOnly) {
         if (key in fields) allowed[key] = fields[key]

@@ -1,0 +1,2 @@
+ALTER TABLE tournaments
+  ADD COLUMN IF NOT EXISTS single_board_per_group BOOLEAN NOT NULL DEFAULT FALSE;

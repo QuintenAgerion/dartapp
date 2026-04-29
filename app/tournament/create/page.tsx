@@ -34,6 +34,7 @@ export default function CreateTournamentPage() {
   const [losersPerGroup, setLosersPerGroup] = useState(0)
   const [numBoards, setNumBoards] = useState(2)
   const [avgDuration, setAvgDuration] = useState(20)
+  const [singleBoardPerGroup, setSingleBoardPerGroup] = useState(false)
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const router = useRouter()
@@ -113,6 +114,7 @@ export default function CreateTournamentPage() {
         num_boards: numBoards,
         avg_match_duration: avgDuration,
         use_scorers: false,
+        single_board_per_group: singleBoardPerGroup,
         status: 'draft',
         invite_code: inviteCode,
       })
@@ -332,6 +334,25 @@ export default function CreateTournamentPage() {
               error={errors.avgDuration}
               hint="Gebruikt voor het schatten van wedstrijdschema's"
             />
+
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={singleBoardPerGroup}
+                onChange={(e) => setSingleBoardPerGroup(e.target.checked)}
+                className="w-4 h-4 accent-accent rounded"
+              />
+              <div>
+                <p className="text-sm font-medium text-stone-700">Elke poule speelt op 1 bord</p>
+                <p className="text-xs text-stone-500">Poule A → bord 1, poule B → bord 2, enz. Schrijvers worden uit dezelfde poule gekozen.</p>
+              </div>
+            </label>
+
+            {singleBoardPerGroup && numGroups > numBoards && (
+              <p className="text-xs text-blue-600 bg-blue-500/10 rounded-lg px-3 py-2">
+                Er zijn meer poules ({numGroups}) dan borden ({numBoards}). Sommige poules delen een bord.
+              </p>
+            )}
           </div>
 
           <div className="flex gap-3">

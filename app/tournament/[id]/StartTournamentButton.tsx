@@ -6,9 +6,9 @@ import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import { useToast } from '@/hooks/useToast'
-import { distributePlayersIntoGroups, generateRoundRobinPairs } from '@/lib/tournament/groups'
+import { distributePlayersIntoGroups, generateRoundRobinPairs, generateGroupMatches } from '@/lib/tournament/groups'
 import { scheduleMatches } from '@/lib/tournament/scheduling'
-import { assignScorers } from '@/lib/tournament/scorers'
+import { assignScorers, assignGroupScopedScorers } from '@/lib/tournament/scorers'
 import type { TournamentMember } from '@/types/database'
 
 interface StartTournamentButtonProps {
@@ -59,6 +59,8 @@ export function StartTournamentButton({ tournamentId, playerCount }: StartTourna
 
       type RawSpec = { groupId: string; homeMemberId: string; awayMemberId: string; round: number }
       const allRawSpecs: RawSpec[] = []
+      const groupIds: string[] = []
+      const groupMembersMap = new Map<string, Set<string>>()
 
       for (let gi = 0; gi < groupedPlayers.length; gi++) {
         const groupPlayers = groupedPlayers[gi]
@@ -73,6 +75,9 @@ export function StartTournamentButton({ tournamentId, playerCount }: StartTourna
           .single()
 
         if (gErr || !group) throw new Error(`Failed to create group ${groupName}`)
+
+        groupIds[gi] = group.id
+        groupMembersMap.set(group.id, new Set(groupPlayers.map(p => p.id)))
 
         const groupMemberInserts = groupPlayers.map((p, idx) => ({
           group_id: group.id,
@@ -104,46 +109,92 @@ export function StartTournamentButton({ tournamentId, playerCount }: StartTourna
       }
 
       if (allRawSpecs.length > 0) {
-        const scheduled = scheduleMatches(
-          allRawSpecs,
-          tournament.num_boards,
-          tournament.avg_match_duration,
-          startTime
-        )
+        let matchInserts: {
+          group_id: string; tournament_id: string; home_member_id: string; away_member_id: string;
+          round: number; board_number: number; scheduled_at: string | null; status: 'scheduled';
+          home_score: 0; away_score: 0; winner_member_id: null; scorer_member_id: string | null;
+        }[]
 
-        // Assign scorers if requested
-        let scorerMap = new Map<string, string>()
-        if (useScorers) {
-          const scorerSpecs = scheduled.map((s) => ({
-            id: `${s.homeMemberId}-${s.awayMemberId}-${s.round}`,
-            homeMemberId: s.homeMemberId,
-            awayMemberId: s.awayMemberId,
-            scheduledAt: s.scheduledAt,
+        if (tournament.single_board_per_group) {
+          // Each group gets a fixed board; generate specs per group
+          const allGroupSpecs = groupedPlayers.flatMap((gPlayers, gi) => {
+            if (gPlayers.length === 0 || !groupIds[gi]) return []
+            return generateGroupMatches(
+              groupIds[gi],
+              tournamentId,
+              gPlayers.map(p => p.id),
+              tournament.num_boards,
+              startTime,
+              tournament.avg_match_duration,
+              (gi % tournament.num_boards) + 1
+            )
+          })
+
+          let scorerMap = new Map<string, string>()
+          if (useScorers) {
+            const specsWithId = allGroupSpecs.map(s => ({
+              ...s,
+              id: `${s.homeMemberId}-${s.awayMemberId}-${s.round}-${s.groupId}`,
+            }))
+            scorerMap = assignGroupScopedScorers(specsWithId, groupMembersMap, players, tournament.avg_match_duration)
+          }
+
+          matchInserts = allGroupSpecs.map(s => ({
+            group_id: s.groupId,
+            tournament_id: tournamentId,
+            home_member_id: s.homeMemberId,
+            away_member_id: s.awayMemberId,
+            round: s.round,
+            board_number: s.boardNumber,
+            scheduled_at: s.scheduledAt,
+            status: 'scheduled' as const,
+            home_score: 0,
+            away_score: 0,
+            winner_member_id: null,
+            scorer_member_id: useScorers
+              ? scorerMap.get(`${s.homeMemberId}-${s.awayMemberId}-${s.round}-${s.groupId}`) ?? null
+              : null,
           }))
-          const tempMap = assignScorers(scorerSpecs, players, tournament.avg_match_duration)
-          // Re-key by index to match scheduled array
-          scorerMap = new Map(
-            scheduled.map((s, i) => [
-              String(i),
-              tempMap.get(`${s.homeMemberId}-${s.awayMemberId}-${s.round}`) ?? '',
-            ])
+        } else {
+          const scheduled = scheduleMatches(
+            allRawSpecs,
+            tournament.num_boards,
+            tournament.avg_match_duration,
+            startTime
           )
-        }
 
-        const matchInserts = scheduled.map((s, i) => ({
-          group_id: s.groupId,
-          tournament_id: tournamentId,
-          home_member_id: s.homeMemberId,
-          away_member_id: s.awayMemberId,
-          round: s.round,
-          board_number: s.boardNumber,
-          scheduled_at: s.scheduledAt,
-          status: 'scheduled' as const,
-          home_score: 0,
-          away_score: 0,
-          winner_member_id: null,
-          scorer_member_id: useScorers ? (scorerMap.get(String(i)) || null) : null,
-        }))
+          let scorerMap = new Map<string, string>()
+          if (useScorers) {
+            const scorerSpecs = scheduled.map((s) => ({
+              id: `${s.homeMemberId}-${s.awayMemberId}-${s.round}`,
+              homeMemberId: s.homeMemberId,
+              awayMemberId: s.awayMemberId,
+              scheduledAt: s.scheduledAt,
+            }))
+            const tempMap = assignScorers(scorerSpecs, players, tournament.avg_match_duration)
+            scorerMap = new Map(
+              scheduled.map((s, i) => [
+                String(i),
+                tempMap.get(`${s.homeMemberId}-${s.awayMemberId}-${s.round}`) ?? '',
+              ])
+            )
+          }
+
+          matchInserts = scheduled.map((s, i) => ({
+            group_id: s.groupId,
+            tournament_id: tournamentId,
+            home_member_id: s.homeMemberId,
+            away_member_id: s.awayMemberId,
+            round: s.round,
+            board_number: s.boardNumber,
+            scheduled_at: s.scheduledAt,
+            status: 'scheduled' as const,
+            home_score: 0,
+            away_score: 0,
+            winner_member_id: null,
+            scorer_member_id: useScorers ? (scorerMap.get(String(i)) || null) : null,
+          }))
+        }
 
         const { error: matchErr } = await supabase.from('group_matches').insert(matchInserts)
         if (matchErr) throw new Error('Failed to create matches')
