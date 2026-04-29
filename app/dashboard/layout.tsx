@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
@@ -29,7 +30,7 @@ export default async function DashboardLayout({
       <nav className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link href="/dashboard" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <img src="/NSVV logo.png" alt="NSVV" className="h-8 w-auto" />
+            <Image src="/NSVV logo.png" alt="NSVV" width={32} height={32} className="h-8 w-auto" />
             <span className="font-display uppercase tracking-widest text-sm font-bold text-stone-900 hidden sm:block">NSVV Dart</span>
           </Link>
 
