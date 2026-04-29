@@ -52,8 +52,8 @@ export function StandingsTable({
               <th className="px-4 py-2 text-center text-xs font-medium text-stone-500 w-10">P</th>
               <th className="px-4 py-2 text-center text-xs font-medium text-stone-500 w-10">W</th>
               <th className="px-4 py-2 text-center text-xs font-medium text-stone-500 w-10">L</th>
-              <th className="px-4 py-2 text-center text-xs font-medium text-stone-500 w-16 hidden sm:table-cell">Legs</th>
-              <th className="px-4 py-2 text-center text-xs font-medium text-stone-500 w-12 hidden sm:table-cell">Diff</th>
+              <th className="px-4 py-2 text-center text-xs font-medium text-stone-500 w-16">Legs</th>
+              <th className="px-4 py-2 text-center text-xs font-medium text-stone-500 w-12">Diff</th>
               <th className="px-4 py-2 text-center text-xs font-medium text-stone-500 w-12">Pts</th>
               {isOrganizer && <th className="px-2 py-2 w-14" />}
             </tr>
@@ -109,11 +109,11 @@ export function StandingsTable({
                   <td className="px-4 py-2.5 text-center text-sm text-stone-500">{row.played}</td>
                   <td className="px-4 py-2.5 text-center text-sm text-green-400 font-medium">{row.wins}</td>
                   <td className="px-4 py-2.5 text-center text-sm text-red-400 font-medium">{row.losses}</td>
-                  <td className="px-4 py-2.5 text-center text-sm text-stone-500 hidden sm:table-cell">
+                  <td className="px-4 py-2.5 text-center text-sm text-stone-500">
                     {row.legs_for}/{row.legs_against}
                   </td>
                   <td className={cn(
-                    'px-4 py-2.5 text-center text-sm font-medium hidden sm:table-cell',
+                    'px-4 py-2.5 text-center text-sm font-medium',
                     row.leg_difference > 0 ? 'text-green-400' : row.leg_difference < 0 ? 'text-red-400' : 'text-stone-500'
                   )}>
                     {row.leg_difference > 0 ? '+' : ''}{row.leg_difference}
