@@ -242,7 +242,7 @@ export default function CreateTournamentPage() {
                     className="w-4 h-4 accent-accent rounded"
                   />
                   <div>
-                    <p className="text-sm font-medium text-stone-700">Verlizersbracket</p>
+                    <p className="text-sm font-medium text-stone-700">Verliezersbracket</p>
                     <p className="text-xs text-stone-500">Herkansing voor verliezers uit de eerste ronde</p>
                   </div>
                 </label>
@@ -274,7 +274,7 @@ export default function CreateTournamentPage() {
                   {enableLosers && (
                     <div className="flex items-center gap-3">
                       <div className="w-3 h-3 rounded-full bg-stone-400 shrink-0" />
-                      <span className="text-sm text-stone-700 flex-1">Spelers naar verlizersbracket</span>
+                      <span className="text-sm text-stone-700 flex-1">Spelers naar Verliezersbracket</span>
                       <div className="flex items-center gap-2">
                         <button
                           type="button"
@@ -294,7 +294,7 @@ export default function CreateTournamentPage() {
                   <p className="text-xs text-stone-500 pt-1 border-t border-border">
                     Top {winnersPerGroup} × {numGroups} poule{numGroups > 1 ? 's' : ''} = <span className="text-stone-700 font-medium">{winnersPerGroup * numGroups} spelers</span> in winnaarsbracket
                     {enableLosers && losersPerGroup > 0 && (
-                      <>, volgende {losersPerGroup} × {numGroups} = <span className="text-stone-700 font-medium">{losersPerGroup * numGroups}</span> in verlizersbracket</>
+                      <>, volgende {losersPerGroup} × {numGroups} = <span className="text-stone-700 font-medium">{losersPerGroup * numGroups}</span> in Verliezersbracket</>
                     )}
                   </p>
                 </div>

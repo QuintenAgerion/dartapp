@@ -179,7 +179,7 @@ export function StandingsTable({
           {losersCount > 0 && (
             <span className="flex items-center gap-1.5 text-xs text-stone-500">
               <span className="w-2 h-2 rounded-full bg-yellow-400 inline-block" />
-              Volgende {losersCount} naar verlizersbracket
+              Volgende {losersCount} naar Verliezersbracket
             </span>
           )}
         </div>

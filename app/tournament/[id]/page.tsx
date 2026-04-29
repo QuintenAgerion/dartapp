@@ -125,7 +125,7 @@ export default async function TournamentOverviewPage({ params }: PageProps) {
             <dd className="text-stone-800 font-medium">{t.enable_winners_bracket ? 'Ja' : 'Nee'}</dd>
           </div>
           <div>
-            <dt className="text-stone-500">Verlizersbracket</dt>
+            <dt className="text-stone-500">Verliezersbracket</dt>
             <dd className="text-stone-800 font-medium">{t.enable_losers_bracket ? 'Ja' : 'Nee'}</dd>
           </div>
         </dl>

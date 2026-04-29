@@ -9,7 +9,7 @@ import { MatchStatusBadge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { useRealtimeTournament } from '@/hooks/useRealtimeTournament'
 import type { UserRole } from '@/lib/tournament/permissions'
-import { cn, formatDate } from '@/lib/utils'
+import { cn, formatDate, getPlayerColorClass } from '@/lib/utils'
 
 interface BracketMatchesClientProps {
   tournamentId: string
@@ -156,9 +156,9 @@ export function BracketMatchesClient({
                       )}>
                         <p className={cn(
                           'font-semibold',
-                          isCompleted && match.winner_member_id === match.home_member_id
-                            ? 'text-accent'
-                            : home ? 'text-stone-800' : 'text-stone-400 italic text-sm'
+                          !home && 'text-stone-400 italic text-sm',
+                          home && isCompleted && match.winner_member_id === match.home_member_id && 'font-bold',
+                          home && getPlayerColorClass(home.id)
                         )}>
                           {home?.display_name ?? 'TBD'}
                         </p>
@@ -190,9 +190,9 @@ export function BracketMatchesClient({
                       )}>
                         <p className={cn(
                           'font-semibold',
-                          isCompleted && match.winner_member_id === match.away_member_id
-                            ? 'text-accent'
-                            : away ? 'text-stone-800' : 'text-stone-400 italic text-sm'
+                          !away && 'text-stone-400 italic text-sm',
+                          away && isCompleted && match.winner_member_id === match.away_member_id && 'font-bold',
+                          away && getPlayerColorClass(away.id)
                         )}>
                           {away?.display_name ?? 'TBD'}
                         </p>
@@ -202,7 +202,7 @@ export function BracketMatchesClient({
                     {/* Scorer */}
                     {match.scorer_member_id && memberMap.get(match.scorer_member_id) && (
                       <div className="mt-2 text-xs text-stone-500 text-center">
-                        Schrijver: <span className="text-stone-500">{memberMap.get(match.scorer_member_id)!.display_name}</span>
+                        Schrijver: <span className="font-bold text-red-600">{memberMap.get(match.scorer_member_id)!.display_name}</span>
                       </div>
                     )}
 
@@ -237,7 +237,7 @@ export function BracketMatchesClient({
         winnersBracket,
         losersBracket ? 'Winnaarsbracket' : 'Bracketwedstrijden'
       )}
-      {losersBracket && renderBracketSection(losersBracket, 'Verlizersbracket')}
+      {losersBracket && renderBracketSection(losersBracket, 'Verliezersbracket')}
 
       {modalMatch && homeMember && awayMember && (
         <ScoreInputModal

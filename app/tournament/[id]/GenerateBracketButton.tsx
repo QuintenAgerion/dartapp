@@ -177,7 +177,7 @@ export function GenerateBracketButton({
           {enableLosers && losersQualifierCount >= 2 && (
             <div>
               <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1">
-                Verlizersbracket
+                Verliezersbracket
               </p>
               <p className="text-sm text-stone-500 mb-3">
                 {losersQualifierCount} spelers ({losersPerGroup}/poule × {numGroups} poules)

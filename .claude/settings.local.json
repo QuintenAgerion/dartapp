@@ -10,7 +10,14 @@
       "Bash(vercel --prod)",
       "mcp__ide__getDiagnostics",
       "Bash(vercel ls:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(find *)",
+      "Bash(node_modules\\\\.bin\\\\tsc --noEmit)",
+      "Bash(./node_modules/.bin/tsc --noEmit)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'fix: use relative import in middleware for Vercel Edge compatibility *)",
+      "Bash(git push *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }

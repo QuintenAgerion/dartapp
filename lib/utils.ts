@@ -76,6 +76,27 @@ export function getGroupColorClass(groupName: string): string {
   return GROUP_BADGE_COLORS[index % GROUP_BADGE_COLORS.length]
 }
 
+// Deterministic color for player names based on member ID
+const PLAYER_COLORS = [
+  'text-sky-600',
+  'text-emerald-600',
+  'text-violet-600',
+  'text-amber-600',
+  'text-rose-600',
+  'text-teal-600',
+  'text-orange-600',
+  'text-indigo-600',
+  'text-fuchsia-600',
+  'text-cyan-700',
+  'text-lime-700',
+  'text-pink-600',
+] as const
+
+export function getPlayerColorClass(memberId: string): string {
+  const hash = memberId.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0)
+  return PLAYER_COLORS[hash % PLAYER_COLORS.length]
+}
+
 export function getRequiredLegs(format: string): number {
   const legs: Record<string, number> = {
     bo1: 1,

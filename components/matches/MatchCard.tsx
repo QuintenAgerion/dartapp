@@ -7,7 +7,7 @@ import { MatchStatusBadge } from '@/components/ui/Badge'
 import { ScoreInputModal } from '@/components/tournament/ScoreInputModal'
 import { Avatar } from '@/components/ui/Avatar'
 import { Button } from '@/components/ui/Button'
-import { formatDate, cn, getGroupColorClass } from '@/lib/utils'
+import { formatDate, cn, getGroupColorClass, getPlayerColorClass } from '@/lib/utils'
 
 interface MatchCardProps {
   match: GroupMatch
@@ -79,8 +79,9 @@ export function MatchCard({
             <p className={cn(
               'font-semibold text-right',
               isCompleted && match.winner_member_id === homeMember.id
-                ? 'text-accent'
-                : 'text-stone-800'
+                ? 'font-bold'
+                : '',
+              getPlayerColorClass(homeMember.id)
             )}>
               {homeMember.display_name}
             </p>
@@ -110,8 +111,9 @@ export function MatchCard({
             <p className={cn(
               'font-semibold',
               isCompleted && match.winner_member_id === awayMember.id
-                ? 'text-accent'
-                : 'text-stone-800'
+                ? 'font-bold'
+                : '',
+              getPlayerColorClass(awayMember.id)
             )}>
               {awayMember.display_name}
             </p>
@@ -121,7 +123,7 @@ export function MatchCard({
         {/* Scorer */}
         {scorerMember && (
           <div className="mt-2 text-xs text-stone-500 text-center">
-            Schrijver: <span className="text-stone-500">{scorerMember.display_name}</span>
+            Schrijver: <span className="font-bold text-red-600">{scorerMember.display_name}</span>
           </div>
         )}
 
