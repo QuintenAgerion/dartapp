@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import type { BracketMatch, TournamentMember, MatchFormat } from '@/types/database'
 import { ScoreInputModal } from '@/components/tournament/ScoreInputModal'
-import { cn } from '@/lib/utils'
+import { cn, getPlayerColorClass } from '@/lib/utils'
 
 interface BracketMatchProps {
   match: BracketMatch
@@ -57,9 +57,8 @@ export function BracketMatchCard({
         )}>
           <span className={cn(
             'text-sm truncate',
-            isCompleted && match.winner_member_id === match.home_member_id
-              ? 'text-accent font-semibold'
-              : 'text-stone-700'
+            isCompleted && match.winner_member_id === match.home_member_id && 'font-bold',
+            homeMember ? getPlayerColorClass(homeMember.id) : 'text-stone-400'
           )}>
             {homeMember?.display_name ?? (match.home_member_id ? '...' : 'TBD')}
           </span>
@@ -80,9 +79,8 @@ export function BracketMatchCard({
         )}>
           <span className={cn(
             'text-sm truncate',
-            isCompleted && match.winner_member_id === match.away_member_id
-              ? 'text-accent font-semibold'
-              : 'text-stone-700'
+            isCompleted && match.winner_member_id === match.away_member_id && 'font-bold',
+            awayMember ? getPlayerColorClass(awayMember.id) : 'text-stone-400'
           )}>
             {awayMember?.display_name ?? (match.away_member_id ? '...' : 'TBD')}
           </span>

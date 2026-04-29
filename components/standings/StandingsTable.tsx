@@ -3,7 +3,7 @@
 import type { GroupStanding, TournamentMember } from '@/types/database'
 import { AdvancementIndicator } from './AdvancementIndicator'
 import { Avatar } from '@/components/ui/Avatar'
-import { cn, getGroupColorClass } from '@/lib/utils'
+import { cn, getGroupColorClass, getPlayerColorClass } from '@/lib/utils'
 
 interface StandingsRow extends GroupStanding {
   member: TournamentMember
@@ -98,7 +98,8 @@ export function StandingsTable({
                       <span
                         className={cn(
                           'text-sm font-medium',
-                          isHighlighted ? 'text-accent' : 'text-stone-800'
+                          isHighlighted && 'font-bold',
+                          getPlayerColorClass(row.member.id)
                         )}
                       >
                         {row.member.display_name}
