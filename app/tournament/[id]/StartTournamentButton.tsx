@@ -9,6 +9,7 @@ import { useToast } from '@/hooks/useToast'
 import { distributePlayersIntoGroups, generateRoundRobinPairs, generateGroupMatches } from '@/lib/tournament/groups'
 import { scheduleMatches } from '@/lib/tournament/scheduling'
 import { assignScorers, assignGroupScopedScorers } from '@/lib/tournament/scorers'
+import { createBracketSkeletons } from '@/lib/tournament/brackets'
 import type { TournamentMember } from '@/types/database'
 
 interface StartTournamentButtonProps {
@@ -61,6 +62,7 @@ export function StartTournamentButton({ tournamentId, playerCount }: StartTourna
       const allRawSpecs: RawSpec[] = []
       const groupIds: string[] = []
       const groupMembersMap = new Map<string, Set<string>>()
+      const groupInfoList: { id: string; orderIndex: number }[] = []
 
       for (let gi = 0; gi < groupedPlayers.length; gi++) {
         const groupPlayers = groupedPlayers[gi]
@@ -78,6 +80,7 @@ export function StartTournamentButton({ tournamentId, playerCount }: StartTourna
 
         groupIds[gi] = group.id
         groupMembersMap.set(group.id, new Set(groupPlayers.map(p => p.id)))
+        groupInfoList.push({ id: group.id, orderIndex: gi })
 
         const groupMemberInserts = groupPlayers.map((p, idx) => ({
           group_id: group.id,
@@ -206,6 +209,19 @@ export function StartTournamentButton({ tournamentId, playerCount }: StartTourna
         .eq('id', tournamentId)
 
       if (updateErr) throw new Error('Failed to update tournament status')
+
+      // Pre-generate bracket skeleton with cross-group seeding
+      if (tournament.enable_winners_bracket && groupInfoList.length >= 2) {
+        await createBracketSkeletons(
+          tournamentId,
+          groupInfoList,
+          tournament.winners_per_group ?? 2,
+          tournament.losers_per_group ?? 0,
+          tournament.enable_winners_bracket,
+          tournament.enable_losers_bracket,
+          supabase
+        )
+      }
 
       toast('Toernooi gestart! Poules en wedstrijden zijn gegenereerd.', 'success')
       router.refresh()

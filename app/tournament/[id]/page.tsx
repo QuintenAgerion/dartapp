@@ -29,13 +29,13 @@ export default async function TournamentOverviewPage({ params }: PageProps) {
   const role = await getMyRole(id, user?.id, supabase)
 
   // Stats
-  const [{ count: playerCount }, { count: matchCount }, { count: completedCount }, { count: bracketCount }] = await Promise.all([
+  const [{ count: playerCount }, { count: matchCount }, { count: completedCount }, { count: filledR1Count }] = await Promise.all([
     supabase.from('tournament_members').select('*', { count: 'exact', head: true }).eq('tournament_id', id).eq('role', 'player'),
     supabase.from('group_matches').select('*', { count: 'exact', head: true }).eq('tournament_id', id),
     supabase.from('group_matches').select('*', { count: 'exact', head: true }).eq('tournament_id', id).eq('status', 'completed'),
-    supabase.from('brackets').select('*', { count: 'exact', head: true }).eq('tournament_id', id),
+    supabase.from('bracket_matches').select('*', { count: 'exact', head: true }).eq('tournament_id', id).eq('round', 1).not('home_member_id', 'is', null),
   ])
-  const hasBracket = (bracketCount ?? 0) > 0
+  const hasBracket = (filledR1Count ?? 0) > 0
 
   return (
     <div className="space-y-6">

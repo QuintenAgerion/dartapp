@@ -112,6 +112,10 @@ export type BracketMatch = {
   match_number: number
   home_member_id: string | null
   away_member_id: string | null
+  home_source_group_idx: number | null
+  home_source_position: number | null
+  away_source_group_idx: number | null
+  away_source_position: number | null
   board_number: number | null
   scheduled_at: string | null
   status: BracketMatchStatus
@@ -143,7 +147,13 @@ export type GroupMemberInsert = Omit<GroupMember, 'id'>
 export type GroupMatchInsert = Omit<GroupMatch, 'id' | 'created_at'>
 export type GroupStandingInsert = Omit<GroupStanding, 'id' | 'leg_difference' | 'points'>
 export type BracketInsert = Omit<Bracket, 'id' | 'created_at'>
-export type BracketMatchInsert = Omit<BracketMatch, 'id' | 'created_at' | 'match_format'> & { match_format?: MatchFormat | null }
+export type BracketMatchInsert = Omit<BracketMatch, 'id' | 'created_at' | 'match_format' | 'home_source_group_idx' | 'home_source_position' | 'away_source_group_idx' | 'away_source_position'> & {
+  match_format?: MatchFormat | null
+  home_source_group_idx?: number | null
+  home_source_position?: number | null
+  away_source_group_idx?: number | null
+  away_source_position?: number | null
+}
 
 export type UserProfileInsert = {
   id: string

@@ -60,7 +60,7 @@ export function BracketMatchCard({
             isCompleted && match.winner_member_id === match.home_member_id && 'font-bold',
             homeMember ? getPlayerColorClass(homeMember.id) : 'text-stone-400'
           )}>
-            {homeMember?.display_name ?? (match.home_member_id ? '...' : 'TBD')}
+            {homeMember?.display_name ?? (match.home_member_id ? '...' : match.home_source_group_idx != null ? `Poule ${String.fromCharCode(65 + match.home_source_group_idx)} #${match.home_source_position}` : 'TBD')}
           </span>
           <span className={cn(
             'text-sm font-bold shrink-0 w-5 text-right',
@@ -82,7 +82,7 @@ export function BracketMatchCard({
             isCompleted && match.winner_member_id === match.away_member_id && 'font-bold',
             awayMember ? getPlayerColorClass(awayMember.id) : 'text-stone-400'
           )}>
-            {awayMember?.display_name ?? (match.away_member_id ? '...' : 'TBD')}
+            {awayMember?.display_name ?? (match.away_member_id ? '...' : match.away_source_group_idx != null ? `Poule ${String.fromCharCode(65 + match.away_source_group_idx)} #${match.away_source_position}` : 'TBD')}
           </span>
           <span className={cn(
             'text-sm font-bold shrink-0 w-5 text-right',

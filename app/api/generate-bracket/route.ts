@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getMyRole } from '@/lib/tournament/permissions'
-import { selectQualifiers, createWinnersBracket, createLosersBracket } from '@/lib/tournament/brackets'
+import { selectQualifiers, advanceBracketWinner } from '@/lib/tournament/brackets'
 import { scheduleMatches } from '@/lib/tournament/scheduling'
 import { assignScorers } from '@/lib/tournament/scorers'
 import type { GroupStanding, TournamentMember } from '@/types/database'
@@ -40,14 +40,27 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Winners bracket is not enabled for this tournament' }, { status: 400 })
     }
 
-    // Check brackets don't already exist
-    const { data: existing } = await supabase
+    // Brackets must already exist (pre-generated at tournament start)
+    const { data: allBrackets } = await supabase
       .from('brackets')
-      .select('id')
+      .select('id, type')
       .eq('tournament_id', tournamentId)
 
-    if (existing && existing.length > 0) {
-      return NextResponse.json({ error: 'Brackets already exist for this tournament' }, { status: 400 })
+    if (!allBrackets || allBrackets.length === 0) {
+      return NextResponse.json({ error: 'Bracket structure not found — start the tournament first' }, { status: 400 })
+    }
+
+    // Check if already filled in
+    const { data: alreadyFilled } = await supabase
+      .from('bracket_matches')
+      .select('id')
+      .in('bracket_id', allBrackets.map((b) => b.id))
+      .eq('round', 1)
+      .not('home_member_id', 'is', null)
+      .limit(1)
+
+    if (alreadyFilled && alreadyFilled.length > 0) {
+      return NextResponse.json({ error: 'Brackets have already been filled in' }, { status: 400 })
     }
 
     // Fetch groups
@@ -100,14 +113,54 @@ export async function POST(request: NextRequest) {
       standingsByGroup.set(group.id, groupStandings)
     }
 
-    // Use tournament's configured advancement values
+    // Validate enough qualifiers
     const winnersPerGroup = tournament.winners_per_group ?? 2
     const losersPerGroup = tournament.losers_per_group ?? 0
-
-    const { winners, losers } = selectQualifiers(standingsByGroup, winnersPerGroup, losersPerGroup)
+    const { winners } = selectQualifiers(standingsByGroup, winnersPerGroup, losersPerGroup)
 
     if (winners.length < 2) {
       return NextResponse.json({ error: 'Not enough qualifiers to generate a bracket (need at least 2)' }, { status: 400 })
+    }
+
+    // Fill in member IDs for each bracket from standings
+    for (const bracket of allBrackets) {
+      const { data: r1Matches } = await supabase
+        .from('bracket_matches')
+        .select('id, home_source_group_idx, home_source_position, away_source_group_idx, away_source_position')
+        .eq('bracket_id', bracket.id)
+        .eq('round', 1)
+        .not('home_source_group_idx', 'is', null)
+
+      for (const match of (r1Matches ?? [])) {
+        const homeGroup = groups.find((g) => g.order_index === match.home_source_group_idx)
+        const awayGroup = match.away_source_group_idx !== null
+          ? groups.find((g) => g.order_index === match.away_source_group_idx)
+          : null
+
+        const homeStandings = homeGroup ? standingsByGroup.get(homeGroup.id) ?? [] : []
+        const awayStandings = awayGroup ? standingsByGroup.get(awayGroup.id) ?? [] : []
+
+        const homeMember = homeStandings.find((s) => s.position === match.home_source_position)?.member ?? null
+        const awayMember = awayStandings.find((s) => s.position === match.away_source_position)?.member ?? null
+
+        if (!homeMember && !awayMember) continue
+
+        const isBye = homeMember !== null && awayMember === null
+
+        await supabase
+          .from('bracket_matches')
+          .update({
+            home_member_id: homeMember?.id ?? null,
+            away_member_id: awayMember?.id ?? null,
+            status: isBye ? 'completed' : homeMember && awayMember ? 'scheduled' : 'pending',
+            winner_member_id: isBye ? homeMember!.id : null,
+          })
+          .eq('id', match.id)
+
+        if (isBye && homeMember) {
+          await advanceBracketWinner(match.id, homeMember.id, null, supabase)
+        }
+      }
     }
 
     // Determine bracket match start time: after the last scheduled group match
@@ -123,14 +176,6 @@ export async function POST(request: NextRequest) {
     const bracketStartTime = lastGroupMatch?.scheduled_at
       ? new Date(new Date(lastGroupMatch.scheduled_at).getTime() + tournament.avg_match_duration * 60_000)
       : null
-
-    // Create winners bracket
-    await createWinnersBracket(tournamentId, winners, supabase)
-
-    // Create losers bracket if enabled and there are enough losers qualifiers
-    if (tournament.enable_losers_bracket && losers.length >= 2) {
-      await createLosersBracket(tournamentId, losers, supabase)
-    }
 
     // Schedule ALL bracket matches across boards and apply format overrides
     const { data: allBracketMatches } = await supabase
@@ -148,14 +193,8 @@ export async function POST(request: NextRequest) {
         bracketStartTime
       )
 
-      // Fetch all brackets to determine type per bracket_id (for format override lookup)
-      const { data: allBrackets } = await supabase
-        .from('brackets')
-        .select('id, type')
-        .eq('tournament_id', tournamentId)
-
       const bracketTypeMap = new Map<string, string>(
-        (allBrackets ?? []).map((b) => [b.id, b.type])
+        allBrackets.map((b) => [b.id, b.type])
       )
 
       // Per-bracket max round (for fromEnd calculation)
@@ -184,7 +223,6 @@ export async function POST(request: NextRequest) {
       }
 
       for (const s of scheduled) {
-        // Scheduling: always applied
         const updatePayload: Record<string, unknown> = {
           board_number: s.boardNumber,
           scheduled_at: s.scheduledAt,
@@ -199,7 +237,6 @@ export async function POST(request: NextRequest) {
           .update(updatePayload as any)
           .eq('id', s.id)
 
-        // Format override: applied separately — silently skipped if match_format column doesn't exist
         const bracketType = bracketTypeMap.get(s.bracket_id) ?? 'winners'
         const maxRound = maxRoundByBracket.get(s.bracket_id) ?? s.round
         const fromEnd = maxRound - s.round

@@ -310,6 +310,166 @@ export async function advanceBracketWinner(
   }
 }
 
+// ─── Bracket Skeleton Creation ────────────────────────────────────────────────
+
+/**
+ * Pre-generates bracket structures at tournament start with cross-group seeding.
+ * Round-1 matches store which group/position they belong to (source info).
+ * Member IDs are left null until "Bracket genereren" fills them in from standings.
+ */
+export async function createBracketSkeletons(
+  tournamentId: string,
+  groups: { id: string; orderIndex: number }[],
+  winnersPerGroup: number,
+  losersPerGroup: number,
+  enableWinners: boolean,
+  enableLosers: boolean,
+  supabase: SupabaseClient<Database>
+): Promise<void> {
+  const sorted = [...groups].sort((a, b) => a.orderIndex - b.orderIndex)
+  const n = sorted.length
+
+  if (enableWinners && winnersPerGroup >= 1 && n * winnersPerGroup >= 2) {
+    await createSkeletonBracket(
+      tournamentId, 'winners', sorted,
+      1,
+      winnersPerGroup >= 2 ? 2 : 1,
+      n * winnersPerGroup,
+      supabase
+    )
+  }
+
+  if (enableLosers && losersPerGroup >= 2 && n * losersPerGroup >= 2) {
+    await createSkeletonBracket(
+      tournamentId, 'losers', sorted,
+      winnersPerGroup + 1,
+      winnersPerGroup + 2,
+      n * losersPerGroup,
+      supabase
+    )
+  }
+}
+
+async function createSkeletonBracket(
+  tournamentId: string,
+  type: 'winners' | 'losers',
+  groups: { id: string; orderIndex: number }[],
+  homePosition: number,
+  awayPosition: number,
+  totalPlayers: number,
+  supabase: SupabaseClient<Database>
+): Promise<void> {
+  const n = groups.length
+  const size = nextPowerOfTwo(totalPlayers)
+  const rounds = numRounds(size)
+  const matchesInR1 = size / 2
+
+  const { data: bracket, error: bErr } = await supabase
+    .from('brackets')
+    .insert({ tournament_id: tournamentId, type })
+    .select()
+    .single()
+
+  if (bErr || !bracket) throw bErr ?? new Error(`Failed to create ${type} bracket`)
+
+  const inserts: BracketMatchInsert[] = []
+
+  // Round 1: cross-group pairs (group[i] homePos vs group[(i+1)%n] awayPos)
+  for (let i = 0; i < Math.min(n, matchesInR1); i++) {
+    inserts.push({
+      bracket_id: bracket.id,
+      tournament_id: tournamentId,
+      round: 1,
+      match_number: i + 1,
+      home_member_id: null,
+      away_member_id: null,
+      home_source_group_idx: groups[i].orderIndex,
+      home_source_position: homePosition,
+      away_source_group_idx: groups[(i + 1) % n].orderIndex,
+      away_source_position: awayPosition,
+      status: 'pending',
+      home_score: 0,
+      away_score: 0,
+      winner_member_id: null,
+      loser_member_id: null,
+      next_match_id: null,
+      loser_next_match_id: null,
+      board_number: null,
+      scheduled_at: null,
+      scorer_member_id: null,
+    })
+  }
+
+  // Remaining round-1 slots (bye/padding)
+  for (let m = inserts.length + 1; m <= matchesInR1; m++) {
+    inserts.push({
+      bracket_id: bracket.id,
+      tournament_id: tournamentId,
+      round: 1,
+      match_number: m,
+      home_member_id: null,
+      away_member_id: null,
+      status: 'pending',
+      home_score: 0,
+      away_score: 0,
+      winner_member_id: null,
+      loser_member_id: null,
+      next_match_id: null,
+      loser_next_match_id: null,
+      board_number: null,
+      scheduled_at: null,
+      scorer_member_id: null,
+    })
+  }
+
+  // Subsequent rounds: all empty
+  let matchesInRound = matchesInR1 / 2
+  for (let r = 2; r <= rounds; r++) {
+    for (let m = 1; m <= matchesInRound; m++) {
+      inserts.push({
+        bracket_id: bracket.id,
+        tournament_id: tournamentId,
+        round: r,
+        match_number: m,
+        home_member_id: null,
+        away_member_id: null,
+        status: 'pending',
+        home_score: 0,
+        away_score: 0,
+        winner_member_id: null,
+        loser_member_id: null,
+        next_match_id: null,
+        loser_next_match_id: null,
+        board_number: null,
+        scheduled_at: null,
+        scorer_member_id: null,
+      })
+    }
+    matchesInRound /= 2
+  }
+
+  const { data: inserted, error: mErr } = await supabase
+    .from('bracket_matches')
+    .insert(inserts)
+    .select()
+
+  if (mErr || !inserted) throw mErr ?? new Error('Failed to insert skeleton bracket matches')
+
+  // Link next_match_id: winner of (r, m) advances to (r+1, ceil(m/2))
+  const idLookup = new Map<string, string>()
+  for (const m of inserted) idLookup.set(`${m.round}-${m.match_number}`, m.id)
+
+  const maxRound = Math.max(...inserted.map((m) => m.round))
+  for (const match of inserted) {
+    if (match.round >= maxRound) continue
+    const nextMatchNumber = Math.ceil(match.match_number / 2)
+    const nextId = idLookup.get(`${match.round + 1}-${nextMatchNumber}`)
+    if (nextId) {
+      await supabase.from('bracket_matches').update({ next_match_id: nextId }).eq('id', match.id)
+    }
+  }
+}
+
 // ─── Qualifier Selection ──────────────────────────────────────────────────────
 
 /**
