@@ -134,7 +134,6 @@ export function StandingsClient({
           .filter(Boolean) as StandingsRow[]
 
         const groupMatches = initialMatches.filter((m) => m.group_id === group.id)
-        const allMatchesPlayed = groupMatches.length > 0 && groupMatches.every((m) => m.status === 'completed')
         const completedMatches = groupMatches.filter((m) => m.status === 'completed')
         const sorted = sortWithTiebreakers(groupRows, completedMatches)
 
@@ -147,7 +146,6 @@ export function StandingsClient({
             losersCount={losersPerGroup}
             highlightMemberId={myMemberId ?? undefined}
             isOrganizer={isOrganizer}
-            allMatchesPlayed={allMatchesPlayed}
             onSwap={(idxA, idxB) => handleSwap(group.id, sorted, idxA, idxB)}
             avatarMap={avatarMap}
           />

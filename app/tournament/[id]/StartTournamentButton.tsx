@@ -119,17 +119,26 @@ export function StartTournamentButton({ tournamentId, playerCount }: StartTourna
         }[]
 
         if (tournament.single_board_per_group) {
-          // Each group gets a fixed board; generate specs per group
+          // Each group gets a fixed board; stagger groups that share the same board
+          const boardRoundOffset = new Map<number, number>()
           const allGroupSpecs = groupedPlayers.flatMap((gPlayers, gi) => {
             if (gPlayers.length === 0 || !groupIds[gi]) return []
+            const boardNumber = (gi % tournament.num_boards) + 1
+            const roundsOffset = boardRoundOffset.get(boardNumber) ?? 0
+            const groupStartTime = startTime
+              ? new Date(startTime.getTime() + roundsOffset * tournament.avg_match_duration * 60_000)
+              : null
+            const n = gPlayers.length
+            const numRounds = n < 2 ? 0 : n % 2 === 0 ? n - 1 : n
+            boardRoundOffset.set(boardNumber, roundsOffset + numRounds)
             return generateGroupMatches(
               groupIds[gi],
               tournamentId,
               gPlayers.map(p => p.id),
               tournament.num_boards,
-              startTime,
+              groupStartTime,
               tournament.avg_match_duration,
-              (gi % tournament.num_boards) + 1
+              boardNumber
             )
           })
 

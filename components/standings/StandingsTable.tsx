@@ -16,7 +16,6 @@ interface StandingsTableProps {
   losersCount?: number
   highlightMemberId?: string
   isOrganizer?: boolean
-  allMatchesPlayed?: boolean
   onSwap?: (idxA: number, idxB: number) => void
   avatarMap?: Record<string, string>
 }
@@ -28,7 +27,6 @@ export function StandingsTable({
   losersCount = 0,
   highlightMemberId,
   isOrganizer = false,
-  allMatchesPlayed = false,
   onSwap,
   avatarMap = {},
 }: StandingsTableProps) {
@@ -68,16 +66,8 @@ export function StandingsTable({
                 displayPosition <= advancingCount + losersCount
               const isHighlighted = row.member.id === highlightMemberId
 
-              const prevTied = idx > 0 &&
-                rows[idx - 1].points === row.points &&
-                rows[idx - 1].leg_difference === row.leg_difference &&
-                rows[idx - 1].legs_for === row.legs_for
-              const nextTied = idx < rows.length - 1 &&
-                rows[idx + 1].points === row.points &&
-                rows[idx + 1].leg_difference === row.leg_difference &&
-                rows[idx + 1].legs_for === row.legs_for
-              const canMoveUp = isOrganizer && allMatchesPlayed && prevTied
-              const canMoveDown = isOrganizer && allMatchesPlayed && nextTied
+              const canMoveUp = isOrganizer && idx > 0
+              const canMoveDown = isOrganizer && idx < rows.length - 1
 
               return (
                 <tr
