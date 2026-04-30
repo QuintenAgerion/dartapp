@@ -5,8 +5,8 @@ import { buildAvatarMap } from '@/lib/tournament/avatars'
 import { InviteLink } from '@/components/tournament/InviteLink'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { Avatar } from '@/components/ui/Avatar'
+import { Badge } from '@/components/ui/Badge'
 import { PlayersManager } from './PlayersManager'
-import { PlayersReorderList } from './PlayersReorderList'
 import type { Tournament, TournamentMember, Group, GroupMember } from '@/types/database'
 
 interface PageProps {
@@ -99,13 +99,25 @@ export default async function PlayersPage({ params, searchParams }: PageProps) {
             description="Deel de uitnodigingslink zodat spelers kunnen meedoen"
           />
         ) : (
-          <PlayersReorderList
-            players={players}
-            isOrganizer={role === 'organizer'}
-            isDraft={t.status === 'draft'}
-            avatarMap={avatarMap}
-            memberGroupMap={Object.fromEntries(memberGroupMap)}
-          />
+          <div className="space-y-2">
+            {players.map((member) => (
+              <div
+                key={member.id}
+                className="flex items-center justify-between gap-3 py-2 border-b border-border/50 last:border-0"
+              >
+                <div className="flex items-center gap-2">
+                  <Avatar src={avatarMap[member.id]} name={member.display_name} size="sm" />
+                  <span className="text-sm text-stone-800">{member.display_name}</span>
+                  {memberGroupMap.has(member.id) && (
+                    <Badge color="blue">{memberGroupMap.get(member.id)}</Badge>
+                  )}
+                </div>
+                {!member.user_id && (
+                  <span className="text-xs text-stone-500">Gast</span>
+                )}
+              </div>
+            ))}
+          </div>
         )}
       </div>
 

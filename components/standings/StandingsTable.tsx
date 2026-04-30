@@ -68,8 +68,14 @@ export function StandingsTable({
                 displayPosition <= advancingCount + losersCount
               const isHighlighted = row.member.id === highlightMemberId
 
-              const prevTied = idx > 0 && rows[idx - 1].points === row.points
-              const nextTied = idx < rows.length - 1 && rows[idx + 1].points === row.points
+              const prevTied = idx > 0 &&
+                rows[idx - 1].points === row.points &&
+                rows[idx - 1].leg_difference === row.leg_difference &&
+                rows[idx - 1].legs_for === row.legs_for
+              const nextTied = idx < rows.length - 1 &&
+                rows[idx + 1].points === row.points &&
+                rows[idx + 1].leg_difference === row.leg_difference &&
+                rows[idx + 1].legs_for === row.legs_for
               const canMoveUp = isOrganizer && allMatchesPlayed && prevTied
               const canMoveDown = isOrganizer && allMatchesPlayed && nextTied
 

@@ -12,26 +12,16 @@ export function distributePlayersIntoGroups(
 ): TournamentMember[][] {
   const groups: TournamentMember[][] = Array.from({ length: numGroups }, () => [])
 
-  // Sort by seed ascending (null seeds go to end)
-  const sorted = [...players].sort((a, b) => {
-    if (a.seed == null && b.seed == null) return 0
-    if (a.seed == null) return 1
-    if (b.seed == null) return -1
-    return a.seed - b.seed
-  })
+  // Fisher-Yates shuffle for random distribution
+  const shuffled = [...players]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
 
-  let direction = 1 // 1 = forward, -1 = backward (snake draft)
-  let groupIdx = 0
-
-  for (const player of sorted) {
-    groups[groupIdx].push(player)
-
-    // Snake: when hitting end/start, reverse direction
-    if (groupIdx + direction >= numGroups || groupIdx + direction < 0) {
-      direction *= -1
-    } else {
-      groupIdx += direction
-    }
+  // Round-robin: spread players evenly across groups
+  for (let i = 0; i < shuffled.length; i++) {
+    groups[i % numGroups].push(shuffled[i])
   }
 
   return groups
