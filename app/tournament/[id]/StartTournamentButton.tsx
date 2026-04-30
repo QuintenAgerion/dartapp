@@ -129,8 +129,8 @@ export function StartTournamentButton({ tournamentId, playerCount }: StartTourna
               ? new Date(startTime.getTime() + roundsOffset * tournament.avg_match_duration * 60_000)
               : null
             const n = gPlayers.length
-            const numRounds = n < 2 ? 0 : n % 2 === 0 ? n - 1 : n
-            boardRoundOffset.set(boardNumber, roundsOffset + numRounds)
+            const totalMatches = n < 2 ? 0 : (n * (n - 1)) / 2
+            boardRoundOffset.set(boardNumber, roundsOffset + totalMatches)
             return generateGroupMatches(
               groupIds[gi],
               tournamentId,

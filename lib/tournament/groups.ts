@@ -132,7 +132,22 @@ export function generateGroupMatches(
     ? pairs.map(m => ({ ...m, boardNumber: fixedBoardNumber }))
     : assignMatchesToBoards(pairs, numBoards)
 
-  // Calculate scheduled times per round
+  if (fixedBoardNumber !== undefined) {
+    // Single board: schedule matches one after another, no parallel play possible
+    return withBoards.map((m, idx) => ({
+      groupId,
+      tournamentId,
+      homeMemberId: m.homeMemberId,
+      awayMemberId: m.awayMemberId,
+      round: m.round,
+      boardNumber: m.boardNumber,
+      scheduledAt: startTime
+        ? new Date(startTime.getTime() + idx * avgDurationMinutes * 60_000).toISOString()
+        : null,
+    }))
+  }
+
+  // Multi-board: matches within a round run in parallel on different boards
   const roundStartTimes = new Map<number, Date>()
   if (startTime) {
     const maxRound = Math.max(...pairs.map((p) => p.round), 1)
